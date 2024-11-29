@@ -1,0 +1,23 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# cache
+/.next
+
+# build
+/out
+/build
+
+# public
+/public
+
+# deploy
+.netlify
+.vercel
+
+templates
+
+# md files
+*.md
