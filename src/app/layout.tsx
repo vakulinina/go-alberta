@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${benne.variable} flex min-h-screen flex-col overflow-hidden antialiased`}>
+      <body className={`${benne.variable} flex min-h-screen flex-col overflow-x-hidden antialiased`}>
         <Header />
         <main>{children}</main>
         <Footer />
