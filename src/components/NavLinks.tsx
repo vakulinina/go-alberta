@@ -13,7 +13,7 @@ export const NavLinks = () => {
   return (
     <>
       {links.map(({ href, label }) => (
-        <Link key={href} href={href} className="whitespace-nowrap">
+        <Link key={href} href={href} className="whitespace-nowrap text-[20px]">
           {label}
         </Link>
       ))}

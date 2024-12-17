@@ -4,11 +4,12 @@ import { ProgressBar } from '../ProgressBar'
 import { BookmarkButton } from './components/BookmarkButton'
 import Link from 'next/link'
 import { ShareButton } from './components/ShareButton'
+import cx from 'classnames'
 
 // TODO: configure image optimization
 
-interface CampaignCardProps {
-  id: number
+interface CampaignCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
+  id: string
   title: string
   description: string
   raised: number
@@ -16,7 +17,6 @@ interface CampaignCardProps {
   imageUrl: string
   invests: number
   days: number
-  tags: string[]
 }
 
 export const CampaignCard = ({
@@ -27,25 +27,28 @@ export const CampaignCard = ({
   total,
   invests,
   days,
-  tags,
   imageUrl,
+  className,
 }: CampaignCardProps) => {
   return (
-    <Link href={`/campaigns/${id}`} className="group relative h-[409px] w-[255px] overflow-hidden">
+    <Link
+      href={`/campaigns/${id}`}
+      className={cx('group flex h-[409px] w-[255px] shrink-0 flex-col overflow-hidden border', className)}
+    >
       <div className="relative">
         <Image alt="" width={255} height={255} src={imageUrl} />
         <BookmarkButton />
         <ShareButton></ShareButton>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 min-h-[160px] translate-y-[62px] bg-[#FFFFFF] pb-[10px] pt-[20px] transition-all group-hover:translate-y-0">
+      <div className="min-h-[160px] bg-[#FFFFFF] px-[6px] pt-[12px] transition-all group-hover:translate-y-[-48px]">
         <div>
           <h3 className="line-clamp-2 text-ellipsis text-[20px]">{title}</h3>
           <p className="line-clamp-2 text-ellipsis text-[14px]">{description}</p>
         </div>
 
         <div>
-          <div className="flex justify-between text-[14px] text-[#6A6A6A]">
+          <div className="mt-[20px] flex justify-between text-[14px] text-[#6A6A6A]">
             <p>Raised</p>
             <p>Total</p>
           </div>
@@ -63,18 +66,6 @@ export const CampaignCard = ({
               <p>{invests} Invests</p>
               <p>{days} days left</p>
             </div>
-            {tags.length > 0 && (
-              <div className="mt-[22px] flex gap-[10px]">
-                {tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="box-border rounded-[2px] border border-[#C8C8C8] px-[6px] py-[1px] text-[12px] uppercase text-[#6A6A6A]"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </div>
