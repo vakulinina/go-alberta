@@ -16,9 +16,9 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
   }
 
   return (
-    <div className="w-full max-w-[480px] rounded-lg bg-white p-8">
-      <button onClick={onClose} className="float-right p-2">
-        <span className="text-2xl">&times;</span>
+    <div className="relative min-h-[700px] w-full max-w-[480px] rounded-lg bg-white p-12 pt-28">
+      <button onClick={onClose} className="absolute left-6 top-6 p-2">
+        <span className="text-2xl">✕</span>
       </button>
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-2xl">Start your journey with us</h1>
@@ -31,43 +31,6 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
         </p>
       </div>
 
-      <div className="mb-8 space-y-4">
-        <button className="flex w-full items-center justify-center gap-2 rounded-lg border p-3">
-          {/*   <Image
-            src="/icons/google.svg"
-            alt="Google"
-            width={20}
-            height={20}
-          />
-          */}
-          Continue with Google
-        </button>
-        <button className="flex w-full items-center justify-center gap-2 rounded-lg border p-3">
-          {/*}      <Image
-            src="/icons/facebook.svg"
-            alt="Facebook"
-            width={20}
-            height={20}
-          />
-          */}
-          Continue with Facebook
-        </button>
-        <button className="flex w-full items-center justify-center gap-2 rounded-lg border p-3">
-          {/*      <Image
-            src="/icons/apple.svg"
-            alt="Apple"
-            width={20}
-            height={20}
-          />
-          */}
-          Continue with Apple
-        </button>
-      </div>
-      <div className="mb-8 flex items-center gap-4">
-        <div className="h-[1px] flex-1 bg-gray-200"></div>
-        <span className="text-gray-500">Or</span>
-        <div className="h-[1px] flex-1 bg-gray-200"></div>
-      </div>
       <form onSubmit={handleLogin} className="space-y-4">
         <div>
           <input
