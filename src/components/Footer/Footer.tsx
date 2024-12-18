@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { config } from './config'
+import { FacebookIcon } from '../Icons/FacebookIcon'
+import { InstagramIcon } from '../Icons/InstagramIcon'
+import { LinkedInIcon } from '../Icons/LinkedInIcon'
 
 const FooterLink = ({ href = '/', label = '' }) => {
   return (
@@ -19,8 +22,18 @@ export const Footer = () => {
             Local, Learn Local, Cheer Local, and Buy Local - Showcasing Everything Alberta
           </p>
           <div>
-            <p className="text-[14px]">Follow us</p>
-            <div>{'<social icons>'}</div>
+            <p className="mb-[10px] text-[14px]">Follow us</p>
+            <div className="flex gap-[24px]">
+              <a href="https://www.facebook.com/goalbertago">
+                <FacebookIcon />
+              </a>
+              <a href="https://www.instagram.com/goalbertaconnect">
+                <InstagramIcon />
+              </a>
+              <a href="https://www.linkedin.com/company/goalbertago">
+                <LinkedInIcon />
+              </a>
+            </div>
           </div>
         </div>
         <div className="mr-[83px] flex gap-[38px]">
