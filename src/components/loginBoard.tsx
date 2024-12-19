@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { EyeIcon } from './Icons/EyeIcon'
+import { EyeOffIcon } from './Icons/EyeOffIcon'
+import { XmarkIcon } from './Icons/XmarkIcon'
 
 interface LoginBoardProps {
   onClose: () => void
@@ -18,7 +20,7 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
   return (
     <div className="relative min-h-[700px] w-full max-w-[480px] rounded-lg bg-white p-12 pt-28">
       <button onClick={onClose} className="absolute left-6 top-6 p-2">
-        <span className="text-2xl">✕</span>
+        <XmarkIcon className="h-6 w-6 text-gray-500" />
       </button>
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-2xl">Start your journey with us</h1>
@@ -57,12 +59,7 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 -translate-y-1/2"
           >
-            <Image
-              src={showPassword ? '/eye-off.svg' : '/eye.svg'}
-              alt={showPassword ? 'Hide password' : 'Show password'}
-              width={20}
-              height={20}
-            />
+            {showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
         </div>
 
