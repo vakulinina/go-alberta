@@ -1,8 +1,4 @@
-interface XmarkIconProps {
-  className?: string
-}
-
-export const XmarkIcon = ({ className }: XmarkIconProps) => {
+export const XmarkIcon = ({ className }: React.SVGAttributes<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
