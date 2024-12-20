@@ -1,3 +1,10 @@
+export type MediaItem = {
+  type: 'image' | 'video'
+  src: string
+  alt?: string
+  platform?: 'youtube' | 'vimeo'
+}
+
 export type Campaign = {
   id: string
   title: string
@@ -7,4 +14,5 @@ export type Campaign = {
   imageUrl: string
   invests: number
   days: number
+  media: MediaItem[]
 }
