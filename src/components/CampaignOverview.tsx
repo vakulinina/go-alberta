@@ -23,7 +23,7 @@ export const CampaignOverview = ({
   return (
     <div
       className={cx(
-        'right-0 top-[20px] box-border min-w-[520px] shrink-0 whitespace-nowrap border-[6px] border-[#BABABA] bg-[#FFFFFF] px-[40px] py-[30px]',
+        'right-0 top-[20px] box-border shrink-0 whitespace-nowrap border-[6px] border-[#BABABA] bg-[#FFFFFF] px-[20px] py-[30px] lg:min-w-[420px] xl:min-w-[520px] xl:px-[40px]',
         className
       )}
     >
