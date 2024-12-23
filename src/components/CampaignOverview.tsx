@@ -2,6 +2,7 @@ import React from 'react'
 import { ProgressBar } from './ProgressBar'
 import cx from 'classnames'
 import { Campaign } from '@/types/campaign'
+import { Button } from './Button'
 
 interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   campaign: Campaign
@@ -44,26 +45,16 @@ export const CampaignOverview = ({
         <input type="number" className="w-full rounded-lg bg-[#F6F8FA] px-[16px] text-[20px]" min={0} placeholder="$" />
       </div>
       <div className="mt-[44px]">
-        {/* TODO: replace buttons with reusable Button component when implemented */}
-        <button
-          className="w-full rounded-[10px] bg-[#000000] px-[30px] py-[10px] text-[20px] text-white"
-          onClick={onInvest}
-        >
+        <Button fullWidth onClick={onInvest}>
           Back This Project
-        </button>
+        </Button>
         <div className="mt-[24px] flex gap-[8px]">
-          <button
-            className="w-full rounded-[10px] bg-[#000000] px-[30px] py-[10px] text-[20px] text-white"
-            onClick={onSave}
-          >
+          <Button fullWidth onClick={onSave}>
             Save
-          </button>
-          <button
-            className="w-full rounded-[10px] bg-[#000000] px-[30px] py-[10px] text-[20px] text-white"
-            onClick={onShare}
-          >
+          </Button>
+          <Button fullWidth onClick={onShare}>
             Share
-          </button>
+          </Button>
         </div>
       </div>
     </div>

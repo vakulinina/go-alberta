@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { EyeIcon } from './Icons/EyeIcon'
 import { EyeOffIcon } from './Icons/EyeOffIcon'
 import { XmarkIcon } from './Icons/XmarkIcon'
+import { Button } from './Button'
 
 interface LoginBoardProps {
   onClose: () => void
@@ -63,9 +64,7 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
           </button>
         </div>
 
-        <button type="submit" className="w-full rounded-lg bg-black p-3 text-white transition-colors hover:bg-gray-800">
-          Log in
-        </button>
+        <Button type="submit">Log in</Button>
 
         <div className="text-center">
           <Link href="/forgot-password" className="text-sm text-gray-600 hover:underline">
