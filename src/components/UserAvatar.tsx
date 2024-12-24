@@ -2,6 +2,7 @@
 
 import { useState, FC } from 'react'
 import Image from 'next/image'
+import { UserIcon } from './Icons/UserIcon'
 
 interface UserAvatarProps {
   username: string
@@ -10,17 +11,24 @@ interface UserAvatarProps {
 }
 
 export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout }) => {
+  const [imageError, setImageError] = useState(false)
+
   const [showDropdown, setShowDropdown] = useState(false)
   return (
     <div className="relative">
       <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 hover:opacity-80">
         <div className="h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-          {avatarUrl ? (
-            <Image src={avatarUrl} alt={username} width={40} height={40} className="h-full w-full object-cover" />
+          {avatarUrl && !imageError ? (
+            <Image
+              src={avatarUrl}
+              alt={username}
+              width={40}
+              height={40}
+              className="h-full w-full object-cover"
+              onError={() => setImageError(true)}
+            />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-lg text-gray-600">
-              {username.charAt(0).toUpperCase()}
-            </div>
+            <UserIcon className="h-10 w-10 text-gray-600" />
           )}
         </div>
         <span className="text-[20px]">{username}</span>

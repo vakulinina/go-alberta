@@ -6,6 +6,10 @@ import { LoginBoard } from './loginBoard'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
 
+//add user Avatar component------------
+import { UserAvatar } from './UserAvatar'
+//-------------------------------------
+
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
     <button className="whitespace-nowrap">Start a Campaign</button>
@@ -39,9 +43,24 @@ const MobileMenu = ({ children }: { children: React.ReactNode }) => {
 export const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
 
+  //add user Avatar component------------
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  //-----------------------------------------
+
   const handleLoginClick = useCallback(() => {
     setShowLoginModal(true)
   }, [])
+
+  //add user Avatar component------------
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false)
+    setIsLoggedIn(true)
+  }
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+  }
+  //-----------------------------------------
 
   return (
     <>
@@ -61,14 +80,20 @@ export const Header = () => {
           </div>
         </MobileMenu>
 
+        {/* add user Avatar component------------ */}
         <div className="ml-auto hidden gap-[50px] text-[20px] md:flex">
-          <MenuButtons onLoginClick={handleLoginClick} />
+          {isLoggedIn ? (
+            <UserAvatar username="Mahnaz" avatarUrl="/path/to/avatar.jpg" onLogout={handleLogout} />
+          ) : (
+            <MenuButtons onLoginClick={handleLoginClick} />
+          )}
         </div>
+        {/* ----------------------------------------- */}
       </header>
 
       {showLoginModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <LoginBoard onClose={() => setShowLoginModal(false)} />
+          <LoginBoard onClose={() => setShowLoginModal(false)} onLogin={handleLoginSuccess} />
         </div>
       )}
     </>

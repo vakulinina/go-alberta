@@ -6,15 +6,25 @@ import { XmarkIcon } from './Icons/XmarkIcon'
 
 interface LoginBoardProps {
   onClose: () => void
+
+  //add onLogin function-----------------------------------------
+  onLogin: () => void
+  //-----------------------------------------
 }
 
-export const LoginBoard = ({ onClose }: LoginBoardProps) => {
+export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
+
+    //add onLogin function-----------------------------------------
+    if (email && password) {
+      onLogin()
+    }
+    //-----------------------------------------
   }
 
   return (
