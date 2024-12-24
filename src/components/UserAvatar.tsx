@@ -3,6 +3,7 @@
 import { useState, FC } from 'react'
 import Image from 'next/image'
 import { UserIcon } from './Icons/UserIcon'
+import { useRouter } from 'next/navigation'
 
 interface UserAvatarProps {
   username: string
@@ -11,9 +12,10 @@ interface UserAvatarProps {
 }
 
 export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout }) => {
+  const router = useRouter()
   const [imageError, setImageError] = useState(false)
-
   const [showDropdown, setShowDropdown] = useState(false)
+
   return (
     <div className="relative">
       <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 hover:opacity-80">
@@ -39,6 +41,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
             onClick={() => {
               onLogout()
               setShowDropdown(false)
+              router.push('/')
             }}
             className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50"
           >

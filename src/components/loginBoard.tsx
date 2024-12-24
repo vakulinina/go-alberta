@@ -4,6 +4,7 @@ import { EyeIcon } from './Icons/EyeIcon'
 import { EyeOffIcon } from './Icons/EyeOffIcon'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { Button } from './Button'
+import { useRouter } from 'next/navigation'
 
 interface LoginBoardProps {
   onClose: () => void
@@ -14,6 +15,7 @@ interface LoginBoardProps {
 }
 
 export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -24,6 +26,8 @@ export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
     //add onLogin function-----------------------------------------
     if (email && password) {
       onLogin()
+
+      router.push('/userProfile')
     }
     //-----------------------------------------
   }
