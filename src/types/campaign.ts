@@ -5,6 +5,14 @@ export type MediaItem = {
   platform?: 'youtube' | 'vimeo'
 }
 
+export type Perk = {
+  title: string
+  description: string
+  price: number
+  shippingDate: string
+  imageUrl: string
+}
+
 export type Campaign = {
   id: string
   title: string
@@ -15,4 +23,5 @@ export type Campaign = {
   invests: number
   days: number
   media: MediaItem[]
+  perks: Perk[]
 }

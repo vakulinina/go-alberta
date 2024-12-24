@@ -64,7 +64,9 @@ export const LoginBoard = ({ onClose }: LoginBoardProps) => {
           </button>
         </div>
 
-        <Button type="submit">Log in</Button>
+        <Button fullWidth type="submit">
+          Log in
+        </Button>
 
         <div className="text-center">
           <Link href="/forgot-password" className="text-sm text-gray-600 hover:underline">
