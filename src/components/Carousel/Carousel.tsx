@@ -6,7 +6,7 @@ import { RightArrowIcon } from '../Icons/RightArrowIcon'
 import { LeftArrowIcon } from '../Icons/LeftArrowIcon'
 import Link from 'next/link'
 
-interface CarouselProps {
+interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   itemWidth?: number
   step?: number
   gap?: number
@@ -26,6 +26,7 @@ const CarouselComponent = ({
   title,
   children,
   link,
+  className,
 }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -59,7 +60,7 @@ const CarouselComponent = ({
 
   return (
     <div
-      className="relative mx-auto overflow-hidden"
+      className={`relative mx-auto w-auto overflow-hidden ${className}`}
       style={{ maxWidth: `${(itemWidth + gap) * visibleItems - gap}px` }}
     >
       <div className="mb-[70px] flex items-baseline justify-between">
