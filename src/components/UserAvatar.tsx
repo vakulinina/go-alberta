@@ -15,7 +15,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
 
   const [showDropdown, setShowDropdown] = useState(false)
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 hover:opacity-80">
         <div className="h-10 w-10 overflow-hidden rounded-full bg-gray-100">
           {avatarUrl && !imageError ? (
@@ -34,13 +34,13 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
         <span className="text-[20px]">{username}</span>
       </button>
       {showDropdown && (
-        <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
+        <div className="absolute left-0 top-full z-50 mt-2 w-28 rounded-lg border border-gray-200 bg-white shadow-lg md:left-auto md:right-16">
           <button
             onClick={() => {
               onLogout()
               setShowDropdown(false)
             }}
-            className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50"
+            className="flex w-full items-center justify-center px-4 py-2 text-gray-700 hover:bg-gray-50"
           >
             Log out
           </button>
