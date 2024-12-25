@@ -13,6 +13,13 @@ export type Perk = {
   imageUrl: string
 }
 
+export type Comment = {
+  id: string
+  user: { name: string; imageUrl: string }
+  date: string
+  content: string
+}
+
 export type Campaign = {
   id: string
   title: string
@@ -24,4 +31,6 @@ export type Campaign = {
   days: number
   media: MediaItem[]
   perks: Perk[]
+  qna: { question: string; answer: string }[]
+  comments: Comment[]
 }
