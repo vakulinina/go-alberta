@@ -7,10 +7,7 @@ import { Button } from './Button'
 
 interface LoginBoardProps {
   onClose: () => void
-
-  //add onLogin function-----------------------------------------
   onLogin: () => void
-  //-----------------------------------------
 }
 
 export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
@@ -21,11 +18,9 @@ export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
 
-    //add onLogin function-----------------------------------------
     if (email && password) {
       onLogin()
     }
-    //-----------------------------------------
   }
 
   return (
