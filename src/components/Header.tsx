@@ -28,7 +28,7 @@ const MobileMenu = ({ children }: { children: React.ReactNode }) => {
       </button>
 
       <div
-        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute left-0 top-[84px] w-full border-b border-[#E1E1E1] bg-white px-[24px] py-[16px]`}
+        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute left-0 top-[84px] z-50 w-full border-b border-[#E1E1E1] bg-white px-[24px] py-[16px]`}
       >
         <div className="flex flex-col items-start py-4">{children}</div>
       </div>
