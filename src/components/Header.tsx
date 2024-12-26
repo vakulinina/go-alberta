@@ -5,10 +5,7 @@ import { useCallback, useState } from 'react'
 import { LoginBoard } from './loginBoard'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
-
-//add user Avatar component------------
 import { UserAvatar } from './UserAvatar'
-//-------------------------------------
 
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
@@ -32,7 +29,7 @@ const MobileMenu = ({ children }: { children: React.ReactNode }) => {
       </button>
 
       <div
-        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute left-0 top-[84px] w-full border-b border-[#E1E1E1] bg-white px-[24px] py-[16px]`}
+        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute left-0 top-[84px] z-50 w-full border-b border-[#E1E1E1] bg-white px-[24px] py-[16px]`}
       >
         <div className="flex flex-col items-start py-4">{children}</div>
       </div>
@@ -42,16 +39,11 @@ const MobileMenu = ({ children }: { children: React.ReactNode }) => {
 
 export const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
-
-  //add user Avatar component------------
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  //-----------------------------------------
-
   const handleLoginClick = useCallback(() => {
     setShowLoginModal(true)
   }, [])
 
-  //add user Avatar component------------
   const handleLoginSuccess = () => {
     setShowLoginModal(false)
     setIsLoggedIn(true)
@@ -60,7 +52,6 @@ export const Header = () => {
   const handleLogout = () => {
     setIsLoggedIn(false)
   }
-  //-----------------------------------------
 
   return (
     <>
@@ -75,12 +66,17 @@ export const Header = () => {
 
         <MobileMenu>
           <NavLinks />
-          <div className="mt-4 flex flex-col items-start text-[20px]">
-            <MenuButtons onLoginClick={handleLoginClick} />
+          <div className="mt-4 flex w-full flex-col items-start text-[20px]">
+            {isLoggedIn ? (
+              <div className="relative w-full">
+                <UserAvatar username="Mahnaz" avatarUrl="/path/to/avatar.jpg" onLogout={handleLogout} />
+              </div>
+            ) : (
+              <MenuButtons onLoginClick={handleLoginClick} />
+            )}
           </div>
         </MobileMenu>
 
-        {/* add user Avatar component------------ */}
         <div className="ml-auto hidden gap-[50px] text-[20px] md:flex">
           {isLoggedIn ? (
             <UserAvatar username="Mahnaz" avatarUrl="/path/to/avatar.jpg" onLogout={handleLogout} />
@@ -88,7 +84,6 @@ export const Header = () => {
             <MenuButtons onLoginClick={handleLoginClick} />
           )}
         </div>
-        {/* ----------------------------------------- */}
       </header>
 
       {showLoginModal && (
