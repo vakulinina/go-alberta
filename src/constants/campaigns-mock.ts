@@ -54,6 +54,55 @@ export const MOCK_CAMPAIGN: Campaign = {
       imageUrl: 'https://via.placeholder.com/220x220',
     },
   ],
+  qna: [
+    {
+      question: 'Question 1',
+      answer:
+        'Answer 1. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores fugiat odit dicta obcaecati atque officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ad magni culpa sapiente iustoexcepturi, laboriosam autem molestiae veritatis. Quaerat, fugiat quae ratione nihil sequi dignissimos nulla atnostrum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit eaque excepturi nam quos nobis, delenitiasperiores. Corrupti placeat maiores ad beatae, nam dolor tempora ab veritatis. Inventore porro quia',
+    },
+    {
+      question: 'Question 2',
+      answer:
+        'Answer 2. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores fugiat odit dicta obcaecati atque officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ad magni culpa sapiente iustoexcepturi, laboriosam autem molestiae veritatis. Quaerat, fugiat quae ratione nihil sequi dignissimos nulla atnostrum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit eaque excepturi nam quos nobis, delenitiasperiores. Corrupti placeat maiores ad beatae, nam dolor tempora ab veritatis. Inventore porro quia',
+    },
+    {
+      question: 'Question 3',
+      answer:
+        'Answer 3. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores fugiat odit dicta obcaecati atque officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ad magni culpa sapiente iustoexcepturi, laboriosam autem molestiae veritatis. Quaerat, fugiat quae ratione nihil sequi dignissimos nulla atnostrum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit eaque excepturi nam quos nobis, delenitiasperiores. Corrupti placeat maiores ad beatae, nam dolor tempora ab veritatis. Inventore porro quia',
+    },
+  ],
+  comments: [
+    {
+      id: '1',
+      user: {
+        name: 'John Doe',
+        imageUrl: 'https://via.placeholder.com/40x40',
+      },
+      content:
+        'Comment 1. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',
+      date: '2025-02-14',
+    },
+    {
+      id: '2',
+      user: {
+        name: 'Jane Doe',
+        imageUrl: '',
+      },
+      content:
+        'Comment 2. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores que officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consec',
+      date: '2025-02-14',
+    },
+    {
+      id: '3',
+      user: {
+        name: 'John Doe',
+        imageUrl: 'https://via.placeholder.com/40x40',
+      },
+      content:
+        'Comment 3. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',
+      date: '2025-02-14',
+    },
+  ],
 }
 
 export const MOCK_CAMPAIGNS: Campaign[] = new Array(9).fill(MOCK_CAMPAIGN).map((item, index) => ({
