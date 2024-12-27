@@ -84,7 +84,7 @@ const CarouselComponent = ({
 
       <div
         ref={carouselRef}
-        className="flex whitespace-nowrap"
+        className="flex"
         style={{
           gap: `${gap}px`,
           transform: `translateX(-${currentIndex * (itemWidth + gap)}px)`,
