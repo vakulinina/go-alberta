@@ -4,7 +4,7 @@ import SideBar from '@/components/UserProfile/SideBar'
 export default function UserProfileLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
-      <div className="hidden border-r md:block md:w-1/6">
+      <div className="hidden border-r md:block md:w-1/5">
         <div className="h-full w-full">
           <SideBar />
         </div>

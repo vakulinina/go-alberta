@@ -2,6 +2,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { CampaignIcon } from '../Icons/CampaignIcon'
+import { ContributionIcon } from '../Icons/ContributionIcon'
+import { GearIcon } from '../Icons/GearIcon'
 
 interface MenuItem {
   id: string
@@ -15,6 +18,7 @@ const menuItems: MenuItem[] = [
   {
     id: 'campaigns',
     label: 'Campaigns',
+    icon: <CampaignIcon className="h-4 w-4" />,
     href: '/campaigns',
     subItems: [
       { id: 'new', label: 'New Campaign', href: '/campaigns/new' },
@@ -25,11 +29,13 @@ const menuItems: MenuItem[] = [
   {
     id: 'contributions',
     label: 'Contributions',
+    icon: <ContributionIcon className="h-4 w-4" />,
     href: '/contributions',
   },
   {
     id: 'settings',
     label: 'Settings',
+    icon: <GearIcon className="h-5 w-5" />,
     href: '/settings',
     subItems: [
       { id: 'profile', label: 'Profile Information', href: '/settings/profile' },
@@ -46,25 +52,26 @@ export default function SideBar() {
     setExpandedMenus((prev) => (prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]))
   }
   return (
-    <nav className="w-full bg-white md:w-1/6">
-      <div className="hidden min-h-screen border-gray-200 p-4 md:block">
+    <nav className="w-full bg-white">
+      <div className="hidden min-h-screen border-gray-200 md:block">
         <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.id} className="w-full">
               <button
                 onClick={() => item.subItems && toggleMenu(item.id)}
-                className={`w-full rounded-lg p-2 text-left transition-colors ${pathname === item.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
+                className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors ${pathname === item.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
               >
+                {item.icon}
                 {item.label}
               </button>
 
               {item.subItems && expandedMenus.includes(item.id) && (
                 <ul className="ml-4 mt-2 space-y-2">
                   {item.subItems.map((subItem) => (
-                    <li key={subItem.id} className="w-full">
+                    <li key={subItem.id} className="-mx-6 w-full pl-14">
                       <Link href={subItem.href} className="block w-full">
                         <span
-                          className={`block w-full whitespace-nowrap rounded-lg p-2 transition-colors ${pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
+                          className={`block w-full whitespace-nowrap p-2 transition-colors ${pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
                         >
                           {subItem.label}
                         </span>
@@ -78,27 +85,27 @@ export default function SideBar() {
         </ul>
       </div>
 
-      <div className="w-full border-b border-t border-gray-200 p-2 md:hidden">
-        <ul className="flex justify-around">
+      <div className="w-full border-b border-t border-gray-300 md:hidden">
+        <ul className="flex w-full">
           {menuItems.map((item) => (
-            <li key={item.id} className="group relative">
+            <li key={item.id} className="group relative w-1/3">
               <button
-                className={`whitespace-nowrap rounded-lg px-3 py-2 transition-colors ${
-                  pathname === item.href ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-50'
+                className={`w-full whitespace-nowrap px-6 py-2 text-center transition-colors ${
+                  pathname === item.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 {item.label}
               </button>
 
               {item.subItems && (
-                <div className="invisible absolute left-0 top-full pt-1 group-hover:visible">
-                  <ul className="w-48 rounded-lg border border-gray-200 bg-white shadow-lg">
+                <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-1 group-hover:visible">
+                  <ul className="w-30 border border-gray-300 bg-white shadow-lg">
                     {item.subItems.map((subItem) => (
                       <li key={subItem.id}>
                         <Link href={subItem.href}>
                           <span
-                            className={`block cursor-pointer px-4 py-2 transition-colors hover:bg-gray-100 ${
-                              pathname === subItem.href ? 'bg-gray-200 text-gray-900' : 'text-gray-600'
+                            className={`block cursor-pointer px-4 py-2 text-center text-sm transition-colors hover:bg-gray-100 ${
+                              pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600'
                             }`}
                           >
                             {subItem.label}
