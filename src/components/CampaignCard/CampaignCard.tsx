@@ -33,18 +33,18 @@ export const CampaignCard = ({
   return (
     <Link
       href={`/campaigns/${id}`}
-      className={cx('group flex h-[409px] w-[255px] shrink-0 flex-col overflow-hidden border', className)}
+      className={cx('group flex h-[450px] w-[255px] shrink-0 flex-col overflow-hidden', className)}
     >
       <div className="relative">
         <Image alt="" width={255} height={255} src={imageUrl} />
         <BookmarkButton />
-        <ShareButton></ShareButton>
+        <ShareButton />
       </div>
 
-      <div className="min-h-[160px] bg-[#FFFFFF] px-[6px] pt-[12px] transition-all group-hover:translate-y-[-48px]">
+      <div className="min-h-[160px] bg-[#FFFFFF] px-[6px] pt-[12px] transition-all group-hover:translate-y-[-18px]">
         <div>
-          <h3 className="line-clamp-2 text-ellipsis text-[20px]">{title}</h3>
-          <p className="line-clamp-2 text-ellipsis text-[14px]">{description}</p>
+          <h3 className="line-clamp-2 min-h-[60px] text-ellipsis text-[20px]">{title}</h3>
+          <p className="line-clamp-1 text-ellipsis text-[14px]">{description}</p>
         </div>
 
         <div>

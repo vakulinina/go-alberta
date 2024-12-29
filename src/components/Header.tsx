@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { NavLinks } from './NavLinks'
 import { useCallback, useState } from 'react'
-import { LoginBoard } from './loginBoard'
+import { LoginBoard } from './LoginBoard'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
 import { UserAvatar } from './UserAvatar'
@@ -69,7 +69,7 @@ export const Header = () => {
           <div className="mt-4 flex w-full flex-col items-start text-[20px]">
             {isLoggedIn ? (
               <div className="relative w-full">
-                <UserAvatar username="Mahnaz" avatarUrl="/path/to/avatar.jpg" onLogout={handleLogout} />
+                <UserAvatar username="Mahnaz" onLogout={handleLogout} />
               </div>
             ) : (
               <MenuButtons onLoginClick={handleLoginClick} />
@@ -79,7 +79,7 @@ export const Header = () => {
 
         <div className="ml-auto hidden gap-[50px] text-[20px] md:flex">
           {isLoggedIn ? (
-            <UserAvatar username="Mahnaz" avatarUrl="/path/to/avatar.jpg" onLogout={handleLogout} />
+            <UserAvatar username="Mahnaz" onLogout={handleLogout} />
           ) : (
             <MenuButtons onLoginClick={handleLoginClick} />
           )}
