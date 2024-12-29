@@ -16,6 +16,13 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
   const [imageError, setImageError] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
 
+  const handleLogout = () => {
+    localStorage.removeItem('expandedMenus')
+    onLogout()
+    setShowDropdown(false)
+    router.push('/')
+  }
+
   return (
     <div className="relative w-full">
       <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 hover:opacity-80">
@@ -38,11 +45,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
       {showDropdown && (
         <div className="absolute left-0 top-full z-50 mt-2 w-28 rounded-lg border border-gray-200 bg-white shadow-lg md:left-auto md:right-16">
           <button
-            onClick={() => {
-              onLogout()
-              setShowDropdown(false)
-              router.push('/')
-            }}
+            onClick={handleLogout}
             className="flex w-full items-center justify-center px-4 py-2 text-gray-700 hover:bg-gray-50"
           >
             Log out
