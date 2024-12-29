@@ -23,7 +23,7 @@ export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
     if (email && password) {
       onLogin()
 
-      router.push('/userProfile')
+      router.push('/user')
     }
   }
 

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { CampaignIcon } from '../Icons/CampaignIcon'
@@ -48,9 +48,30 @@ export default function SideBar() {
   const pathname = usePathname()
   const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
+  useEffect(() => {
+    const saved = localStorage.getItem('expandedMenus')
+    if (saved) {
+      setExpandedMenus(JSON.parse(saved))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (expandedMenus.length > 0) {
+      localStorage.setItem('expandedMenus', JSON.stringify(expandedMenus))
+    }
+  }, [expandedMenus])
+
+  useEffect(() => {
+    const currentMainMenu = menuItems.find((item) => item.subItems?.some((subItem) => subItem.href === pathname))
+    if (currentMainMenu && !expandedMenus.includes(currentMainMenu.id)) {
+      setExpandedMenus((prev) => [...prev, currentMainMenu.id])
+    }
+  }, [pathname, expandedMenus])
+
   const toggleMenu = (menuId: string) => {
     setExpandedMenus((prev) => (prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]))
   }
+
   return (
     <nav className="w-full bg-white">
       <div className="hidden min-h-screen border-gray-200 md:block">
