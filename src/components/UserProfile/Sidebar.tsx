@@ -35,7 +35,7 @@ const menuItems: MenuItem[] = [
   {
     id: 'settings',
     label: 'Settings',
-    icon: <GearIcon className="h-5 w-5" />,
+    icon: <GearIcon className="h-5.3 w-5.3 -ml-1" />,
     href: '/settings',
     subItems: [
       { id: 'profile', label: 'Profile Information', href: '/settings/profile' },
@@ -66,14 +66,14 @@ export default function SideBar() {
               </button>
 
               {item.subItems && expandedMenus.includes(item.id) && (
-                <ul className="ml-4 mt-2 space-y-2">
+                <ul className="ml-4 mt-2 w-full space-y-2">
                   {item.subItems.map((subItem) => (
-                    <li key={subItem.id} className="-mx-6 w-full pl-14">
+                    <li key={subItem.id} className="-mx-4 w-full">
                       <Link href={subItem.href} className="block w-full">
                         <span
-                          className={`block w-full whitespace-nowrap p-2 transition-colors ${pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
+                          className={`block w-full whitespace-nowrap px-6 py-2 transition-colors ${pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
                         >
-                          {subItem.label}
+                          <span className="inline-block pl-8">{subItem.label}</span>
                         </span>
                       </Link>
                     </li>
