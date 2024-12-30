@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { CampaignIcon } from '../Icons/CampaignIcon'
 import { ContributionIcon } from '../Icons/ContributionIcon'
@@ -19,28 +20,29 @@ const menuItems: MenuItem[] = [
     id: 'campaigns',
     label: 'Campaigns',
     icon: <CampaignIcon className="h-4 w-4" />,
-    href: '/campaigns',
+    href: '/user/campaigns',
     subItems: [
-      { id: 'new', label: 'New Campaign', href: '/campaigns/new' },
-      { id: 'my', label: 'My Campaigns', href: '/campaigns/my' },
-      { id: 'saved', label: 'Saved Campaigns', href: '/campaigns/saved' },
+      { id: 'new', label: 'New Campaign', href: '/user/campaigns/new' },
+      { id: 'my', label: 'My Campaigns', href: '/user/campaigns/my' },
+      { id: 'saved', label: 'Saved Campaigns', href: '/user/campaigns/saved' },
     ],
   },
   {
     id: 'contributions',
     label: 'Contributions',
     icon: <ContributionIcon className="h-4 w-4" />,
-    href: '/contributions',
+    href: '/user/contributions',
   },
   {
     id: 'settings',
     label: 'Settings',
     icon: <GearIcon className="h-5.3 w-5.3 -ml-1" />,
-    href: '/settings',
+    href: '/user/settings',
   },
 ]
 
 export default function SideBar() {
+  const router = useRouter()
   const pathname = usePathname()
   const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
@@ -57,30 +59,43 @@ export default function SideBar() {
     }
   }, [expandedMenus])
 
-  useEffect(() => {
-    const currentMainMenu = menuItems.find((item) => item.subItems?.some((subItem) => subItem.href === pathname))
-    if (currentMainMenu && !expandedMenus.includes(currentMainMenu.id)) {
-      setExpandedMenus((prev) => [...prev, currentMainMenu.id])
-    }
-  }, [pathname, expandedMenus])
-
   const toggleMenu = (menuId: string) => {
     setExpandedMenus((prev) => (prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]))
   }
 
+  const handleMainMenuClick = (item: MenuItem) => {
+    toggleMenu(item.id)
+    if (item.subItems && !expandedMenus.includes(item.id)) {
+      router.push(item.href)
+    }
+  }
+
   return (
     <nav className="w-full bg-white">
-      <div className="hidden min-h-screen border-gray-200 md:block">
+      <div className="hidden min-h-screen border-gray-500 md:block">
         <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.id} className="w-full">
-              <button
-                onClick={() => item.subItems && toggleMenu(item.id)}
-                className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors ${pathname === item.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
-              >
-                {item.icon}
-                {item.label}
-              </button>
+              {item.subItems ? (
+                <button
+                  onClick={() => handleMainMenuClick(item)}
+                  className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'} `}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              ) : (
+                <Link href={item.href} className="block w-full">
+                  <span
+                    className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${
+                      pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+                    }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </span>
+                </Link>
+              )}
 
               {item.subItems && expandedMenus.includes(item.id) && (
                 <ul className="ml-4 mt-2 w-full space-y-2">
@@ -88,9 +103,9 @@ export default function SideBar() {
                     <li key={subItem.id} className="-mx-4 w-full">
                       <Link href={subItem.href} className="block w-full">
                         <span
-                          className={`block w-full whitespace-nowrap px-6 py-2 transition-colors ${pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-200'} `}
+                          className={`block w-full cursor-pointer whitespace-nowrap px-6 py-2 transition-colors ${pathname === subItem.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'} `}
                         >
-                          <span className="inline-block pl-8">{subItem.label}</span>
+                          <span className="inline-block pl-8 hover:underline">{subItem.label}</span>
                         </span>
                       </Link>
                     </li>
@@ -102,17 +117,30 @@ export default function SideBar() {
         </ul>
       </div>
 
-      <div className="w-full border-b border-t border-gray-300 md:hidden">
+      <div className="border-gray-150 w-full border-b border-t md:hidden">
         <ul className="flex w-full">
           {menuItems.map((item) => (
             <li key={item.id} className="group relative w-1/3">
-              <button
-                className={`w-full whitespace-nowrap px-6 py-2 text-center transition-colors ${
-                  pathname === item.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                {item.label}
-              </button>
+              {item.subItems ? (
+                <button
+                  onClick={() => handleMainMenuClick(item)}
+                  className={`w-full whitespace-nowrap px-6 py-2 text-center transition-colors hover:underline ${
+                    pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ) : (
+                <Link href={item.href} className="block w-full">
+                  <span
+                    className={`block w-full whitespace-nowrap px-6 py-2 text-center transition-colors hover:underline ${
+                      pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              )}
 
               {item.subItems && (
                 <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-1 group-hover:visible">
@@ -121,8 +149,8 @@ export default function SideBar() {
                       <li key={subItem.id}>
                         <Link href={subItem.href}>
                           <span
-                            className={`block cursor-pointer px-4 py-2 text-center text-sm transition-colors hover:bg-gray-100 ${
-                              pathname === subItem.href ? 'bg-gray-300 text-gray-900' : 'text-gray-600'
+                            className={`block cursor-pointer px-4 py-2 text-center text-sm transition-colors hover:underline ${
+                              pathname === subItem.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
                             }`}
                           >
                             {subItem.label}
