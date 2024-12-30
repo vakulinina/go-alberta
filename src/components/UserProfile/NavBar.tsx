@@ -1,7 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import { ChevronRightIcon } from '../Icons/ChevronRightIcon'
-import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
 import { IndexIcon } from '../Icons/IndexIcon'
 
 type NavItem = {
@@ -61,18 +60,6 @@ export default function NavBar() {
         <span className="text-neutral-500">Go Alberta</span>
         <ChevronRightIcon className="h-4 w-4" />
         {currentNavItem && <span key={currentNavItem.id}>{currentNavItem.label}</span>}
-      </div>
-
-      <div className="flex items-center gap-4">
-        <button className="flex items-center gap-1">
-          Filter
-          <ChevronDownIcon className="h-4 w-4" />
-        </button>
-
-        <button className="flex items-center gap-1">
-          Sort
-          <ChevronDownIcon className="h-4 w-4" />
-        </button>
       </div>
     </nav>
   )
