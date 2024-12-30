@@ -37,10 +37,6 @@ const menuItems: MenuItem[] = [
     label: 'Settings',
     icon: <GearIcon className="h-5.3 w-5.3 -ml-1" />,
     href: '/settings',
-    subItems: [
-      { id: 'profile', label: 'Profile Information', href: '/settings/profile' },
-      { id: 'password', label: 'Change Password', href: '/settings/password' },
-    ],
   },
 ]
 
