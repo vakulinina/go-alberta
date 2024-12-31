@@ -1,7 +1,9 @@
-export default function Contributions() {
+import ContributionsTable from '@/components/UserProfile/ContributionsTable'
+
+export default function ContributionsPage() {
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-2xl font-bold">Contributions</h1>
+      <ContributionsTable />
     </div>
   )
 }
