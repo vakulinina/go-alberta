@@ -18,10 +18,13 @@ export default function ContributionsTable() {
         </thead>
         <tbody className="divide-y divide-gray-200">
           {mockContributions.map((contribution: Contribution, index: number) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              <td className="px-3 py-2 text-xs text-gray-900 sm:px-6 sm:py-4">{contribution.invest}</td>
+            <tr key={index} className="group hover:bg-gray-50">
+              <td className="relative px-3 py-2 text-xs text-gray-900 sm:px-6 sm:py-4">
+                <div className="absolute left-0 top-0 h-full w-1 bg-green-500 opacity-0 group-hover:opacity-100" />
+                {contribution.invest}
+              </td>
               <td className="px-3 py-2 text-xs sm:px-6 sm:py-4">
-                <a href="#" className="break-words text-gray-900 hover:underline">
+                <a href={`/campaigns/${contribution.campaign}`} className="text-gray-900 underline hover:text-gray-600">
                   {contribution.campaign}
                 </a>
               </td>
