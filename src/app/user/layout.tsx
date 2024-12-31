@@ -1,5 +1,5 @@
 import NavBar from '@/components/UserProfile/NavBar'
-import SideBar from '@/components/UserProfile/Sidebar'
+import SideBar from '@/components/UserProfile/SideBar'
 
 export default function UserProfileLayout({ children }: { children: React.ReactNode }) {
   return (
