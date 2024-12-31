@@ -4,35 +4,33 @@ import { Contribution, mockContributions } from '@/constants/contributions-mock'
 
 export default function ContributionsTable() {
   return (
-    <div className="w-full">
-      <table className="w-full">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900">Invest</th>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900">Campaign</th>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900">Date</th>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900">Perks</th>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900">Status</th>
-            <th className="px-6 py-3 text-left text-base font-medium text-gray-900"></th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3">Invest</th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3">Campaign</th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3">Date</th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3">Perks</th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3">Status</th>
+            <th className="px-3 py-2 text-left text-base font-medium text-gray-900 sm:px-6 sm:py-3"></th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
           {mockContributions.map((contribution: Contribution, index: number) => (
             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              <td className="whitespace-nowrap px-6 py-4 text-xs text-gray-900">{contribution.invest}</td>
-              <td className="px-6 py-4 text-xs">
-                <a href="#" className="text-gray-900 hover:underline">
+              <td className="px-3 py-2 text-xs text-gray-900 sm:px-6 sm:py-4">{contribution.invest}</td>
+              <td className="px-3 py-2 text-xs sm:px-6 sm:py-4">
+                <a href="#" className="break-words text-gray-900 hover:underline">
                   {contribution.campaign}
                 </a>
               </td>
-              <td className="whitespace-nowrap px-6 py-4 text-xs text-gray-500">{contribution.date}</td>
-              <td className="whitespace-nowrap px-6 py-4 text-xs text-gray-500">{contribution.perks}</td>
-              <td className="whitespace-nowrap px-6 py-4 text-xs">
-                <span className="inline-flex rounded-full px-2 text-xs font-semibold leading-5">
-                  {contribution.status}
-                </span>
+              <td className="px-3 py-2 text-xs text-gray-500 sm:px-6 sm:py-4">
+                <div className="break-words">{contribution.date}</div>
               </td>
-              <td className="whitespace-nowrap px-6 py-4 text-xs text-gray-500">
+              <td className="px-3 py-2 text-xs text-gray-500 sm:px-6 sm:py-4">{contribution.perks}</td>
+              <td className="px-3 py-2 text-xs font-semibold sm:px-6 sm:py-4">{contribution.status}</td>
+              <td className="px-3 py-2 text-xs text-gray-500 sm:px-6 sm:py-4">
                 <SupportIcon className="h-2 w-2" />
               </td>
             </tr>
