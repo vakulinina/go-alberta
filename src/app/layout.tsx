@@ -4,9 +4,9 @@ import './globals.css'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer/Footer'
 
-const benne = localFont({
-  src: './fonts/Benne-Regular.ttf',
-  variable: '--font-benne',
+const albertSans = localFont({
+  src: './fonts/AlbertSans.ttf',
+  variable: '--font-albert-sans',
   weight: '400',
 })
 
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${benne.variable} flex min-h-screen flex-col overflow-x-hidden antialiased`}>
+      <body className={`${albertSans.variable} flex min-h-screen flex-col overflow-x-hidden antialiased`}>
         <Header />
         <main>{children}</main>
         <Footer />
