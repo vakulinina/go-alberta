@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face {
-  font-family: 'Benne';
-  src: url('./fonts/Benne-Regular.ttf') format('ttf');
+@font-face {
+  font-family: 'AlbertSans';
+  src: url('./fonts/AlbertSans.ttf') format('ttf');
   font-weight: 400;
   font-style: normal;
-} */
+}
 
 :root {
   --background: #ffffff;
@@ -17,6 +17,5 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  /* font-family: 'Benne', Arial, Helvetica, sans-serif; */
+  font-family: 'AlbertSans', Arial, Helvetica, sans-serif;
 }
