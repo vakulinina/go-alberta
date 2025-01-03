@@ -23,9 +23,9 @@ export default function Settings() {
         <h1 className="text-xl font-bold"># Mahnaz Booshehrian</h1>
       </div>
 
-      <form className="flex flex-col gap-6">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4">
-          <div className="flex flex-col gap-4 pl-8">
+      <form className="flex flex-col gap-6 px-8">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4 md:px-0">
+          <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label>First Name</label>
               <InputBox value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Mahnaz" />
@@ -54,7 +54,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 md:pl-0">
             <div className="flex flex-col gap-2">
               <label>Current Password</label>
               <PasswordInput value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
@@ -71,8 +71,8 @@ export default function Settings() {
         </div>
 
         <div className="flex justify-end gap-4">
-          <Button className="min-w-[200px] hover:bg-gray-800">Cancel</Button>
-          <Button className="min-w-[200px]">Save</Button>
+          <Button className="w-[180px] md:w-[200px]">Cancel</Button>
+          <Button className="w-[180px] md:w-[200px]">Save</Button>
         </div>
       </form>
     </div>
