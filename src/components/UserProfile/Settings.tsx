@@ -4,6 +4,7 @@ import { PasswordInput } from '@/components/PasswordInput'
 import { InputBox } from '@/components/InputBox'
 import { UserIcon } from '@/components/Icons/UserIcon'
 import { useState } from 'react'
+import { CameraIcon } from '../Icons/CameraIcon'
 
 export default function Settings() {
   const [firstName, setFirstName] = useState('')
@@ -17,8 +18,11 @@ export default function Settings() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center gap-4 pl-8">
-        <div className="h-16 w-16">
+        <div className="relative h-16 w-16">
           <UserIcon className="h-full w-full" />
+          <div className="absolute bottom-0 right-0 rounded-full bg-white">
+            <CameraIcon className="-m-[2px] h-5 w-5" />
+          </div>
         </div>
         <h1 className="text-xl font-bold"># Mahnaz Booshehrian</h1>
       </div>
