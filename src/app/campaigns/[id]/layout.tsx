@@ -6,7 +6,7 @@ import { Metadata } from 'next'
 
 type CampaignLayoutProps = {
   children: React.ReactNode
-  params: Promise<{ id: string }>
+  params: Promise<{ id: number }>
 }
 
 export async function generateMetadata({ params }: CampaignLayoutProps): Promise<Metadata> {
@@ -38,7 +38,7 @@ const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
 
       <div className="flex flex-row gap-[100px] max-xl:gap-[50px] max-lg:flex-col-reverse max-lg:justify-end">
         <div className="w-full overflow-hidden">
-          {media.length > 0 && <MediaGallery mediaItems={media} className="mb-[90px]" />}
+          {media?.length && <MediaGallery mediaItems={media} className="mb-[90px]" />}
 
           <TabBox tabs={tabs} />
           <div className="pt-[80px]">{children}</div>

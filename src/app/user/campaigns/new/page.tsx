@@ -1,7 +1,17 @@
-export default function NewCampaignsPage() {
-  return (
-    <div className="p-6">
-      <h1 className="mb-4 text-2xl font-bold">New Campaigns</h1>
-    </div>
-  )
+'use client'
+
+import { useCampaign } from '@/context/CampaignContext'
+import { redirect, useParams } from 'next/navigation'
+
+export default function NewCampaignPage() {
+  const { id } = useParams()
+  const { initCampaign } = useCampaign()
+
+  if (!id) {
+    initCampaign().then((campaign) => {
+      if (campaign?.id) redirect(`/user/campaigns/${campaign.id}/edit/basic`)
+    })
+  }
+
+  // TODO: maybe return loader
 }

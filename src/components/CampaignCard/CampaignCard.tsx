@@ -5,29 +5,23 @@ import { BookmarkButton } from './components/BookmarkButton'
 import Link from 'next/link'
 import { ShareButton } from './components/ShareButton'
 import cx from 'classnames'
+import { Campaign } from '@/types/campaign'
 
 // TODO: configure image optimization
 
-interface CampaignCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
-  id: string
-  title: string
-  description: string
-  raised: number
-  total: number
-  imageUrl: string
-  invests: number
-  days: number
+interface CampaignCardProps extends Campaign {
+  className?: string
 }
 
 export const CampaignCard = ({
   id,
-  title,
-  description,
-  raised,
-  total,
-  invests,
-  days,
-  imageUrl,
+  title = '',
+  description = '',
+  raised = 0,
+  funding_target = 0,
+  invests = 0,
+  days = 0,
+  cover_url = '',
   className,
 }: CampaignCardProps) => {
   return (
@@ -36,7 +30,7 @@ export const CampaignCard = ({
       className={cx('group flex h-[450px] w-[255px] shrink-0 flex-col overflow-hidden', className)}
     >
       <div className="relative">
-        <Image alt="" width={255} height={255} src={imageUrl} />
+        <Image alt="" width={255} height={255} src={cover_url} />
         <BookmarkButton />
         <ShareButton />
       </div>
@@ -52,13 +46,13 @@ export const CampaignCard = ({
             <p>Raised</p>
             <p>Total</p>
           </div>
-          <ProgressBar percentage={Math.round((raised / total) * 100)} />
+          <ProgressBar percentage={Math.round((raised / funding_target) * 100)} />
           <div className="mt-[6px] flex justify-between">
             <p className="text-[20px]">
               ${raised.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
             <p className="text-[20px]">
-              ${total.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${funding_target.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
           </div>
           <div className="opacity-0 group-hover:opacity-100">

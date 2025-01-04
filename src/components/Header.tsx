@@ -2,14 +2,16 @@
 import Link from 'next/link'
 import { NavLinks } from './NavLinks'
 import { useCallback, useState } from 'react'
-import { LoginBoard } from './LoginBoard'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
 import { UserAvatar } from './UserAvatar'
+import { LoginBoard } from './LoginBoard'
 
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
-    <button className="whitespace-nowrap">Start a Campaign</button>
+    <Link className="whitespace-nowrap" href="/user/campaigns/new">
+      Start a Campaign
+    </Link>
     <button onClick={onLoginClick} className="whitespace-nowrap">
       Log in / Sign up
     </button>

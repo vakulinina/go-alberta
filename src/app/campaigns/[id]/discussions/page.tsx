@@ -3,7 +3,7 @@ import Image from 'next/image'
 import avatar from '../../../../images/avatar.svg'
 import { Button } from '@/components/Button'
 
-const DiscussionsTab = async ({ params }: { params: Promise<{ id: string }> }) => {
+const DiscussionsTab = async ({ params }: { params: Promise<{ id: number }> }) => {
   const id = (await params).id
 
   // TODO: replace with actual data fetching
@@ -11,7 +11,7 @@ const DiscussionsTab = async ({ params }: { params: Promise<{ id: string }> }) =
 
   return (
     <>
-      {comments.map(({ id, user, content, date }) => (
+      {comments?.map(({ id, user, content, date }) => (
         <div key={id} className="mb-[40px] flex flex-col gap-[16px]">
           <div className="mb-[16px] flex items-center" key={id}>
             <Image

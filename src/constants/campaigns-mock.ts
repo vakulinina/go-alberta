@@ -1,15 +1,18 @@
 import { Campaign } from '@/types/campaign'
 
 export const MOCK_CAMPAIGN: Campaign = {
-  id: '1',
+  id: 1,
+  user_id: 1,
+  campaign_status_id: 0,
   title: 'COOLSMILE: Portable Air Cooler for Any Space',
   description:
     'Lorem ipsum, dolor sit amet consect quod aperiam molestiae temporibus quiabeatae aliquid, asperiores fugiat odit dicta obcaecati atque officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ad magni culpa sapiente iustoexcepturi, laboriosam autem molestiae veritatis. Quaerat, fugiat quae ratione nihil sequi dignissimos nulla atnostrum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit eaque excepturi nam quos nobis, delenitiasperiores. Corrupti placeat maiores ad beatae, nam dolor tempora ab veritatis. Inventore porro quia ad?lorem',
   raised: 5220,
-  total: 7500,
-  imageUrl: '/mock-camp-main.webp',
+  funding_target: 7500,
+  cover_url: '/mock-camp-main.webp',
   invests: 75,
   days: 15,
+  start_date: '2025-02-14',
   media: [
     { type: 'image', src: 'https://via.placeholder.com/800x450', alt: 'Sample Image 1' },
     { type: 'image', src: 'https://via.placeholder.com/800x450', alt: 'Sample Image 2' },
@@ -109,4 +112,5 @@ export const MOCK_CAMPAIGNS: Campaign[] = new Array(9).fill(MOCK_CAMPAIGN).map((
   ...item,
   title: `Campaign Title ${index + 1}${index === 1 ? ' very long long long long long long long long' : ''}`,
   id: (index + 1).toString(),
+  userId: (index + 1).toString(),
 }))

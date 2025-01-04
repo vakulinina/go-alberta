@@ -13,13 +13,13 @@ interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const CampaignOverview = ({
-  campaign: { raised, total, invests, days },
+  campaign: { raised = 0, funding_target = 0, invests, days },
   className,
   onSave,
   onInvest,
   onShare,
 }: CampaignOverviewProps) => {
-  const percentage = Math.round((raised / total) * 100)
+  const percentage = Math.round((raised / funding_target) * 100)
 
   return (
     <div
@@ -28,8 +28,8 @@ export const CampaignOverview = ({
         className
       )}
     >
-      <p className="text-[40px]">{`$${raised.toLocaleString()}`}</p>
-      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${total.toLocaleString()} raised`}</p>
+      <p className="text-[40px]">{`$${raised?.toLocaleString()}`}</p>
+      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${funding_target?.toLocaleString()} raised`}</p>
 
       <ProgressBar percentage={percentage} className="!h-[17px]" />
       <div className="mb-[46px] flex justify-between text-[20px]">

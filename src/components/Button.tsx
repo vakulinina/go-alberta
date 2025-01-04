@@ -6,6 +6,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   loading?: boolean
   fullWidth?: boolean
   type?: 'submit' | 'reset' | 'button'
+  name?: string
 }
 
 const Spinner = () => (
