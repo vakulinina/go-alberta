@@ -32,11 +32,21 @@ export default function Settings() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label>First Name</label>
-              <InputBox value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Mahnaz" />
+              <InputBox
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Mahnaz"
+                className="h-12"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <label>Last Name</label>
-              <InputBox value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Booshehrian" />
+              <InputBox
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Booshehrian"
+                className="h-12"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <label>Email</label>
@@ -45,6 +55,7 @@ export default function Settings() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="m.b@gmail.com"
+                className="h-12"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -54,6 +65,7 @@ export default function Settings() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="+1xxx xxx xxxx"
+                className="h-12"
               />
             </div>
           </div>
@@ -61,15 +73,23 @@ export default function Settings() {
           <div className="flex flex-col gap-4 md:pl-0">
             <div className="flex flex-col gap-2">
               <label>Current Password</label>
-              <PasswordInput value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+              <PasswordInput
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="h-12"
+              />
             </div>
             <div className="flex flex-col gap-2">
               <label>New Password</label>
-              <PasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              <PasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-12" />
             </div>
             <div className="flex flex-col gap-2">
               <label>Repeat New Password</label>
-              <PasswordInput value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)} />
+              <PasswordInput
+                value={repeatNewPassword}
+                onChange={(e) => setRepeatNewPassword(e.target.value)}
+                className="h-12"
+              />
             </div>
           </div>
         </div>
