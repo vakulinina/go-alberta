@@ -1,7 +1,9 @@
+import { SavedCampaigns } from '@/components/UserProfile/SavedCampaigns'
+
 export default function SavedCampaignsPage() {
   return (
-    <div className="p-6">
-      <h1 className="mb-4 text-2xl font-bold">Saved Campaigns</h1>
+    <div className="mb-6 flex items-center justify-between">
+      <SavedCampaigns />
     </div>
   )
 }
