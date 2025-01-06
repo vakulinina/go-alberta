@@ -16,7 +16,7 @@ export const PasswordInput = ({ value, onChange, className, ...props }: Password
         type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={onChange}
-        className={`w-full rounded-lg border border-gray-300 bg-gray-50 p-3 ${className || ''}`}
+        className={`w-full rounded-lg border border-gray-300 bg-gray-50 px-3 text-sm [&:-webkit-autofill]:bg-white [&:-webkit-autofill]:shadow-[0_0_0_30px_white_inset] ${className ?? ''}`}
         {...props}
       />
       <button

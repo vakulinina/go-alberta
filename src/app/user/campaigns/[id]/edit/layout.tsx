@@ -1,10 +1,11 @@
 'use client'
 
 import { Button } from '@/components/Button'
-import { useCampaign } from '../../../../../context/CampaignContext'
+import { CampaignProvider, useCampaign } from '../../../../../context/CampaignContext'
 import { useCallback } from 'react'
+import { useParams } from 'next/navigation'
 
-export default function NewCampaignLayout({ children }: { children: React.ReactNode }) {
+const CampaignForm = ({ children }: { children: React.ReactNode }) => {
   const { prevStep, saveCampaign, isLastStep, isFirstStep } = useCampaign()
 
   const handleSubmit = useCallback(
@@ -18,7 +19,7 @@ export default function NewCampaignLayout({ children }: { children: React.ReactN
   return (
     <form onSubmit={handleSubmit}>
       <div className="max-w-[484px]">{children}</div>
-      <div className="mt-[20px] flex justify-end gap-[20px]">
+      <div className="mt-[40px] flex justify-end gap-[20px]">
         {!isFirstStep && (
           <Button type="button" onClick={prevStep}>
             Back
@@ -34,5 +35,15 @@ export default function NewCampaignLayout({ children }: { children: React.ReactN
         )}
       </div>
     </form>
+  )
+}
+
+export default function NewCampaignLayout({ children }: { children: React.ReactNode }) {
+  const { id } = useParams()
+
+  return (
+    <CampaignProvider id={Number(id)}>
+      <CampaignForm>{children}</CampaignForm>
+    </CampaignProvider>
   )
 }

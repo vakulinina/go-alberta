@@ -1,29 +1,91 @@
+'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { EyeIcon } from './Icons/EyeIcon'
-import { EyeOffIcon } from './Icons/EyeOffIcon'
-import { XmarkIcon } from './Icons/XmarkIcon'
-import { Button } from './Button'
 import { useRouter } from 'next/navigation'
+import { XmarkIcon } from './Icons/XmarkIcon'
+import { InputBox } from './InputBox'
+import { PasswordInput } from './PasswordInput'
+import { Button } from './Button'
 
 interface LoginBoardProps {
   onClose: () => void
   onLogin: () => void
 }
 
-export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
-  const router = useRouter()
+export function LoginBoard({ onClose, onLogin }: LoginBoardProps) {
+  const [isLogin, setIsLogin] = useState(true)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const router = useRouter()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const validateForm = () => {
+    setError('')
+
+    if (!isLogin) {
+      if (!firstName || !lastName) {
+        setError('Please enter your full name')
+        return false
+      }
+    }
+    if (!email) {
+      setError('Please enter your email')
+      return false
+    }
+    if (!password) {
+      setError('Please enter your password')
+      return false
+    }
+    if (!isLogin && password !== confirmPassword) {
+      setError('Passwords do not match')
+      return false
+    }
+    return true
+  }
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (email && password) {
-      onLogin()
+    try {
+      if (validateForm()) {
+        setIsLoading(true)
+        // TODO:AUTH API
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        onLogin()
+        router.push('/user')
+      }
+    } catch (error) {
+      console.error('Login failed:', error)
+      setError('Invalid email or password')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-      router.push('/user')
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      if (validateForm()) {
+        setIsLoading(true)
+        // TODO:AUTH REGISTER API
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        setIsLogin(true)
+        setPassword('')
+        setConfirmPassword('')
+        setFirstName('')
+        setLastName('')
+        setError('Registration successful! Please log in.')
+      }
+    } catch (error) {
+      console.error('Signup failed:', error)
+      setError('Registration failed. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -32,56 +94,97 @@ export const LoginBoard = ({ onClose, onLogin }: LoginBoardProps) => {
       <button onClick={onClose} className="absolute left-6 top-6 p-2">
         <XmarkIcon className="h-6 w-6 text-gray-500" />
       </button>
+
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-2xl">Start your journey with us</h1>
-        <h2 className="mb-4 text-xl">Login to Go Alberta</h2>
+        <h1 className="mb-2 text-2xl font-bold">
+          {isLogin ? 'Continue your journey with us' : 'Start your journey with us'}
+        </h1>
+        <h2 className="mb-4 text-xl font-bold">{isLogin ? 'Login to Go Alberta' : 'Sign up to Go Alberta'}</h2>
         <p className="text-sm text-gray-600">
-          Don`t have an account?{' '}
-          <Link href="/signup" className="underline">
-            Sign up
-          </Link>
+          {isLogin ? "Don't have an account? " : 'Already have an account? '}
+          <button
+            className="underline"
+            onClick={() => {
+              setIsLogin(!isLogin)
+              setError('')
+            }}
+          >
+            {isLogin ? 'Sign up' : 'Login'}
+          </button>
         </p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-4">
+      {error && <div className="mb-4 text-center text-sm text-red-500">{error}</div>}
+
+      <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-4">
+        {!isLogin && (
+          <>
+            <div>
+              <InputBox
+                type="text"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+                className="h-10"
+              />
+            </div>
+            <div>
+              <InputBox
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                className="h-10"
+              />
+            </div>
+          </>
+        )}
+
         <div>
-          <input
+          <InputBox
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg bg-gray-50 p-3"
             required
+            className="h-10"
           />
         </div>
-
-        <div className="relative">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
+        <div>
+          <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg bg-gray-50 p-3"
+            placeholder="Password"
             required
+            className="h-10"
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-          </button>
         </div>
 
-        <Button fullWidth type="submit">
-          Log in
+        {!isLogin && (
+          <div>
+            <PasswordInput
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm Password"
+              required
+              className="h-10"
+            />
+          </div>
+        )}
+
+        <Button type="submit" fullWidth disabled={isLoading}>
+          {isLoading ? 'Processing...' : isLogin ? 'Log in' : 'Sign up'}
         </Button>
 
-        <div className="text-center">
-          <Link href="/forgot-password" className="text-sm text-gray-600 hover:underline">
-            Forget password?
-          </Link>
-        </div>
+        {isLogin && (
+          <div className="text-center">
+            <Link href="/forgot-password" className="text-sm text-gray-600 hover:underline">
+              Forget password?
+            </Link>
+          </div>
+        )}
       </form>
     </div>
   )
