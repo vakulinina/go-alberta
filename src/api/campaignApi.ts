@@ -1,6 +1,5 @@
+import { MOCK_CAMPAIGN } from '@/constants/campaigns-mock'
 import { Campaign } from '@/types/campaign'
-
-// interface Campaign but with id as optional
 
 export const createCampaign = async (campaign: Omit<Campaign, 'id'>): Promise<Campaign> => {
   const id = Math.floor(Math.random() * 100)
@@ -10,4 +9,8 @@ export const createCampaign = async (campaign: Omit<Campaign, 'id'>): Promise<Ca
 
 export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
   return { ...campaign }
+}
+
+export const getCampaign = async (id: number): Promise<Campaign> => {
+  return { ...MOCK_CAMPAIGN, id }
 }

@@ -1,18 +1,19 @@
 'use client'
 
-import { createContext, useCallback, useContext, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { createCampaign, updateCampaign } from '@/api/campaignApi'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+
+import { createCampaign, getCampaign, updateCampaign } from '@/api/campaignApi'
 import { Campaign } from '@/types/campaign'
+import { useRouter } from 'next/navigation'
 
 type StepConfig = { key: string; path: (id: number) => string }
 
 type CampaignContextType = {
-  campaignId: number | null
+  campaign: Campaign | undefined
   currentStepIndex: number
   isLastStep: boolean
   isFirstStep: boolean
-  setCampaignId: (id: number | null) => void
+  setCampaign: (campaign: Campaign | undefined) => void
   nextStep: () => void
   prevStep: () => void
   goToStep: (index: number) => void
@@ -28,25 +29,30 @@ const stepConfig: StepConfig[] = [
   { key: 'step3', path: (id) => `/user/campaigns/${id}/edit/goals` },
 ]
 
-export function CampaignProvider({ children }: { children: React.ReactNode }) {
-  const [campaignId, setCampaignId] = useState<number | null>(null)
+export function CampaignProvider({ children, id }: { children: React.ReactNode; id?: number }) {
+  const [campaign, setCampaign] = useState<Campaign | undefined>(undefined)
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const router = useRouter()
 
   const isLastStep = currentStepIndex === stepConfig.length - 1
 
-  // TODO: load campaign data from api and/or local storage
+  useEffect(() => {
+    if (id) {
+      console.log('LOL Fetching campaign with ID:', id)
+      getCampaign(id).then((campaign) => setCampaign(campaign))
+    }
+  }, [id])
 
   const goToStep = useCallback(
     (index: number) => {
-      if (!campaignId) return
+      if (!campaign) return
 
       if (index >= 0 && index < stepConfig.length) {
         setCurrentStepIndex(index)
-        router.push(stepConfig[index].path(campaignId))
+        router.push(stepConfig[index].path(campaign.id))
       }
     },
-    [campaignId, router]
+    [campaign, router]
   )
 
   const nextStep = useCallback(() => goToStep(currentStepIndex + 1), [currentStepIndex, goToStep])
@@ -59,28 +65,28 @@ export function CampaignProvider({ children }: { children: React.ReactNode }) {
         user_id: 2, // TODO: replace with real user ID later
       })
 
-      if (!campaign.id) return
+      if (!campaign) return
 
-      setCampaignId(campaign.id)
+      setCampaign(campaign)
 
       return campaign
     } catch (error) {
       console.error('Failed to create campaign', error) // TODO: Show error to user
     }
-  }, [setCampaignId])
+  }, [])
 
   const saveCampaign = useCallback(
     async (event: React.FormEvent<HTMLFormElement>, launch: boolean) => {
       event.preventDefault()
 
-      if (!campaignId) {
+      if (!campaign?.id) {
         console.error('No campaign ID found')
         return
       }
 
       try {
         await updateCampaign({
-          id: campaignId,
+          id: campaign.id,
           ...(launch && { campaign_status_id: 2 }),
         })
 
@@ -93,19 +99,19 @@ export function CampaignProvider({ children }: { children: React.ReactNode }) {
         console.error('Failed to update campaign', error) // TODO: Show error to user
       }
     },
-    [campaignId, isLastStep, nextStep, router]
+    [campaign, isLastStep, nextStep, router]
   )
 
   return (
     <CampaignContext.Provider
       value={{
-        campaignId,
+        campaign,
         currentStepIndex,
         isLastStep: currentStepIndex === stepConfig.length - 1,
         isFirstStep: currentStepIndex === 0,
         initCampaign,
         saveCampaign,
-        setCampaignId,
+        setCampaign,
         nextStep,
         prevStep,
         goToStep,

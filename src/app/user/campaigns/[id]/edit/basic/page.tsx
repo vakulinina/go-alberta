@@ -3,7 +3,8 @@
 import { Button } from '@/components/Button'
 import { TextArea } from '@/components/TextArea'
 import { TextInput } from '@/components/TextInput'
-import { useState } from 'react'
+import { useCampaign } from '@/context/CampaignContext'
+import { Fragment, useState } from 'react'
 
 interface ToggleProps {
   values: { key: string; title: string }[]
@@ -40,6 +41,7 @@ const Toggle = ({ values, onSelect, className, activeValue }: ToggleProps) => (
 )
 
 export default function CampaignEditBasicPage() {
+  const { campaign } = useCampaign()
   const [mediaType, setMediaType] = useState('image')
 
   return (
@@ -50,7 +52,7 @@ export default function CampaignEditBasicPage() {
         Title*
       </label>
       <p className="mt-[16px] text-[20px]">Write a title for your Campaign.</p>
-      <TextInput name="title" placeholder="Title" className="mt-[16px] w-full" />
+      <TextInput name="title" placeholder="Title" className="mt-[16px] w-full" defaultValue={campaign?.title} />
 
       <label htmlFor="description" className="mt-[42px] block text-[32px]">
         Description*
@@ -58,7 +60,12 @@ export default function CampaignEditBasicPage() {
       <p className="mt-[16px] text-[20px]">
         Write a brief description which helps investors find out more about the project.
       </p>
-      <TextArea name="description" placeholder="Description" className="mt-[16px] w-full" />
+      <TextArea
+        name="description"
+        placeholder="Description"
+        className="mt-[16px] w-full"
+        defaultValue={campaign?.description}
+      />
 
       <Toggle
         values={[
@@ -103,15 +110,19 @@ export default function CampaignEditBasicPage() {
         Q&A should provide the most common details that backers are looking for when evaluating your campaign.
       </p>
 
-      <label htmlFor="question" className="mt-[16px] block text-[20px]">
-        Question
-      </label>
-      <TextArea name="question" className="mt-[6px] w-full" />
+      {campaign?.qna?.map(({ question, answer }) => (
+        <Fragment key={question}>
+          <label htmlFor="question" className="mt-[16px] block text-[20px]">
+            Question
+          </label>
+          <TextArea name="question" className="mt-[6px] w-full" defaultValue={question} />
 
-      <label htmlFor="answer" className="mt-[16px] block text-[20px]">
-        Answer
-      </label>
-      <TextArea name="answer" className="mt-[6px] w-full" />
+          <label htmlFor="answer" className="mt-[16px] block text-[20px]">
+            Answer
+          </label>
+          <TextArea name="answer" className="mt-[6px] w-full" defaultValue={answer} />
+        </Fragment>
+      ))}
 
       <button type="button" className="pt-[6px] text-[20px] hover:text-[#131313C9]">
         ➕ Add more questions
