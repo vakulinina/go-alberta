@@ -1,5 +1,6 @@
 'use client'
 
+import { DateInput } from '@/components/DateInput'
 import { TextInput } from '@/components/TextInput'
 import { useCampaign } from '@/context/CampaignContext'
 
@@ -27,13 +28,13 @@ export default function CampaignEditGoalsPage() {
         Launch Date*
       </label>
       <p className="mt-[16px] text-[20px]">Choose a start date for your campaign.</p>
-      <TextInput name="start-date" placeholder="MM/DD/YYYY" className="mt-[16px] w-full" />
+      <DateInput name="start-date" placeholder="MM/DD/YYYY" className="mt-[16px] w-full" />
 
       <label htmlFor="end-date" className="mt-[42px] block text-[32px]">
         Ending Date*
       </label>
       <p className="mt-[16px] text-[20px]">Choose an ending date for your campaign.</p>
-      <TextInput name="end-date" placeholder="MM/DD/YYYY" className="mt-[16px] w-full" />
+      <DateInput name="end-date" placeholder="MM/DD/YYYY" className="mt-[16px] w-full" />
     </>
   )
 }
