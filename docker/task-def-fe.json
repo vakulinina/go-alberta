@@ -1,0 +1,50 @@
+{
+  "family": "fe-def",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "memory": "512",
+  "cpu": "256",
+  "executionRoleArn": "arn:aws:iam::324037307288:role/ecs_github",
+  "containerDefinitions": [
+    {
+      "name": "fe",
+      "environment": [
+        {
+          "name": "HOST",
+          "value": "0.0.0.0"
+        },
+        {
+          "name": "PORT",
+          "value": "3000"
+        }
+      ],
+      "image": "324037307288.dkr.ecr.us-west-2.amazonaws.com/fe:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/fe",
+          "awslogs-region": "us-west-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "linuxParameters": {
+        "initProcessEnabled": true
+      }
+    }
+  ],
+  "tags": [
+    {
+      "key": "cluster",
+      "value": "fund-cluster"
+    }
+  ]
+}
