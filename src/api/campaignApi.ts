@@ -1,4 +1,4 @@
-import { MOCK_CAMPAIGN } from '@/constants/campaigns-mock'
+import { MOCK_CAMPAIGNS } from '@/constants/campaigns-mock'
 import { Campaign } from '@/types/campaign'
 
 export const createCampaign = async (campaign: Omit<Campaign, 'id'>): Promise<Campaign> => {
@@ -11,6 +11,8 @@ export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
   return { ...campaign }
 }
 
-export const getCampaign = async (id: number): Promise<Campaign> => {
-  return { ...MOCK_CAMPAIGN, id }
+export const getCampaign = async (id: number): Promise<Campaign | undefined> => {
+  const campaign = MOCK_CAMPAIGNS.find((campaign) => campaign.id === id)
+
+  return campaign
 }

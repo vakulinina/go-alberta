@@ -31,7 +31,7 @@ const Toggle = ({ values, onSelect, className, activeValue }: ToggleProps) => (
         onClick={() => onSelect(key)}
         type="button"
         className={`flex h-[40px] w-[136px] items-center justify-center border bg-[#E1E1E1] text-[20px] text-[#8F8F8F] ${
-          key === activeValue && 'border-[#000000] bg-[#FFFFFF] text-[#000000]'
+          key === activeValue && 'border-[#000000] bg-[#FFFFFF] !text-[#000000]'
         }`}
       >
         {title}

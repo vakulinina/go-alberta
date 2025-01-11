@@ -71,7 +71,7 @@ export const Header = () => {
           <div className="mt-4 flex w-full flex-col items-start text-[20px]">
             {isLoggedIn ? (
               <div className="relative w-full">
-                <UserAvatar username="Mahnaz" onLogout={handleLogout} />
+                <UserAvatar username="User Name" onLogout={handleLogout} />
               </div>
             ) : (
               <MenuButtons onLoginClick={handleLoginClick} />
@@ -81,7 +81,7 @@ export const Header = () => {
 
         <div className="ml-auto hidden gap-[50px] text-[20px] md:flex">
           {isLoggedIn ? (
-            <UserAvatar username="Mahnaz" onLogout={handleLogout} />
+            <UserAvatar username="User Name" onLogout={handleLogout} />
           ) : (
             <MenuButtons onLoginClick={handleLoginClick} />
           )}

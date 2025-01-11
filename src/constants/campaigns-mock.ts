@@ -111,6 +111,6 @@ export const MOCK_CAMPAIGN: Campaign = {
 export const MOCK_CAMPAIGNS: Campaign[] = new Array(9).fill(MOCK_CAMPAIGN).map((item, index) => ({
   ...item,
   title: `Campaign Title ${index + 1}${index === 1 ? ' very long long long long long long long long' : ''}`,
-  id: (index + 1).toString(),
-  userId: (index + 1).toString(),
+  id: index + 1,
+  userId: index + 1,
 }))

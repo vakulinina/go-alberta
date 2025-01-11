@@ -4,6 +4,7 @@ import { useState, FC } from 'react'
 import Image from 'next/image'
 import { UserIcon } from './Icons/UserIcon'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface UserAvatarProps {
   username: string
@@ -43,11 +44,11 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
         <span className="text-[20px]">{username}</span>
       </button>
       {showDropdown && (
-        <div className="absolute left-0 top-full z-50 mt-2 w-28 rounded-lg border border-gray-200 bg-white shadow-lg md:left-auto md:right-16">
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center justify-center px-4 py-2 text-gray-700 hover:bg-gray-50"
-          >
+        <div className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg md:left-auto md:right-0">
+          <Link href="/user" className="flex w-full items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+            Profile
+          </Link>
+          <button onClick={handleLogout} className="flex w-full items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
             Log out
           </button>
         </div>

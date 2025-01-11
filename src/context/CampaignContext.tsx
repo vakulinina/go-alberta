@@ -38,7 +38,6 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
 
   useEffect(() => {
     if (id) {
-      console.log('LOL Fetching campaign with ID:', id)
       getCampaign(id).then((campaign) => setCampaign(campaign))
     }
   }, [id])

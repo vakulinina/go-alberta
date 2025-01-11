@@ -4,10 +4,7 @@ import Link from 'next/link'
 
 import React from 'react'
 
-const links = [
-  { href: '/campaigns', label: 'Explore' },
-  { href: '/about', label: 'About us' },
-]
+const links = [{ href: '/campaigns', label: 'Explore' }]
 
 export const NavLinks = () => {
   return (

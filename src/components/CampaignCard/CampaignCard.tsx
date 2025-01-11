@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { ShareButton } from './components/ShareButton'
 import cx from 'classnames'
 import { Campaign } from '@/types/campaign'
+import { EditButton } from './components/EditButton'
 
 // TODO: configure image optimization
 
 interface CampaignCardProps extends Campaign {
   className?: string
+  isEditable?: boolean
 }
 
 export const CampaignCard = ({
@@ -23,6 +25,7 @@ export const CampaignCard = ({
   days = 0,
   cover_url = '',
   className,
+  isEditable = false,
 }: CampaignCardProps) => {
   return (
     <Link
@@ -31,7 +34,7 @@ export const CampaignCard = ({
     >
       <div className="relative">
         <Image alt="" width={255} height={255} src={cover_url} />
-        <BookmarkButton />
+        {isEditable ? <EditButton href={`/user/campaigns/${id}/edit/basic`} /> : <BookmarkButton />}
         <ShareButton />
       </div>
 

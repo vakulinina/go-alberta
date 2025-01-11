@@ -2,14 +2,7 @@ import React from 'react'
 
 export const GearIcon = ({ className }: React.SVGAttributes<SVGSVGElement>) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 25"
-      width="24"
-      height="25"
-      fill="none"
-      className={className}
-    >
+    <svg viewBox="0 0 24 25" width="24" height="25" fill="none" className={`shrink-0 ${className}`}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -6,12 +6,13 @@ import { BookmarkIcon } from '../../Icons/BookmarkIcon'
 const BookmarkButtonComponent = () => {
   const [isSaved, setIsSaved] = React.useState(false)
 
-  const handleBookmark = () => {
+  const handleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault()
     setIsSaved(!isSaved)
   }
 
   return (
-    <button className="group/bookmark absolute left-0 top-0 p-[10px]" onClick={handleBookmark}>
+    <button className="group/bookmark absolute left-0 top-0 p-[10px]" onClick={handleBookmark} type="button">
       <BookmarkIcon isFilled={isSaved} className="group-hover/bookmark:stroke-[#FFFFFF]" />
     </button>
   )

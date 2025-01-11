@@ -71,23 +71,23 @@ export default function SideBar() {
   }
 
   return (
-    <nav className="w-full bg-white">
+    <nav className="bg-white">
       <div className="hidden min-h-screen border-gray-500 md:block">
         <ul className="space-y-2">
           {menuItems.map((item) => (
-            <li key={item.id} className="w-full">
+            <li key={item.id}>
               {item.subItems ? (
                 <button
                   onClick={() => handleMainMenuClick(item)}
-                  className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'} `}
+                  className={`flex items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'} `}
                 >
                   {item.icon}
                   {item.label}
                 </button>
               ) : (
-                <Link href={item.href} className="block w-full">
+                <Link href={item.href} className="block">
                   <span
-                    className={`flex w-full items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${
+                    className={`flex items-center gap-3 px-6 py-2 text-left transition-colors hover:underline ${
                       pathname === item.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
                     }`}
                   >
@@ -98,9 +98,9 @@ export default function SideBar() {
               )}
 
               {item.subItems && expandedMenus.includes(item.id) && (
-                <ul className="ml-4 mt-2 w-full space-y-2">
+                <ul className="mt-2 w-full space-y-2">
                   {item.subItems.map((subItem) => (
-                    <li key={subItem.id} className="-mx-4 w-full">
+                    <li key={subItem.id} className="">
                       <Link href={subItem.href} className="block w-full">
                         <span
                           className={`block w-full cursor-pointer whitespace-nowrap px-6 py-2 transition-colors ${pathname === subItem.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'} `}
@@ -143,13 +143,13 @@ export default function SideBar() {
               )}
 
               {item.subItems && (
-                <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-1 group-hover:visible">
+                <div className="invisible absolute left-1/2 top-full z-10 w-full -translate-x-1/2 pt-1 group-hover:visible">
                   <ul className="w-30 border border-gray-300 bg-white shadow-lg">
                     {item.subItems.map((subItem) => (
                       <li key={subItem.id}>
                         <Link href={subItem.href}>
                           <span
-                            className={`block cursor-pointer px-4 py-2 text-center text-sm transition-colors hover:underline ${
+                            className={`block cursor-pointer px-4 py-2 text-sm transition-colors hover:underline ${
                               pathname === subItem.href ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
                             }`}
                           >
