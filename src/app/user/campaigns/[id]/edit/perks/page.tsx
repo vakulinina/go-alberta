@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/Button'
 import { TextArea } from '@/components/TextArea'
-import { TextInput } from '@/components/TextInput'
+import { Input } from '@/components/Inputs/Input'
 import { useCampaign } from '@/context/CampaignContext'
 import { Fragment } from 'react'
 
@@ -21,19 +21,21 @@ export default function CampaignEditPerksPage() {
             Perk Name*
           </label>
           <p className="mt-[16px] text-[20px]">Write a name for this perk.</p>
-          <TextInput name="perk-name" placeholder="Perk Name" className="mt-[16px] w-full" defaultValue={perk.title} />
+          <Input name="perk-name" placeholder="Perk Name" className="mt-[16px] w-full" defaultValue={perk.title} />
 
           <label htmlFor="image" className="mt-[42px] block text-[32px]">
             Perk Image*
           </label>
           <p className="mt-[16px] text-[20px]">Upload one image to appear at the top of your perk.</p>
-          <Button className="mt-[16px]">Upload Image</Button>
+          <Button className="mt-[16px]" variant="secondary">
+            Upload Image
+          </Button>
 
           <label htmlFor="perk-price" className="mt-[42px] block text-[32px]">
             Price*
           </label>
           <p className="mt-[16px] text-[20px]">What is the price for this perk?</p>
-          <TextInput name="perk-price" placeholder="Amount" className="mt-[16px] w-full" defaultValue={perk.price} />
+          <Input name="perk-price" placeholder="Amount" className="mt-[16px] w-full" defaultValue={perk.price} />
 
           <label htmlFor="awards" className="mt-[42px] block text-[32px]">
             Awards*

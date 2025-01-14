@@ -1,14 +1,17 @@
 'use client'
 import { Button } from '@/components/Button'
-import { PasswordInput } from '@/components/PasswordInput'
-import { InputBox } from '@/components/InputBox'
+import { PasswordInput } from '@/components/Inputs/PasswordInput'
 import { UserIcon } from '@/components/Icons/UserIcon'
 import { useState } from 'react'
 import { CameraIcon } from '../Icons/CameraIcon'
+import { Input } from '../Inputs/Input'
+
+const FIRST_NAME = 'First Name'
+const LAST_NAME = 'Last Name'
 
 export default function Settings() {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [firstName, setFirstName] = useState(FIRST_NAME)
+  const [lastName, setLastName] = useState(LAST_NAME)
   const [email, setEmail] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [currentPassword, setCurrentPassword] = useState('')
@@ -24,72 +27,52 @@ export default function Settings() {
             <CameraIcon className="-m-[2px] h-5 w-5" />
           </div>
         </div>
-        <h1 className="text-xl font-bold"># Mahnaz Booshehrian</h1>
+        <h1 className="text-xl font-bold">{`${firstName} ${lastName}`}</h1>
       </div>
 
       <form className="flex flex-col gap-6 px-8">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4 md:px-0">
-          <div className="flex flex-col gap-4">
+          <div className="flex max-w-[400px] flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label>First Name</label>
-              <InputBox
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Mahnaz"
-                className="h-12"
-              />
+              <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name" />
             </div>
             <div className="flex flex-col gap-2">
               <label>Last Name</label>
-              <InputBox
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Booshehrian"
-                className="h-12"
-              />
+              <Input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name" />
             </div>
             <div className="flex flex-col gap-2">
               <label>Email</label>
-              <InputBox
+              <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="m.b@gmail.com"
-                className="h-12"
               />
             </div>
             <div className="flex flex-col gap-2">
               <label>Phone Number</label>
-              <InputBox
+              <Input
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="+1xxx xxx xxxx"
-                className="h-12"
+                placeholder="+1 xxx xxx xxxx"
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 md:pl-0">
+          <div className="flex max-w-[400px] flex-col gap-4 md:pl-0">
             <div className="flex flex-col gap-2">
               <label>Current Password</label>
-              <PasswordInput
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="h-12"
-              />
+              <PasswordInput value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
             </div>
             <div className="flex flex-col gap-2">
               <label>New Password</label>
-              <PasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-12" />
+              <PasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
             </div>
             <div className="flex flex-col gap-2">
               <label>Repeat New Password</label>
-              <PasswordInput
-                value={repeatNewPassword}
-                onChange={(e) => setRepeatNewPassword(e.target.value)}
-                className="h-12"
-              />
+              <PasswordInput value={repeatNewPassword} onChange={(e) => setRepeatNewPassword(e.target.value)} />
             </div>
           </div>
         </div>

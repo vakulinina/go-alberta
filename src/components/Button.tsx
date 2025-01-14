@@ -7,15 +7,12 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean
   type?: 'submit' | 'reset' | 'button'
   name?: string
+  variant?: 'primary' | 'secondary'
 }
 
 const Spinner = () => (
   <div role="status">
-    <svg
-      className="h-6 w-6 animate-spin fill-[#000] text-gray-200 dark:text-gray-600"
-      viewBox="0 0 100 101"
-      fill="none"
-    >
+    <svg className="h-6 w-6 animate-spin fill-[#582F93] text-[#8446db]" viewBox="0 0 100 101" fill="none">
       <path
         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
         fill="currentColor"
@@ -28,14 +25,27 @@ const Spinner = () => (
   </div>
 )
 
-export const Button = ({ className, loading, children, fullWidth, disabled, ...props }: ButtonProps) => {
+export const Button = ({
+  className,
+  loading,
+  children,
+  fullWidth,
+  disabled,
+  variant = 'primary',
+  ...props
+}: ButtonProps) => {
   return (
     <button
       className={cx(
         'box-border flex h-[50px] items-center justify-center rounded-[10px] border border-solid px-[30px] transition-colors',
         'whitespace-nowrap text-center text-[20px]',
         'disabled:pointer-events-none disabled:cursor-default',
-        'border-[#131313f2] bg-[#131313f2] text-[#FFFFFF] hover:bg-[#131313C9]',
+        {
+          'border-[#582F93] bg-[#582F93] text-[#FFFFFF] hover:bg-[#51236DD9]': variant === 'primary',
+        },
+        {
+          'border-[#582F93] bg-[#FFFFFF] text-[#582F93]': variant === 'secondary',
+        },
         { 'border-[#E1E1E1] bg-[#E1E1E1]': disabled },
         { 'w-full': fullWidth },
         className

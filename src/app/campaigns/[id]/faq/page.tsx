@@ -4,7 +4,7 @@ const CampaignFaqTab = async ({ params }: { params: Promise<{ id: number }> }) =
   const id = (await params).id
 
   // TODO: replace with actual data fetching
-  const { qna } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === id) || { qna: [] }
+  const { qna } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === Number(id)) || { qna: [] }
 
   if (qna?.length === 0) return <p className="text-center">No questions and answers available</p>
 

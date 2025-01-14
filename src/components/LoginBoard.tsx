@@ -3,9 +3,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { XmarkIcon } from './Icons/XmarkIcon'
-import { InputBox } from './InputBox'
-import { PasswordInput } from './PasswordInput'
+import { PasswordInput } from './Inputs/PasswordInput'
 import { Button } from './Button'
+import { Input } from './Inputs/Input'
+
+// TODO: Separate Login and SignUp components
 
 interface LoginBoardProps {
   onClose: () => void
@@ -120,37 +122,28 @@ export function LoginBoard({ onClose, onLogin }: LoginBoardProps) {
         {!isLogin && (
           <>
             <div>
-              <InputBox
+              <Input
                 type="text"
                 placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
-                className="h-10"
               />
             </div>
             <div>
-              <InputBox
+              <Input
                 type="text"
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
-                className="h-10"
               />
             </div>
           </>
         )}
 
         <div>
-          <InputBox
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="h-10"
-          />
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <div>
           <PasswordInput
@@ -158,7 +151,6 @@ export function LoginBoard({ onClose, onLogin }: LoginBoardProps) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
-            className="h-10"
           />
         </div>
 
@@ -169,13 +161,12 @@ export function LoginBoard({ onClose, onLogin }: LoginBoardProps) {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm Password"
               required
-              className="h-10"
             />
           </div>
         )}
 
-        <Button type="submit" fullWidth disabled={isLoading}>
-          {isLoading ? 'Processing...' : isLogin ? 'Log in' : 'Sign up'}
+        <Button type="submit" fullWidth loading={isLoading}>
+          {isLogin ? 'Log in' : 'Sign up'}
         </Button>
 
         {isLogin && (

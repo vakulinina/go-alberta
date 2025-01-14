@@ -6,7 +6,7 @@ interface ProgressBar extends React.HTMLAttributes<HTMLDivElement> {
 
 export const ProgressBar = ({ percentage = 0, className }: ProgressBar) => {
   return (
-    <div className={cx(className, 'h-[7px] w-full overflow-hidden rounded-[3px] bg-[#CED3D9]')}>
+    <div className={cx(className, 'h-[7px] w-full overflow-hidden rounded-[3px] bg-[#C3E09C]')}>
       <div className="h-full rounded-[3px] bg-[#80CD57]" style={{ width: `${percentage}%` }}></div>
     </div>
   )

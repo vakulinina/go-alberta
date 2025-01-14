@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import { CalendarIcon } from '@/components/Icons/CalendarIcon'
-import { TextInput } from './TextInput'
+import { Input } from './Input'
 import { format, isValid, parse } from 'date-fns'
 
 export const useClickOutside = (ref: React.RefObject<HTMLDivElement>, onClose: () => void) => {
@@ -77,7 +77,7 @@ export const DateInput = ({ className, ...props }: React.InputHTMLAttributes<HTM
 
   return (
     <div className={`relative ${className}`}>
-      <TextInput
+      <Input
         type="text"
         value={inputValue}
         onChange={handleInputChange}

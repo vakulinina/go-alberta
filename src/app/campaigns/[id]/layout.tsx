@@ -30,7 +30,10 @@ const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
   ]
 
   // replace with actual data fetching
-  const { title, media } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === id) || { title: 'Campaign', media: [] }
+  const { title, media } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === Number(id)) || {
+    title: 'Campaign',
+    media: [],
+  }
 
   return (
     <div className="px-[16px] py-[80px] sm:px-[60px] md:px-[60px]">

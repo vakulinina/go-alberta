@@ -6,7 +6,7 @@ const OverviewTab = async ({ params }: { params: Promise<{ id: number }> }) => {
   const id = (await params).id
 
   // TODO: replace with actual data fetching
-  const { perks, description } = MOCK_CAMPAIGNS.find((product) => product.id === id) || { perks: [] }
+  const { perks, description } = MOCK_CAMPAIGNS.find((product) => product.id === Number(id)) || { perks: [] }
 
   return (
     <>

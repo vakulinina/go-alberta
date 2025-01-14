@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/Button'
 import { TextArea } from '@/components/TextArea'
-import { TextInput } from '@/components/TextInput'
+import { Input } from '@/components/Inputs/Input'
 import { useCampaign } from '@/context/CampaignContext'
 import { Fragment, useState } from 'react'
 
@@ -31,7 +31,7 @@ const Toggle = ({ values, onSelect, className, activeValue }: ToggleProps) => (
         onClick={() => onSelect(key)}
         type="button"
         className={`flex h-[40px] w-[136px] items-center justify-center border bg-[#E1E1E1] text-[20px] text-[#8F8F8F] ${
-          key === activeValue && 'border-[#000000] bg-[#FFFFFF] !text-[#000000]'
+          key === activeValue && 'border-[3px] border-[#88BE3C] bg-[#FFFFFF] !text-[#000000]'
         }`}
       >
         {title}
@@ -52,7 +52,7 @@ export default function CampaignEditBasicPage() {
         Title*
       </label>
       <p className="mt-[16px] text-[20px]">Write a title for your Campaign.</p>
-      <TextInput name="title" placeholder="Title" className="mt-[16px] w-full" defaultValue={campaign?.title} />
+      <Input name="title" placeholder="Title" className="mt-[16px] w-full" defaultValue={campaign?.title} />
 
       <label htmlFor="description" className="mt-[42px] block text-[32px]">
         Description*
@@ -83,7 +83,7 @@ export default function CampaignEditBasicPage() {
             Video URL
           </label>
           <p className="mt-[16px] text-[20px]">Enter a YouTube URL to appear at the top of your campaign page.</p>
-          <TextInput name="video" placeholder="http://" className="mt-[16px] w-full" />
+          <Input name="video" placeholder="http://" className="mt-[16px] w-full" />
         </>
       )}
 
@@ -93,7 +93,9 @@ export default function CampaignEditBasicPage() {
             Image*
           </label>
           <p className="mt-[16px] text-[20px]">Upload one or more images to appear at the top of your campaign page.</p>
-          <Button className="mt-[16px]">Upload Image</Button>
+          <Button className="mt-[16px]" variant="secondary">
+            Upload Image
+          </Button>
         </>
       )}
 

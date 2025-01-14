@@ -1,7 +1,7 @@
 'use client'
 
-import { DateInput } from '@/components/DateInput'
-import { TextInput } from '@/components/TextInput'
+import { DateInput } from '@/components/Inputs/DateInput'
+import { Input } from '@/components/Inputs/Input'
 import { useCampaign } from '@/context/CampaignContext'
 
 export default function CampaignEditGoalsPage() {
@@ -17,7 +17,7 @@ export default function CampaignEditGoalsPage() {
         Funding Requirement*
       </label>
       <p className="mt-[16px] text-[20px]">What is the amount of fund you need to launch your campaign?</p>
-      <TextInput
+      <Input
         name="funding-target"
         placeholder="Amount"
         className="mt-[16px] w-full"

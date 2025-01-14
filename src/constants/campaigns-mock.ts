@@ -14,11 +14,11 @@ export const MOCK_CAMPAIGN: Campaign = {
   days: 15,
   start_date: '2025-02-14',
   media: [
-    { type: 'image', src: 'https://via.placeholder.com/800x450', alt: 'Sample Image 1' },
-    { type: 'image', src: 'https://via.placeholder.com/800x450', alt: 'Sample Image 2' },
+    { type: 'image', src: 'https://placehold.co/800x450/png', alt: 'Sample Image 1' },
+    { type: 'image', src: 'https://placehold.co/800x450/png', alt: 'Sample Image 2' },
     { type: 'video', src: 'https://www.youtube.com/embed/dQw4w9WgXcQ', platform: 'youtube' },
     { type: 'video', src: 'https://player.vimeo.com/video/459221891', platform: 'vimeo' },
-    { type: 'image', src: 'https://via.placeholder.com/800x450', alt: 'Sample Image 3' },
+    { type: 'image', src: 'https://placehold.co/800x450/png', alt: 'Sample Image 3' },
   ],
   perks: [
     {
@@ -26,35 +26,35 @@ export const MOCK_CAMPAIGN: Campaign = {
       description: 'Perk 1 Description',
       price: 100,
       shippingDate: '2025-02-14',
-      imageUrl: 'https://via.placeholder.com/220x220',
+      imageUrl: 'https://placehold.co/220x220/png',
     },
     {
       title: 'Perk 2',
       description: 'Perk 2 Description',
       price: 200,
       shippingDate: '2025-02-14',
-      imageUrl: 'https://via.placeholder.com/220x220',
+      imageUrl: 'https://placehold.co/220x220/png',
     },
     {
       title: 'Perk 3',
       description: 'Perk 3 Description',
       price: 300,
       shippingDate: '2025-02-14',
-      imageUrl: 'https://via.placeholder.com/220x220',
+      imageUrl: 'https://placehold.co/220x220/png',
     },
     {
       title: 'Perk 4',
       description: 'Perk 4 Description',
       price: 400,
       shippingDate: '2025-02-14',
-      imageUrl: 'https://via.placeholder.com/220x220',
+      imageUrl: 'https://placehold.co/220x220/png',
     },
     {
       title: 'Perk 5',
       description: 'Perk 5 Description',
       price: 500,
       shippingDate: '2025-02-14',
-      imageUrl: 'https://via.placeholder.com/220x220',
+      imageUrl: 'https://placehold.co/220x220/png',
     },
   ],
   qna: [
@@ -79,7 +79,7 @@ export const MOCK_CAMPAIGN: Campaign = {
       id: '1',
       user: {
         name: 'John Doe',
-        imageUrl: 'https://via.placeholder.com/40x40',
+        imageUrl: 'https://placehold.co/40x40/png',
       },
       content:
         'Comment 1. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',
@@ -99,7 +99,7 @@ export const MOCK_CAMPAIGN: Campaign = {
       id: '3',
       user: {
         name: 'John Doe',
-        imageUrl: 'https://via.placeholder.com/40x40',
+        imageUrl: 'https://placehold.co/40x40/png',
       },
       content:
         'Comment 3. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',

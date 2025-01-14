@@ -6,6 +6,8 @@ import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
 import { UserAvatar } from './UserAvatar'
 import { LoginBoard } from './LoginBoard'
+import logo from '../images/logo.png'
+import Image from 'next/image'
 
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
@@ -57,9 +59,9 @@ export const Header = () => {
 
   return (
     <>
-      <header className="box-border flex h-[84px] items-center justify-between gap-[50px] border-b border-[#E1E1E1] px-[9px]">
+      <header className="box-border flex h-[84px] items-center justify-between gap-[50px] border-b border-[#E1E1E1] px-[20px]">
         <Link href="/" className="whitespace-nowrap text-[32px] uppercase">
-          Go Alberta
+          <Image src={logo} alt="" width={141} />
         </Link>
 
         <div className="hidden gap-[50px] md:flex">
