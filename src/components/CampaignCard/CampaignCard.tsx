@@ -16,25 +16,31 @@ interface CampaignCardProps extends Campaign {
 }
 
 export const CampaignCard = ({
-  id,
+  campaignId,
   title = '',
   description = '',
   raised = 0,
-  funding_target = 0,
+  target = 0,
   invests = 0,
   days = 0,
-  cover_url = '',
+  coverPic = '',
   className,
   isEditable = false,
 }: CampaignCardProps) => {
   return (
     <Link
-      href={`/campaigns/${id}`}
+      href={`/campaigns/${campaignId}`}
       className={cx('group flex h-[450px] w-[255px] shrink-0 flex-col overflow-hidden', className)}
     >
       <div className="relative">
-        <Image alt="" width={255} height={255} src={cover_url} />
-        {isEditable ? <EditButton href={`/user/campaigns/${id}/edit/basic`} /> : <BookmarkButton />}
+        {coverPic ? (
+          // TODO: replace with real image url after image upload is implemented
+          <Image alt="" width={255} height={255} src={`https://placehold.co/255x255/png`} />
+        ) : (
+          <div className="flex h-[255px] w-[255px] items-center justify-center bg-gray-100" />
+        )}
+
+        {isEditable ? <EditButton href={`/user/campaigns/${campaignId}/edit/basic`} /> : <BookmarkButton />}
         <ShareButton />
       </div>
 
@@ -49,13 +55,13 @@ export const CampaignCard = ({
             <p>Raised</p>
             <p>Total</p>
           </div>
-          <ProgressBar percentage={Math.round((raised / funding_target) * 100)} />
+          <ProgressBar percentage={Math.round((raised / target) * 100)} />
           <div className="mt-[6px] flex justify-between">
             <p className="text-[20px]">
               ${raised.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
             <p className="text-[20px]">
-              ${funding_target.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${target.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
           </div>
           <div className="opacity-0 group-hover:opacity-100">

@@ -7,7 +7,7 @@ const DiscussionsTab = async ({ params }: { params: Promise<{ id: number }> }) =
   const id = (await params).id
 
   // TODO: replace with actual data fetching
-  const { comments } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === Number(id)) || { comments: [] }
+  const { comments } = MOCK_CAMPAIGNS.find((campaign) => campaign.campaignId === Number(id)) || { comments: [] }
 
   return (
     <>

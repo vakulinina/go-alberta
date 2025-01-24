@@ -5,43 +5,36 @@ import { TextArea } from '@/components/TextArea'
 import { Input } from '@/components/Inputs/Input'
 import { useCampaign } from '@/context/CampaignContext'
 import { Fragment, useState } from 'react'
+import { Dropdown } from '@/components/Dropdown'
+import { Toggle } from '../../../../../../components/Toggle'
 
-interface ToggleProps {
-  values: { key: string; title: string }[]
-  onSelect: (key: string) => void
-  className?: string
-  activeValue: string
-}
+// TODO: if the campaign is in Approved status, editing is not allowed
 
-const Dropdown = ({ className }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={`relative w-full ${className}`}>
-    <select name="category" className="w-full rounded-lg border border-[##BABABA] p-3" required>
-      <option value="1">Category 1</option>
-      <option value="2">Category 2</option>
-      <option value="3">Category 3</option>
-    </select>
-  </div>
-)
+const Qna = ({
+  question,
+  answer,
+  onChange,
+  ...props
+}: {
+  question: string
+  answer: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+}) => (
+  <Fragment {...props}>
+    <label htmlFor="question" className="mt-[16px] block text-[20px]">
+      Question
+    </label>
+    <TextArea name="question" className="mt-[6px] w-full" defaultValue={question} onChange={onChange} />
 
-const Toggle = ({ values, onSelect, className, activeValue }: ToggleProps) => (
-  <div className={`flex ${className}`}>
-    {values.map(({ key, title }) => (
-      <button
-        key={key}
-        onClick={() => onSelect(key)}
-        type="button"
-        className={`flex h-[40px] w-[136px] items-center justify-center border bg-[#E1E1E1] text-[20px] text-[#8F8F8F] ${
-          key === activeValue && 'border-[3px] border-[#88BE3C] bg-[#FFFFFF] !text-[#000000]'
-        }`}
-      >
-        {title}
-      </button>
-    ))}
-  </div>
+    <label htmlFor="answer" className="mt-[16px] block text-[20px]">
+      Answer
+    </label>
+    <TextArea name="answer" className="mt-[6px] w-full" defaultValue={answer} onChange={onChange} />
+  </Fragment>
 )
 
 export default function CampaignEditBasicPage() {
-  const { campaign } = useCampaign()
+  const { formData, handleChange } = useCampaign()
   const [mediaType, setMediaType] = useState('image')
 
   return (
@@ -52,7 +45,13 @@ export default function CampaignEditBasicPage() {
         Title*
       </label>
       <p className="mt-[16px] text-[20px]">Write a title for your Campaign.</p>
-      <Input name="title" placeholder="Title" className="mt-[16px] w-full" defaultValue={campaign?.title} />
+      <Input
+        name="title"
+        placeholder="Title"
+        className="mt-[16px] w-full"
+        defaultValue={formData.title}
+        onChange={handleChange}
+      />
 
       <label htmlFor="description" className="mt-[42px] block text-[32px]">
         Description*
@@ -64,7 +63,8 @@ export default function CampaignEditBasicPage() {
         name="description"
         placeholder="Description"
         className="mt-[16px] w-full"
-        defaultValue={campaign?.description}
+        defaultValue={formData.description}
+        onChange={handleChange}
       />
 
       <Toggle
@@ -105,26 +105,36 @@ export default function CampaignEditBasicPage() {
       <p className="mt-[16px] text-[20px]">
         Select a category that best represents your project. This will be used in filtering the campaigns.
       </p>
-      <Dropdown className="mt-[16px]" />
+      <Dropdown
+        name="category"
+        className="mt-[16px]"
+        options={[
+          { id: 1, label: 'Fashion' },
+          { id: 2, label: 'Tech' },
+          { id: 3, label: 'Education' },
+        ]}
+        selectedOption={formData.categoryId}
+        onChange={handleChange}
+      />
 
       <p className="mt-[42px] text-[32px]">Q&A*</p>
       <p className="mt-[16px] text-[20px]">
         Q&A should provide the most common details that backers are looking for when evaluating your campaign.
       </p>
 
-      {campaign?.qna?.map(({ question, answer }) => (
-        <Fragment key={question}>
-          <label htmlFor="question" className="mt-[16px] block text-[20px]">
-            Question
-          </label>
-          <TextArea name="question" className="mt-[6px] w-full" defaultValue={question} />
-
-          <label htmlFor="answer" className="mt-[16px] block text-[20px]">
-            Answer
-          </label>
-          <TextArea name="answer" className="mt-[6px] w-full" defaultValue={answer} />
-        </Fragment>
-      ))}
+      {formData.qna?.length === 0 ? (
+        <Qna question="" answer="" onChange={handleChange} />
+      ) : (
+        formData.qna?.map(({ question, answer }) => (
+          <>
+            <Qna key={question} question={question} answer={answer} onChange={handleChange} />
+            <Button className="mt-[16px]" variant="secondary">
+              Delete
+            </Button>
+            {/* Make a small button */}
+          </>
+        ))
+      )}
 
       <button type="button" className="pt-[6px] text-[20px] hover:text-[#131313C9]">
         ➕ Add more questions
@@ -132,3 +142,6 @@ export default function CampaignEditBasicPage() {
     </>
   )
 }
+
+// TODO: add onChange for QnA
+// TODO: image/video upload

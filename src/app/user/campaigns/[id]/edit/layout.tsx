@@ -2,19 +2,10 @@
 
 import { Button } from '@/components/Button'
 import { CampaignProvider, useCampaign } from '../../../../../context/CampaignContext'
-import { useCallback } from 'react'
 import { useParams } from 'next/navigation'
 
 const CampaignForm = ({ children }: { children: React.ReactNode }) => {
-  const { prevStep, saveCampaign, isLastStep, isFirstStep } = useCampaign()
-
-  const handleSubmit = useCallback(
-    async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
-      e.preventDefault()
-      saveCampaign(e, e.nativeEvent.submitter?.id === 'launch' && true)
-    },
-    [saveCampaign]
-  )
+  const { prevStep, handleSubmit, isLastStep, isFirstStep } = useCampaign()
 
   return (
     <form onSubmit={handleSubmit}>

@@ -1,12 +1,14 @@
+import { getCampaignById } from '@/api/campaignApi'
 import { Carousel } from '@/components/Carousel/Carousel'
 import { PerkCard } from '@/components/PerkCard'
-import { MOCK_CAMPAIGNS } from '@/constants/campaigns-mock'
 
 const OverviewTab = async ({ params }: { params: Promise<{ id: number }> }) => {
   const id = (await params).id
+  const campaign = await getCampaignById(id)
 
-  // TODO: replace with actual data fetching
-  const { perks, description } = MOCK_CAMPAIGNS.find((product) => product.id === Number(id)) || { perks: [] }
+  if (!campaign) return null
+
+  const { description, perks } = campaign
 
   return (
     <>

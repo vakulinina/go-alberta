@@ -9,3 +9,21 @@ export const generateUUID = () => {
 
   return crypto.randomUUID()
 }
+
+export const getUUID = () => {
+  const localStorage = global?.window?.localStorage
+
+  if (!localStorage) {
+    console.error('localStorage is not available')
+    return generateUUID()
+  }
+
+  let userId = localStorage.getItem('userId')
+
+  if (!userId) {
+    userId = generateUUID()
+    localStorage.setItem('userId', userId)
+  }
+
+  return userId
+}

@@ -25,7 +25,14 @@ export const MediaGallery = ({ mediaItems, className }: MediaGalleryProps) => {
 
     if (type === 'image') {
       return (
-        <Image width={800} height={450} src={src} alt={alt || ''} className="h-full w-full rounded-lg object-contain" />
+        <Image
+          width={800}
+          height={450}
+          // TODO: replace with real image url after image upload is implemented
+          src="https://placehold.co/800x450/png"
+          alt={alt || ''}
+          className="h-full w-full rounded-lg object-contain"
+        />
       )
     } else if (type === 'video') {
       return (

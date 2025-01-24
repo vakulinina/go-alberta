@@ -21,19 +21,19 @@ export type Comment = {
 }
 
 export type Campaign = {
-  id: number
-  user_id?: number
+  campaignId: number
+  userId?: number
   campaign_status_id?: number
   title?: string
   description?: string
-  category_id?: number
+  categoryId?: number
   raised?: number
-  funding_target?: number
-  cover_url?: string
+  target?: number
+  coverPic?: string
   invests?: number
   days?: number
-  start_date?: string
-  end_date?: string
+  startDate?: string
+  endDate?: string
   media?: MediaItem[]
   perks?: Perk[]
   qna?: { question: string; answer: string }[]

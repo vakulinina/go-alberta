@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: CampaignLayoutProps): Promise
   const id = (await params).id
 
   // replace with actual data fetching
-  const { title } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === id) || { title: 'Campaign' }
+  const { title } = MOCK_CAMPAIGNS.find((campaign) => campaign.campaignId === id) || { title: 'Campaign' }
 
   return {
     title: `${title} | Go Alberta`,
@@ -30,7 +30,7 @@ const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
   ]
 
   // replace with actual data fetching
-  const { title, media } = MOCK_CAMPAIGNS.find((campaign) => campaign.id === Number(id)) || {
+  const { title, media } = MOCK_CAMPAIGNS.find((campaign) => campaign.campaignId === Number(id)) || {
     title: 'Campaign',
     media: [],
   }

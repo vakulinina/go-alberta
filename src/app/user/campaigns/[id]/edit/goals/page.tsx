@@ -17,12 +17,7 @@ export default function CampaignEditGoalsPage() {
         Funding Requirement*
       </label>
       <p className="mt-[16px] text-[20px]">What is the amount of fund you need to launch your campaign?</p>
-      <Input
-        name="funding-target"
-        placeholder="Amount"
-        className="mt-[16px] w-full"
-        defaultValue={campaign?.funding_target}
-      />
+      <Input name="funding-target" placeholder="Amount" className="mt-[16px] w-full" defaultValue={campaign?.target} />
 
       <label htmlFor="start-date" className="mt-[42px] block text-[32px]">
         Launch Date*
