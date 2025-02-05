@@ -3,7 +3,7 @@ import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import React from 'react'
 
 const CampaignsPage = async () => {
-  const campaigns = await getCampaigns() //TODO:update request to only get campaigns that are active
+  const campaigns = await getCampaigns({ campaignStatusId: 3 })
 
   return (
     <div className="px-[100px] py-[60px]">

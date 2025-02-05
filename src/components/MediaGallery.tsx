@@ -4,41 +4,39 @@ import Image from 'next/image'
 import { useCallback, useState } from 'react'
 import { PlayIcon } from './Icons/PlayIcon'
 import { MediaItem } from '@/types/campaign'
-
-const getVideoThumbnail = ({ src, platform }: MediaItem) => {
-  if (platform === 'youtube') {
-    return `https://img.youtube.com/vi/${src.split('/embed/')[1]}/hqdefault.jpg`
-  }
-
-  return `https://vumbnail.com/${src.split('/video/')[1]}.jpg`
-}
+import { getVideoEmbedUrl, getVideoThumbnail } from '@/utils/helpers'
 
 interface MediaGalleryProps extends React.HTMLAttributes<HTMLDivElement> {
   mediaItems: MediaItem[]
 }
 
+if (!process.env.NEXT_PUBLIC_S3_BUCKET_URL) {
+  throw new Error('S3_BUCKET_URL is not set')
+}
+
+const s3BucketUrl = process.env.NEXT_PUBLIC_S3_BUCKET_URL
+
 export const MediaGallery = ({ mediaItems, className }: MediaGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const renderMainMedia = useCallback(() => {
-    const { type, src, alt } = mediaItems[selectedIndex]
+    const { imageType, imageUrl } = mediaItems[selectedIndex]
 
-    if (type === 'image') {
+    if (imageType === 0) {
       return (
         <Image
           width={800}
           height={450}
-          // TODO: replace with real image url after image upload is implemented
-          src="https://placehold.co/800x450/png"
-          alt={alt || ''}
+          src={s3BucketUrl + '/' + imageUrl}
+          alt=""
           className="h-full w-full rounded-lg object-contain"
         />
       )
-    } else if (type === 'video') {
+    } else if (imageType === 1) {
       return (
         <iframe
           className="h-full w-full rounded-lg"
-          src={src}
+          src={getVideoEmbedUrl(imageUrl)}
           title="YouTube video"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
@@ -61,10 +59,10 @@ export const MediaGallery = ({ mediaItems, className }: MediaGalleryProps) => {
                 selectedIndex === index ? 'border-[#80CD57]' : 'border-none'
               }`}
             >
-              {item.type === 'image' ? (
+              {item.imageType === 0 ? (
                 <Image
-                  src={item.src}
-                  alt={item.alt || 'Preview'}
+                  src={s3BucketUrl + '/' + item.imageUrl}
+                  alt=""
                   className="h-full w-full object-cover"
                   width={800}
                   height={450}
@@ -72,7 +70,7 @@ export const MediaGallery = ({ mediaItems, className }: MediaGalleryProps) => {
               ) : (
                 <div className="relative h-full w-full object-cover">
                   <Image
-                    src={getVideoThumbnail(item)}
+                    src={getVideoThumbnail(item.imageUrl)}
                     alt="Video preview"
                     width={800}
                     height={450}

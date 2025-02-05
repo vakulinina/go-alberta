@@ -14,13 +14,15 @@ interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const CampaignOverview = ({
-  campaign: { raised = 0, target = 0, invests, days },
+  campaign: { amount = '', fundingTarget = 0, invests, endDate },
   className,
   onSave,
   onInvest,
   onShare,
 }: CampaignOverviewProps) => {
-  const percentage = Math.round((raised / target) * 100)
+  const amountNumber = parseFloat(amount)
+  const percentage = Math.round((amountNumber / fundingTarget) * 100)
+  const daysLeft = endDate ? Math.ceil((new Date(endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0
 
   return (
     <div
@@ -29,13 +31,13 @@ export const CampaignOverview = ({
         className
       )}
     >
-      <p className="text-[32px]">{`$${raised?.toLocaleString()}`}</p>
-      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${target?.toLocaleString()} raised`}</p>
+      <p className="text-[32px]">{`$${amountNumber?.toLocaleString()}`}</p>
+      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${fundingTarget?.toLocaleString()} raised`}</p>
 
       <ProgressBar percentage={percentage} className="!h-[17px]" />
       <div className="mb-[46px] mt-[12px] flex justify-between text-[14px]">
-        <p>{invests} Invests</p>
-        <p>{days} days left</p>
+        <p>{invests || 0} Invests</p>
+        <p>{daysLeft} days left</p>
       </div>
 
       <div className="flex">

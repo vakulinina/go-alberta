@@ -1,20 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Campaign } from '@/types/campaign'
+import { Campaign, Perk, Qna } from '@/types/campaign'
 
 export type StepConfig = { key: string; path: (id: number) => string }
 
-export type CampaignContextType = {
-  formData: Campaign
-  campaign: Campaign | undefined
+type CampaignContextState = {
+  campaign: Campaign
   currentStepIndex: number
   isLastStep: boolean
   isFirstStep: boolean
-  setCampaign: (campaign: Campaign) => void
+  categories: { categoryId: number; categoryName: string }[]
+  loading: boolean
+}
+
+export type CampaignContextType = {
+  state: CampaignContextState
   nextStep: () => void
   prevStep: () => void
   goToStep: (index: number) => void
-  initCampaign: () => Promise<Campaign | undefined>
-  saveCampaign: (event: React.FormEvent<HTMLFormElement>, launch: boolean) => void
-  handleSubmit: (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => void
+  handleSubmit: (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>, launch: boolean) => void
   handleChange: (e: React.ChangeEvent<any>) => void
+  uploadImages: (files: File[]) => Promise<void>
+  removeImage: (index: number) => Promise<void>
+  uploadCoverImage: (file: File) => Promise<void>
+  handleQnaChange: (qnaList: Qna[]) => void
+  uploadVideo: (url: string) => Promise<void>
+  handlePerkChange: (index: number, perk?: Perk) => Promise<void>
 }

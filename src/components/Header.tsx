@@ -1,4 +1,5 @@
 'use client'
+
 import Link from 'next/link'
 import { NavLinks } from './NavLinks'
 import { useCallback, useState } from 'react'
@@ -20,8 +21,13 @@ const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   </>
 )
 
-const MobileMenu = ({ children }: { children: React.ReactNode }) => {
+const MobileMenu = ({ children, onClose }: { children: React.ReactNode; onClose?: () => void }) => {
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const handleClose = () => {
+    setMenuOpen(false)
+    onClose?.()
+  }
 
   return (
     <>
@@ -34,6 +40,7 @@ const MobileMenu = ({ children }: { children: React.ReactNode }) => {
 
       <div
         className={`md:hidden ${menuOpen ? 'block' : 'hidden'} absolute left-0 top-[84px] z-50 w-full border-b border-[#E1E1E1] bg-white px-[24px] py-[16px]`}
+        onClick={handleClose}
       >
         <div className="flex flex-col items-start py-4">{children}</div>
       </div>

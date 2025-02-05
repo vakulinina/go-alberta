@@ -1,16 +1,18 @@
 export type MediaItem = {
-  type: 'image' | 'video'
-  src: string
-  alt?: string
-  platform?: 'youtube' | 'vimeo'
+  imageId: number
+  imageType: number
+  imageUrl: string
 }
 
 export type Perk = {
-  title: string
-  description: string
-  price: number
-  shippingDate: string
-  imageUrl: string
+  perkId?: number
+  campaignId?: number
+  perkText?: string
+  perkAmount?: number
+  perkImage?: string
+  perkImageType?: string
+  imageFile?: File
+  perkImagePresignedUrl?: string
 }
 
 export type Comment = {
@@ -23,12 +25,12 @@ export type Comment = {
 export type Campaign = {
   campaignId: number
   userId?: number
-  campaign_status_id?: number
+  campaignStatusId?: number
   title?: string
-  description?: string
+  campaignDesc?: string
   categoryId?: number
-  raised?: number
-  target?: number
+  amount?: string
+  fundingTarget?: number
   coverPic?: string
   invests?: number
   days?: number
@@ -36,6 +38,11 @@ export type Campaign = {
   endDate?: string
   media?: MediaItem[]
   perks?: Perk[]
-  qna?: { question: string; answer: string }[]
+  qnaList?: Qna[]
   comments?: Comment[]
+  addUpdPic?: number
+  picPresignedUrl?: string
+  coverPicType?: string
 }
+
+export type Qna = { qnaId?: number; question?: string; answer?: string; createdAt?: string }

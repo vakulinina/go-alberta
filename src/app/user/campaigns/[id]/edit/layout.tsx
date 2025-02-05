@@ -3,28 +3,55 @@
 import { Button } from '@/components/Button'
 import { CampaignProvider, useCampaign } from '../../../../../context/CampaignContext'
 import { useParams } from 'next/navigation'
+import { Spinner } from '@/components/Spinner'
+import { useCallback } from 'react'
 
 const CampaignForm = ({ children }: { children: React.ReactNode }) => {
-  const { prevStep, handleSubmit, isLastStep, isFirstStep } = useCampaign()
+  const {
+    state: { campaign, isLastStep, isFirstStep, loading },
+    prevStep,
+    handleSubmit,
+  } = useCampaign()
+
+  const handleSave = useCallback(
+    async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+      if (e.nativeEvent.submitter?.id === 'save') {
+        handleSubmit(e, false)
+      } else {
+        handleSubmit(e, true)
+      }
+    },
+    [handleSubmit]
+  )
+
+  if (!campaign?.campaignId)
+    return (
+      <div className="flex h-[200px] items-center justify-center">
+        <Spinner />
+      </div>
+    )
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSave} className="relative">
       <div className="max-w-[484px]">{children}</div>
+
       <div className="mt-[40px] flex justify-end gap-[20px]">
         {!isFirstStep && (
-          <Button type="button" onClick={prevStep}>
+          <Button type="button" variant="secondary" onClick={prevStep} loading={loading}>
             Back
           </Button>
         )}
-        <Button type="submit" id="save" name="save">
+        <Button type="submit" id="save" name="save" loading={loading}>
           {isLastStep ? 'Save' : 'Save and Continue'}
         </Button>
         {isLastStep && (
-          <Button type="submit" id="launch" name="launch">
+          <Button type="submit" id="launch" name="launch" loading={loading}>
             Save and Launch
           </Button>
         )}
       </div>
+
+      {loading && <div className="absolute inset-0 z-50 flex h-full w-full items-center justify-center bg-white/50" />}
     </form>
   )
 }

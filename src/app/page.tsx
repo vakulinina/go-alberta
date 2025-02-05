@@ -3,7 +3,7 @@ import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import { Carousel } from '@/components/Carousel/Carousel'
 
 export default async function Home() {
-  const campaigns = await getCampaigns()
+  const campaigns = await getCampaigns({ campaignStatusId: 3 })
 
   return (
     <div className="px-[100px] py-[70px]">

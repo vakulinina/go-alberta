@@ -20,28 +20,38 @@ export const useClickOutside = (ref: React.RefObject<HTMLDivElement>, onClose: (
   }, [ref, onClose])
 }
 
-export const DateInput = ({ className, ...props }: React.InputHTMLAttributes<HTMLDivElement>) => {
+export const DateInput = ({ className, value, onChange, ...props }: React.InputHTMLAttributes<HTMLDivElement>) => {
   const [month, setMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
-  const [inputValue, setInputValue] = useState('')
-
+  const [inputValue, setInputValue] = useState(() => {
+    if (!value) return ''
+    const date = new Date(value as string)
+    return format(new Date(date.getTime() + date.getTimezoneOffset() * 60000), 'MM/dd/yyyy')
+  })
   const calendarRef = useRef(null)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
   useClickOutside(calendarRef, () => setIsCalendarOpen(false))
 
-  const handleDayPickerSelect = useCallback((date: Date | undefined) => {
-    if (!date) {
-      setInputValue('')
-      setSelectedDate(undefined)
-    } else {
-      setSelectedDate(date)
-      setMonth(date)
-      setInputValue(format(date, 'MM/dd/yyyy'))
-    }
+  const handleDayPickerSelect = useCallback(
+    (date: Date | undefined) => {
+      if (!date) {
+        setInputValue('')
+        setSelectedDate(undefined)
+      } else {
+        const utcDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000)
+        setSelectedDate(utcDate)
+        setMonth(utcDate)
+        setInputValue(format(utcDate, 'MM/dd/yyyy'))
+        onChange?.({
+          target: { name: props.name, value: utcDate.toISOString().split('T')[0] },
+        } as React.ChangeEvent<HTMLInputElement>)
+      }
 
-    setIsCalendarOpen(false)
-  }, [])
+      setIsCalendarOpen(false)
+    },
+    [onChange, props.name]
+  )
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value

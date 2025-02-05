@@ -1,5 +1,5 @@
 interface DropdownProps extends React.HTMLAttributes<HTMLSelectElement> {
-  options: { label: string; id: number }[]
+  options: { categoryId: number; categoryName: string }[]
   selectedOption?: number
   name: string
 }
@@ -11,11 +11,11 @@ export const Dropdown = ({ options, onChange, selectedOption, className, name }:
       onChange={onChange}
       defaultValue={selectedOption}
       required
-      className="w-full rounded-lg border border-[##BABABA] p-3"
+      className="h-[50px] w-full rounded-lg border border-[##BABABA] capitalize"
     >
-      {options.map(({ label, id }) => (
-        <option key={id} value={id}>
-          {label}
+      {options.map(({ categoryId, categoryName }) => (
+        <option key={categoryId} value={categoryId}>
+          {categoryName}
         </option>
       ))}
     </select>
