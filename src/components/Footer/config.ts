@@ -33,9 +33,10 @@ export const config = {
           label: 'Trust & Safety',
         },
         {
-          href: '/',
+          href: '/support/faq',
           label: 'Help & Support',
         },
+
         {
           href: '/',
           label: 'Press',
