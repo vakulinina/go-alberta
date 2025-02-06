@@ -10,7 +10,7 @@ export const PerkCard = ({ perkAmount, perkImage, perkText }: Perk) => {
       )}
       <div className="px-[16px] pb-[12px] pt-[24px]">
         <div>
-          <h3 className="text-[20px]">{perkText}</h3>
+          <h3 className="line-clamp-2 text-ellipsis text-[20px]">{perkText}</h3>
 
           <p className="text-[20px]">
             {/* TODO: calculate the amount */}

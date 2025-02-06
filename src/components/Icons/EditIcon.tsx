@@ -6,7 +6,7 @@ export const EditIcon = ({ className }: React.SVGAttributes<SVGSVGElement>) => {
       <path d="M4 16V20H8L18 10L14 6L4 16Z" className={className} />
       <path
         d="M18 10L21 7L17 3L14 6M18 10L8 20H4V16L14 6M18 10L14 6"
-        stroke="#BABABA"
+        stroke="#582F93"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

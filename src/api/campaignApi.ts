@@ -7,7 +7,7 @@ if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
 
 const BASE_URL = process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL
 // const userId = getUUID()
-const userId = 38 // mock id, switch to uuid or authenticated user id later
+const userId = 45 // mock id, switch to uuid or authenticated user id later
 
 export const createCampaign = async (): Promise<Campaign> => {
   const params = {
@@ -95,7 +95,7 @@ export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaig
   const url = `${BASE_URL}/campaigns?${urlSearchParams}`
 
   try {
-    const response = await fetch(url)
+    const response = await fetch(url, { cache: 'no-store' })
 
     if (!response.ok) {
       throw new Error(`Failed to fetch campaigns: ${response.status}`)

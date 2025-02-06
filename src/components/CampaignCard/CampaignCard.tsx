@@ -59,10 +59,10 @@ export const CampaignCardComponent = ({
           <ProgressBar percentage={Math.round((amountNumber / fundingTarget) * 100)} />
           <div className="mt-[6px] flex justify-between">
             <p className="text-[20px]">
-              ${amountNumber} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${amountNumber.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
             <p className="text-[20px]">
-              ${fundingTarget} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${fundingTarget.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
           </div>
           <div className="opacity-0 group-hover:opacity-100">

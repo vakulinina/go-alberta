@@ -16,7 +16,7 @@ const EditButtonComponent = ({ href }: { href: string }) => {
         push(href)
       }}
     >
-      <EditIcon className="group-hover/edit:stroke-[#FFFFFF]" />
+      <EditIcon className="group-hover/edit:stroke-[#51236DD9]" />
     </button>
   )
 }

@@ -13,7 +13,7 @@ const BookmarkButtonComponent = () => {
 
   return (
     <button className="group/bookmark absolute left-0 top-0 p-[10px]" onClick={handleBookmark} type="button">
-      <BookmarkIcon isFilled={isSaved} className="group-hover/bookmark:stroke-[#FFFFFF]" />
+      <BookmarkIcon isFilled={isSaved} className="group-hover/bookmark:stroke-[#51236DD9]" />
     </button>
   )
 }
