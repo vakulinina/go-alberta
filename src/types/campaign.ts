@@ -43,6 +43,7 @@ export type Campaign = {
   addUpdPic?: number
   picPresignedUrl?: string
   coverPicType?: string
+  exist?: number
 }
 
 export type Qna = { qnaId?: number; question?: string; answer?: string; createdAt?: string }

@@ -14,9 +14,9 @@ import Image from 'next/image'
 
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
-    <Link className="whitespace-nowrap" href="/user/campaigns/new">
+    {/* <Link className="whitespace-nowrap" href="/user/campaigns/new">
       Start a Campaign
-    </Link>
+    </Link> */}
     <button onClick={onLoginClick} className="whitespace-nowrap">
       Log in / Sign up
     </button>
@@ -59,7 +59,8 @@ export const Header = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = JSON.parse(localStorage.getItem('userData') || '{}')
+      const userData = localStorage.getItem('userData')
+      const user = userData ? JSON.parse(userData) : null
 
       if (user) {
         try {
@@ -80,7 +81,9 @@ export const Header = () => {
   }, [])
 
   const handleLoginSuccess = async () => {
-    const user = JSON.parse(localStorage.getItem('userData') || '{}')
+    const userData = localStorage.getItem('userData')
+    const user = userData ? JSON.parse(userData) : null
+
     if (user) {
       try {
         setUsername(`${user.name} ${user.surname}`.trim())

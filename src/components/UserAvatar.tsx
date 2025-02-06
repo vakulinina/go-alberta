@@ -19,6 +19,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
 
   const handleLogout = () => {
     localStorage.removeItem('expandedMenus')
+    localStorage.removeItem('userData')
     onLogout()
     setShowDropdown(false)
     router.push('/')
