@@ -31,6 +31,10 @@ const CampaignForm = ({ children }: { children: React.ReactNode }) => {
       </div>
     )
 
+  if (campaign.campaignStatusId !== 1) {
+    return <div className="p-8 text-center">Campaign can not be edited</div>
+  }
+
   return (
     <form onSubmit={handleSave} className="relative">
       <div className="max-w-[484px]">{children}</div>
