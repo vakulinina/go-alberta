@@ -33,11 +33,10 @@ const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
 
   return (
     <div className="px-[16px] py-[80px] sm:px-[60px] md:px-[60px]">
-      <h1 className="mb-5 text-[60px]">{campaign?.title}</h1>
+      <h1 className="mb-5 text-[40px]">{campaign?.title}</h1>
 
       <div className="flex flex-row gap-[100px] max-xl:gap-[50px] max-lg:flex-col-reverse max-lg:justify-end">
         <div className="w-full overflow-hidden">
-          {/* TODO: generate embed url from video url */}
           {media?.length && <MediaGallery mediaItems={media} className="mb-[90px]" />}
 
           <TabBox tabs={tabs} />

@@ -50,7 +50,7 @@ export const MediaGallery = ({ mediaItems, className }: MediaGalleryProps) => {
       <div className="mb-4 aspect-video">{renderMainMedia()}</div>
 
       {mediaItems.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto">
+        <div className="flex gap-2 overflow-x-auto pb-3">
           {mediaItems.map((item, index) => (
             <button
               key={index}
