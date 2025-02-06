@@ -4,6 +4,10 @@ import { CalendarIcon } from '@/components/Icons/CalendarIcon'
 import { Input } from './Input'
 import { format, isValid, parse } from 'date-fns'
 
+interface DateInputProps extends React.InputHTMLAttributes<HTMLDivElement> {
+  error?: string
+}
+
 export const useClickOutside = (ref: React.RefObject<HTMLDivElement>, onClose: () => void) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -20,7 +24,7 @@ export const useClickOutside = (ref: React.RefObject<HTMLDivElement>, onClose: (
   }, [ref, onClose])
 }
 
-export const DateInput = ({ className, value, onChange, ...props }: React.InputHTMLAttributes<HTMLDivElement>) => {
+export const DateInput = ({ className, value, onChange, error, ...props }: DateInputProps) => {
   const [month, setMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [inputValue, setInputValue] = useState(() => {
@@ -93,6 +97,7 @@ export const DateInput = ({ className, value, onChange, ...props }: React.InputH
         onChange={handleInputChange}
         placeholder="MM/DD/YYYY"
         className={`w-full pr-[40px]`}
+        error={error}
         {...props}
       />
       <button onClick={toggleCalendar} className="absolute right-[8px] translate-y-1/2" type="button">

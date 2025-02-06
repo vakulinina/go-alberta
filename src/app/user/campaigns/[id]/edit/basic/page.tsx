@@ -12,6 +12,7 @@ import { FileInput } from '@/components/FileInput'
 import { Button } from '@/components/Button'
 import { getVideoThumbnail } from '@/utils/helpers'
 import Image from 'next/image'
+import { Toast } from '@/components/Toast'
 
 const fields = {
   title: {
@@ -47,6 +48,7 @@ const fields = {
 export default function CampaignEditBasicPage() {
   const {
     state: { campaign, categories },
+    errors,
     handleChange,
     uploadImages,
     removeImage,
@@ -116,6 +118,7 @@ export default function CampaignEditBasicPage() {
         className="mt-[16px] w-full"
         defaultValue={campaign.title}
         onChange={handleChange}
+        error={errors.title}
       />
 
       <label htmlFor="description" className="mt-[42px] block text-[32px]">
@@ -130,6 +133,7 @@ export default function CampaignEditBasicPage() {
         className="mt-[16px] w-full"
         defaultValue={campaign.campaignDesc}
         onChange={handleChange}
+        error={errors.campaignDesc}
       />
 
       <label htmlFor="cardImage" className="mt-[42px] block text-[32px]">
@@ -144,11 +148,12 @@ export default function CampaignEditBasicPage() {
         label={`${coverImageUrl ? 'Change' : 'Upload'} Card Image`}
         id="cardImage"
       />
-      {coverImageUrl && (
+      {coverImageUrl && !errors.coverPic && (
         <div className="mt-4">
           <Image src={coverImageUrl} alt="" className="h-[255px] w-[255px] object-cover" width={255} height={255} />
         </div>
       )}
+      {errors.coverPic && <Toast message={errors.coverPic} key={Date.now()} />}
 
       <Toggle
         values={[
@@ -171,6 +176,7 @@ export default function CampaignEditBasicPage() {
             Maximum file size: 150KB.
           </p>
           <FileInput onChange={handleGalleryImageChange} label="Upload Image" multiple id="imageGallery" />
+          {errors.media && <Toast message={errors.media} key={Date.now()} />}
         </>
       )}
 
@@ -209,6 +215,7 @@ export default function CampaignEditBasicPage() {
         options={categories}
         selectedOption={campaign.categoryId}
         onChange={handleChange}
+        error={errors.categoryId}
       />
 
       <p className="mt-[42px] text-[32px]">{fields.qna.label}</p>

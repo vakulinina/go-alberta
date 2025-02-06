@@ -7,7 +7,7 @@ if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
 
 const BASE_URL = process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL
 // const userId = getUUID()
-const userId = 45 // mock id, switch to uuid or authenticated user id later
+const userId = 49 // mock id, switch to uuid or authenticated user id later
 
 export const createCampaign = async (): Promise<Campaign> => {
   const params = {

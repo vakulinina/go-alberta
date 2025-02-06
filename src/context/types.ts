@@ -12,8 +12,15 @@ type CampaignContextState = {
   loading: boolean
 }
 
+export type ErrorState = {
+  [K in keyof Campaign]?: string
+} & {
+  general?: string
+}
+
 export type CampaignContextType = {
   state: CampaignContextState
+  errors: ErrorState
   nextStep: () => void
   prevStep: () => void
   goToStep: (index: number) => void
@@ -25,4 +32,7 @@ export type CampaignContextType = {
   handleQnaChange: (qnaList: Qna[]) => void
   uploadVideo: (url: string) => Promise<void>
   handlePerkChange: (index: number, perk?: Perk) => Promise<void>
+  clearErrors: () => void
+  setFieldError: (field: keyof Campaign | 'general', message: string) => void
+  validateRequiredFields: (campaign: Campaign) => boolean
 }

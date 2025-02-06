@@ -2,11 +2,13 @@
 
 import { DateInput } from '@/components/Inputs/DateInput'
 import { Input } from '@/components/Inputs/Input'
+import { Toast } from '@/components/Toast'
 import { useCampaign } from '@/context/CampaignContext'
 
 export default function CampaignEditGoalsPage() {
   const {
     state: { campaign },
+    errors,
     handleChange,
   } = useCampaign()
 
@@ -28,6 +30,7 @@ export default function CampaignEditGoalsPage() {
         onChange={handleChange}
         type="number"
         min={0}
+        error={errors.fundingTarget}
       />
 
       <label htmlFor="startDate" className="mt-[42px] block text-[32px]">
@@ -40,6 +43,7 @@ export default function CampaignEditGoalsPage() {
         className="mt-[16px] w-full"
         onChange={handleChange}
         value={campaign.startDate}
+        error={errors.startDate}
       />
 
       <label htmlFor="endDate" className="mt-[42px] block text-[32px]">
@@ -52,7 +56,10 @@ export default function CampaignEditGoalsPage() {
         className="mt-[16px] w-full"
         onChange={handleChange}
         value={campaign.endDate}
+        error={errors.endDate}
       />
+
+      {errors.general && <Toast message={errors.general} key={Date.now()} />}
     </>
   )
 }

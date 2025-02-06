@@ -26,10 +26,11 @@ import {
   INVALID_IMAGE_ERROR,
   isValidImageFormat,
   isValidImageSize,
+  REQUIRED_FIELDS,
   stepConfig,
 } from './constants'
 import { isValidVideoUrl } from '@/utils/helpers'
-import { CampaignContextType } from './types'
+import { CampaignContextType, ErrorState } from './types'
 
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined)
 
@@ -42,6 +43,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
   const pathname = usePathname()
 
   const [modifiedFields, setModifiedFields] = useState<Set<keyof Campaign>>(new Set())
+  const [errors, setErrors] = useState<ErrorState>({})
   const [state, setState] = useState<CampaignContextType['state']>({
     campaign: INITIAL_CAMPAIGN_DATA,
     currentStepIndex: getCurrentStepIndex(id, pathname),
@@ -88,6 +90,53 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
     fetchCampaignData()
     fetchCategories()
   }, [id])
+
+  const clearErrors = useCallback((field?: keyof Campaign) => {
+    if (field) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[field]
+        return newErrors
+      })
+    } else {
+      setErrors({})
+    }
+  }, [])
+
+  const setFieldError = useCallback((field: keyof Campaign | 'general', message: string) => {
+    setErrors((prev) => ({
+      ...prev,
+      [field]: message,
+    }))
+  }, [])
+
+  const validateRequiredFields = useCallback((campaign: Campaign) => {
+    const newErrors: ErrorState = {}
+
+    Object.entries(REQUIRED_FIELDS).forEach(([key, label]) => {
+      if (key === 'qnaList' || key === 'perks') {
+        const hasValidItems = {
+          qnaList: campaign.qnaList?.some((qna) => qna.question && qna.answer),
+          perks: campaign.perks?.some((perk) => perk.perkText && perk.perkAmount),
+        }
+
+        if (!hasValidItems[key as 'qnaList' | 'perks']) {
+          newErrors[key as keyof Campaign] = `${label} is required`
+        }
+      }
+
+      if (!campaign[key as keyof Campaign]) {
+        newErrors[key as keyof Campaign] = `${label} is required`
+      }
+    })
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      throw new Error('Please fill in all required fields')
+    }
+
+    return true
+  }, [])
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -149,7 +198,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         },
       }))
     },
-    [campaign.campaignId, campaign.perks]
+    [campaign.perks, state.campaign.campaignId]
   )
 
   const goToStep = useCallback(
@@ -201,7 +250,9 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
 
       if (modifiedFields.has('qnaList')) {
         const filteredQnaList = campaign.qnaList?.filter((qna) => qna.question && qna.answer) || []
-        await updateCampaignQna(campaign.campaignId, filteredQnaList)
+        if (filteredQnaList.length > 0) {
+          await updateCampaignQna(campaign.campaignId, filteredQnaList)
+        }
       }
 
       campaign.perks?.forEach(async (perk, index) => {
@@ -241,23 +292,33 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
     } finally {
       setState((prev) => ({ ...prev, loading: false }))
     }
-  }, [campaign, isLastStep, nextStep, push])
+  }, [campaign, isLastStep, modifiedFields, nextStep, push])
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>, launch: boolean) => {
       e.preventDefault()
+      clearErrors()
       setState((prev) => ({ ...prev, loading: true }))
 
-      await saveCampaign()
+      try {
+        if (launch) {
+          validateRequiredFields(campaign)
+        }
 
-      // TODO: add check for required fields
-      if (launch && campaign.campaignStatusId === 1) {
-        await updateCampaignStatus(campaign.campaignId, 2)
+        await saveCampaign()
+
+        if (launch && campaign.campaignStatusId === 1) {
+          await updateCampaignStatus(campaign.campaignId, 2)
+        }
+      } catch (error) {
+        if (Object.keys(errors).length === 0) {
+          setFieldError('general', error instanceof Error ? error.message : 'An unexpected error occurred')
+        }
+      } finally {
+        setState((prev) => ({ ...prev, loading: false }))
       }
-
-      setState((prev) => ({ ...prev, loading: false }))
     },
-    [saveCampaign, campaign.campaignId, campaign.campaignStatusId]
+    [campaign, clearErrors, errors, saveCampaign, setFieldError, validateRequiredFields]
   )
 
   const removeImage = useCallback(
@@ -290,9 +351,11 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
   const uploadCoverImage = useCallback(
     async (file: File) => {
       if (!campaign.campaignId) return
+      clearErrors('coverPic')
 
       if (!isValidImageFormat(file) || !isValidImageSize(file)) {
-        throw new Error(INVALID_IMAGE_ERROR)
+        setFieldError('coverPic', INVALID_IMAGE_ERROR)
+        return
       }
 
       setState((prev) => ({ ...prev, loading: true }))
@@ -317,12 +380,12 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
           },
         }))
       } catch (error) {
-        throw error
+        setFieldError('coverPic', error instanceof Error ? error.message : 'Failed to upload cover image')
       } finally {
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign]
+    [campaign.campaignId, campaign.coverPic, clearErrors, setFieldError]
   )
 
   const uploadImages = useCallback(
@@ -330,7 +393,8 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
       if (!campaign.campaignId) return
 
       if (files.some((file) => !isValidImageFormat(file) || !isValidImageSize(file))) {
-        throw new Error(INVALID_IMAGE_ERROR)
+        setFieldError('media', INVALID_IMAGE_ERROR)
+        return
       }
 
       setState((prev) => ({ ...prev, loading: true }))
@@ -375,7 +439,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign, removeImage]
+    [campaign.campaignId, removeImage, setFieldError]
   )
 
   const uploadVideo = useCallback(
@@ -419,6 +483,10 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
   const api = useMemo(
     () => ({
       state,
+      errors,
+      clearErrors,
+      setFieldError,
+      validateRequiredFields,
       handleSubmit,
       handleChange,
       uploadImages,
@@ -433,6 +501,10 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
     }),
     [
       state,
+      errors,
+      clearErrors,
+      setFieldError,
+      validateRequiredFields,
       handleSubmit,
       handleChange,
       uploadImages,

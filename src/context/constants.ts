@@ -45,3 +45,16 @@ export const stepConfig: StepConfig[] = [
   { key: 'step2', path: (id) => `/user/campaigns/${id}/edit/perks` },
   { key: 'step3', path: (id) => `/user/campaigns/${id}/edit/goals` },
 ]
+
+export const REQUIRED_FIELDS = {
+  title: 'Title',
+  campaignDesc: 'Description',
+  categoryId: 'Category',
+  fundingTarget: 'Funding requirement',
+  coverPic: 'Card image',
+  startDate: 'Start date',
+  endDate: 'End date',
+  media: 'Image Gallery',
+  qnaList: 'Q&A',
+  perks: 'Perks',
+} as const
