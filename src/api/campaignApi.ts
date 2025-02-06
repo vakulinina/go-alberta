@@ -386,3 +386,21 @@ export const updateCampaignStatus = async (campaignId: number, statusId: number)
     throw new Error(`Failed to update campaign status: ${response.status}`)
   }
 }
+
+export const getMyCampaigns = async (userId: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/campaigns?userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user campaigns')
+    }
+
+    return response.json()
+  } catch (error) {
+    throw error
+  }
+}

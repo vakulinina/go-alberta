@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import { NavLinks } from './NavLinks'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { XmarkIcon } from './Icons/XmarkIcon'
 import { BarsIcon } from './Icons/BarsIcon'
 import { UserAvatar } from './UserAvatar'
-import { LoginBoard } from './LoginBoard'
+import { LoginPanel } from './LoginBoard/LoginPanel'
+import { SignUpPanel } from './LoginBoard/SignUpPanel'
+import { ConfirmationPanel } from './LoginBoard/ConfirmationPanel'
 import logo from '../images/logo.png'
 import Image from 'next/image'
 
@@ -51,17 +53,63 @@ const MobileMenu = ({ children, onClose }: { children: React.ReactNode; onClose?
 export const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const handleLoginClick = useCallback(() => {
-    setShowLoginModal(true)
+  const [username, setUsername] = useState('')
+  const [currentStep, setCurrentStep] = useState<'login' | 'signup' | 'confirm'>('login')
+  const [emailForConfirmation, setEmailForConfirmation] = useState('')
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = JSON.parse(localStorage.getItem('userData') || '{}')
+
+      if (user) {
+        try {
+          setIsLoggedIn(true)
+          setUsername(`${user.name} ${user.surname}`.trim())
+        } catch (err) {
+          console.error('Failed to fetch user:', err)
+          setIsLoggedIn(false)
+        }
+      }
+    }
+    fetchUser()
   }, [])
 
-  const handleLoginSuccess = () => {
+  const handleLoginClick = useCallback(() => {
+    setShowLoginModal(true)
+    setCurrentStep('login')
+  }, [])
+
+  const handleLoginSuccess = async () => {
+    const user = JSON.parse(localStorage.getItem('userData') || '{}')
+    if (user) {
+      try {
+        setUsername(`${user.name} ${user.surname}`.trim())
+        setIsLoggedIn(true)
+      } catch (err) {
+        console.error('Failed to fetch user after login:', err)
+      }
+    }
+  }
+
+  const handleSignUpSuccess = (email: string) => {
+    setCurrentStep('confirm')
+    setEmailForConfirmation(email)
+  }
+
+  const handleConfirmationSuccess = () => {
+    setCurrentStep('login')
+    setEmailForConfirmation('')
+  }
+
+  const handleCloseModal = () => {
     setShowLoginModal(false)
-    setIsLoggedIn(true)
+    setCurrentStep('login')
   }
 
   const handleLogout = () => {
+    localStorage.removeItem('userId')
     setIsLoggedIn(false)
+    setUsername('')
   }
 
   return (
@@ -80,7 +128,7 @@ export const Header = () => {
           <div className="mt-4 flex w-full flex-col items-start text-[20px]">
             {isLoggedIn ? (
               <div className="relative w-full">
-                <UserAvatar username="User Name" onLogout={handleLogout} />
+                <UserAvatar username={username} onLogout={handleLogout} />
               </div>
             ) : (
               <MenuButtons onLoginClick={handleLoginClick} />
@@ -90,7 +138,7 @@ export const Header = () => {
 
         <div className="ml-auto hidden gap-[50px] text-[20px] md:flex">
           {isLoggedIn ? (
-            <UserAvatar username="User Name" onLogout={handleLogout} />
+            <UserAvatar username={username} onLogout={handleLogout} />
           ) : (
             <MenuButtons onLoginClick={handleLoginClick} />
           )}
@@ -99,7 +147,25 @@ export const Header = () => {
 
       {showLoginModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <LoginBoard onClose={() => setShowLoginModal(false)} onLogin={handleLoginSuccess} />
+          <div className="relative w-full max-w-[480px] rounded-lg bg-white p-6">
+            <button onClick={handleCloseModal} className="absolute right-4 top-4 p-2">
+              <XmarkIcon className="h-6 w-6 text-gray-500" />
+            </button>
+
+            {currentStep === 'login' && (
+              <LoginPanel
+                onLoginSuccess={handleLoginSuccess}
+                onSwitchToSignUp={() => setCurrentStep('signup')}
+                setShowLoginModal={setShowLoginModal}
+              />
+            )}
+            {currentStep === 'signup' && (
+              <SignUpPanel onSignUpSuccess={handleSignUpSuccess} onSwitchToLogin={() => setCurrentStep('login')} />
+            )}
+            {currentStep === 'confirm' && (
+              <ConfirmationPanel email={emailForConfirmation} onConfirmSuccess={handleConfirmationSuccess} />
+            )}
+          </div>
         </div>
       )}
     </>
