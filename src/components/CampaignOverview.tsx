@@ -20,8 +20,9 @@ export const CampaignOverview = ({
   onSave,
   onShare,
 }: CampaignOverviewProps) => {
+  const target = fundingTarget || 0
   const amountNumber = parseFloat(amount)
-  const percentage = Math.round((amountNumber / fundingTarget) * 100)
+  const percentage = target > 0 ? Math.round((amountNumber / target) * 100) : 0
   const daysLeft = endDate ? Math.ceil((new Date(endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0
 
   return (
@@ -32,7 +33,7 @@ export const CampaignOverview = ({
       )}
     >
       <p className="text-[32px]">{`$${amountNumber?.toLocaleString()}`}</p>
-      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${fundingTarget?.toLocaleString()} raised`}</p>
+      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${target?.toLocaleString()} raised`}</p>
 
       <ProgressBar percentage={percentage} className="!h-[17px]" />
       <div className="mb-[46px] mt-[12px] flex justify-between text-[14px]">

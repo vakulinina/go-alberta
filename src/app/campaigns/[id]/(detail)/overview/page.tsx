@@ -14,8 +14,6 @@ const OverviewTab = async ({ params }: { params: Promise<{ id: number }> }) => {
     perkImage: perk.perkImage ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + '/' + perk.perkImage : undefined,
   }))
 
-  console.log('perks', perks)
-
   return (
     <>
       {perks?.length > 0 && (

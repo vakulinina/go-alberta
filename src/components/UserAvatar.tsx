@@ -10,9 +10,10 @@ interface UserAvatarProps {
   username: string
   avatarUrl?: string
   onLogout: () => void
+  className?: string
 }
 
-export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout }) => {
+export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout, className }) => {
   const router = useRouter()
   const [imageError, setImageError] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -26,7 +27,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
   }
 
   return (
-    <div className="relative w-full">
+    <div className={`relative w-full ${className}`}>
       <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 hover:opacity-80">
         <div className="h-10 w-10 overflow-hidden rounded-full bg-gray-100">
           {avatarUrl && !imageError ? (
@@ -49,7 +50,10 @@ export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarUrl, onLogout 
           <Link href="/user" className="flex w-full items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
             Profile
           </Link>
-          <button onClick={handleLogout} className="flex w-full items-center px-4 py-2 text-gray-700 hover:bg-gray-50">
+          <button
+            onClick={handleLogout}
+            className="white flex w-full items-center whitespace-nowrap px-4 py-2 text-gray-700 hover:bg-gray-50"
+          >
             Log out
           </button>
         </div>

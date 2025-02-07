@@ -1,6 +1,6 @@
 import { MOCK_CAMPAIGNS } from '@/constants/campaigns-mock'
 import Image from 'next/image'
-import avatar from '../../../../images/avatar.svg'
+import avatar from '../../../../../images/avatar.svg'
 import { Button } from '@/components/Button'
 
 const DiscussionsTab = async ({ params }: { params: Promise<{ id: number }> }) => {
