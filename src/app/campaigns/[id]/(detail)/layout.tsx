@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: CampaignLayoutProps): Promise
 
 const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
   const id = (await params).id
-
   const campaign = await getCampaignById(id)
   const media = await getCampaignMedia(id)
 
@@ -42,7 +41,6 @@ const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
           <TabBox tabs={tabs} />
           <div className="pt-[80px]">{children}</div>
         </div>
-
         <div>{campaign && <CampaignOverview campaign={campaign} className="sticky max-lg:block" />}</div>
       </div>
     </div>

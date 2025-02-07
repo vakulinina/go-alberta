@@ -4,6 +4,7 @@ import cx from 'classnames'
 import { Campaign } from '@/types/campaign'
 import { Button } from './Button'
 import { Input } from './Inputs/Input'
+import Link from 'next/link'
 
 interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   campaign: Campaign
@@ -14,10 +15,9 @@ interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const CampaignOverview = ({
-  campaign: { amount = '', fundingTarget = 0, invests, endDate },
+  campaign: { amount = '', fundingTarget = 0, invests, endDate, campaignId },
   className,
   onSave,
-  onInvest,
   onShare,
 }: CampaignOverviewProps) => {
   const amountNumber = parseFloat(amount)
@@ -48,9 +48,9 @@ export const CampaignOverview = ({
         <Input type="number" min={0} placeholder="$" />
       </div>
       <div className="mt-[44px]">
-        <Button fullWidth onClick={onInvest}>
-          Back This Project
-        </Button>
+        <Link href={`/campaigns/${campaignId}/checkout`}>
+          <Button fullWidth>Back This Project</Button>
+        </Link>
         <div className="mt-[24px] flex gap-[8px]">
           <Button fullWidth onClick={onSave} variant="secondary">
             Save

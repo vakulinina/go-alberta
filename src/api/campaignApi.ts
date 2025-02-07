@@ -6,12 +6,15 @@ if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL
-// const userId = getUUID()
-const userId = 49 // mock id, switch to uuid or authenticated user id later
+
+const getUserId = () => {
+  const userData = global?.window?.localStorage.getItem('userData')
+  return userData ? JSON.parse(userData).userId : 1
+}
 
 export const createCampaign = async (): Promise<Campaign> => {
   const params = {
-    userId,
+    userId: getUserId(),
   }
 
   try {
@@ -43,7 +46,7 @@ export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...params, userId }),
+      body: JSON.stringify({ ...params, userId: getUserId() }),
     })
 
     if (!response.ok) {
@@ -59,7 +62,7 @@ export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
 
 export const getCampaignById = async (id: number): Promise<Campaign | undefined> => {
   const urlSearchParams = new URLSearchParams({
-    userId: userId.toString(),
+    userId: getUserId().toString(),
   }).toString()
 
   const url = `${BASE_URL}/campaigns/${id}?${urlSearchParams}`
@@ -86,7 +89,7 @@ type GetCampaignsParams = {
 
 export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaign[]> => {
   const defaultParams = {
-    userId: userId,
+    userId: getUserId(),
     campaignStatusId: 1,
   }
   const urlSearchParams = new URLSearchParams(
@@ -110,7 +113,7 @@ export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaig
 
 export const getCampaignPerks = async (id: number): Promise<Perk[]> => {
   const params = {
-    userId: userId.toString(),
+    userId: getUserId().toString(),
   }
 
   const urlSearchParams = new URLSearchParams(params).toString()
@@ -131,7 +134,7 @@ export const getCampaignPerks = async (id: number): Promise<Perk[]> => {
 
 export const addPerk = async (campaignId: number, perk: Perk): Promise<Perk> => {
   const params = {
-    userId,
+    userId: getUserId(),
     ...perk,
   }
 
@@ -157,7 +160,7 @@ export const addPerk = async (campaignId: number, perk: Perk): Promise<Perk> => 
 
 export const updatePerk = async (campaignId: number, perk: Perk): Promise<Perk> => {
   const params = {
-    userId,
+    userId: getUserId(),
     ...perk,
   }
 
@@ -183,7 +186,7 @@ export const updatePerk = async (campaignId: number, perk: Perk): Promise<Perk> 
 
 export const deletePerk = async (campaignId: number, perkId: number): Promise<void> => {
   const params = {
-    userId: userId.toString(),
+    userId: getUserId().toString(),
   }
 
   const urlSearchParams = new URLSearchParams(params).toString()
@@ -207,7 +210,7 @@ export const deletePerk = async (campaignId: number, perkId: number): Promise<vo
 
 export const getCampaignQna = async (id: number): Promise<Qna[]> => {
   const params = {
-    userId: userId.toString(),
+    userId: getUserId().toString(),
   }
 
   const urlSearchParams = new URLSearchParams(params).toString()
@@ -227,7 +230,10 @@ export const getCampaignQna = async (id: number): Promise<Qna[]> => {
 }
 
 export const updateCampaignQna = async (campaignId: number, qnaList: Qna[]): Promise<Qna> => {
-  const params = { userId, qnaList }
+  const params = {
+    userId: getUserId(),
+    qnaList,
+  }
 
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/qna`, {
@@ -253,7 +259,7 @@ export const getCampaignMedia = async (
   id: number
 ): Promise<{ imageId: number; imageType: number; imageUrl: string }[]> => {
   const params = {
-    userId: userId.toString(),
+    userId: getUserId().toString(),
   }
 
   const urlSearchParams = new URLSearchParams(params).toString()
@@ -277,7 +283,7 @@ export const updateCampaignMedia = async ({
   campaignId,
 }: UpdateCampaignMediaRequest): Promise<UpdateCampaignMediaResponse> => {
   const params = {
-    userId,
+    userId: getUserId(),
     imageList,
   }
 
@@ -349,7 +355,7 @@ export const deleteCampaignImage = async ({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ userId: getUserId() }),
     })
 
     if (!response.ok) {
@@ -379,7 +385,7 @@ export const updateCampaignStatus = async (campaignId: number, statusId: number)
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId, statusId }),
+    body: JSON.stringify({ userId: getUserId(), statusId }),
   })
 
   if (!response.ok) {

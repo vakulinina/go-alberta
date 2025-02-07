@@ -29,7 +29,6 @@ export function LoginPanel({ onLoginSuccess, onSwitchToSignUp, setShowLoginModal
       setIsLoading(true)
 
       const response = await userApi.login(email, password)
-      console.log(response)
 
       if ('userId' in response) {
         localStorage.setItem(

@@ -153,7 +153,7 @@ export default function CampaignEditBasicPage() {
           <Image src={coverImageUrl} alt="" className="h-[255px] w-[255px] object-cover" width={255} height={255} />
         </div>
       )}
-      {errors.coverPic && <Toast message={errors.coverPic} key={Date.now()} />}
+      {errors.coverPic && <Toast message={errors.coverPic} />}
 
       <Toggle
         values={[
@@ -176,7 +176,7 @@ export default function CampaignEditBasicPage() {
             Maximum file size: 150KB.
           </p>
           <FileInput onChange={handleGalleryImageChange} label="Upload Image" multiple id="imageGallery" />
-          {errors.media && <Toast message={errors.media} key={Date.now()} />}
+          {errors.media && <Toast message={errors.media} />}
         </>
       )}
 
