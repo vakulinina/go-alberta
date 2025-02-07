@@ -395,7 +395,7 @@ export const updateCampaignStatus = async (campaignId: number, statusId: number)
 
 export const getMyCampaigns = async (userId: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/campaigns?userId=${userId}`, {
+    const response = await fetch(`${BASE_URL}/campaigns?userId=${userId}&fUserId=${userId}&campaignStatusId=-1`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -407,6 +407,8 @@ export const getMyCampaigns = async (userId: string) => {
 
     return response.json()
   } catch (error) {
+    console.error('Error in getMyCampaigns:', error)
+
     throw error
   }
 }
