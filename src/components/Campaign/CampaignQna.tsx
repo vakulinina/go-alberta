@@ -1,6 +1,6 @@
 import { memo, useCallback, useState } from 'react'
-import { TextArea } from './TextArea'
-import { Button } from './Button'
+import { TextArea } from '../TextArea'
+import { Button } from '../Button'
 import { Qna } from '@/types/campaign'
 
 interface QnaItemProps {

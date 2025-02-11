@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import { getMyCampaigns } from '@/api/campaignApi'
 import { Campaign } from '@/types/campaign'
+import { Spinner } from '../Spinner'
 
 export function MyCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -29,7 +30,12 @@ export function MyCampaigns() {
     fetchMyCampaigns()
   }, [])
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <div className="flex h-[200px] w-full items-center justify-center">
+        <Spinner />
+      </div>
+    )
 
   if (error) return <div className="text-red-500">{error}</div>
 

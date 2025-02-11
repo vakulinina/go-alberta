@@ -151,10 +151,6 @@ export const Header = () => {
       {showLoginModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-full max-w-[480px] rounded-lg bg-white p-6">
-            <button onClick={handleCloseModal} className="absolute right-4 top-4 p-2">
-              <XmarkIcon className="h-6 w-6 text-gray-500" />
-            </button>
-
             {currentStep === 'login' && (
               <LoginPanel
                 onLoginSuccess={handleLoginSuccess}
@@ -163,7 +159,11 @@ export const Header = () => {
               />
             )}
             {currentStep === 'signup' && (
-              <SignUpPanel onSignUpSuccess={handleSignUpSuccess} onSwitchToLogin={() => setCurrentStep('login')} />
+              <SignUpPanel
+                onSignUpSuccess={handleSignUpSuccess}
+                onSwitchToLogin={() => setCurrentStep('login')}
+                onClose={handleCloseModal}
+              />
             )}
             {currentStep === 'confirm' && (
               <ConfirmationPanel email={emailForConfirmation} onConfirmSuccess={handleConfirmationSuccess} />

@@ -1,10 +1,11 @@
 import React from 'react'
-import { ProgressBar } from './ProgressBar'
+import { ProgressBar } from '../ProgressBar'
 import cx from 'classnames'
 import { Campaign } from '@/types/campaign'
-import { Button } from './Button'
-import { Input } from './Inputs/Input'
+import { Button } from '../Button'
+import { Input } from '../Inputs/Input'
 import Link from 'next/link'
+import { CampaignShareButton } from './CampaignShareButton'
 
 interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
   campaign: Campaign
@@ -15,14 +16,14 @@ interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const CampaignOverview = ({
-  campaign: { amount = '', fundingTarget = 0, invests, endDate, campaignId },
+  campaign: { amount = 0, fundingTarget = 0, invests, endDate, campaignId },
   className,
   onSave,
   onShare,
 }: CampaignOverviewProps) => {
-  const target = fundingTarget || 0
-  const amountNumber = parseFloat(amount)
-  const percentage = target > 0 ? Math.round((amountNumber / target) * 100) : 0
+  const fundingTargetInDollars = Math.round(fundingTarget / 100)
+  const amountInDollars = Math.round(amount / 100)
+  const percentage = fundingTargetInDollars > 0 ? Math.round((amountInDollars / fundingTargetInDollars) * 100) : 0
   const daysLeft = endDate ? Math.ceil((new Date(endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0
 
   return (
@@ -32,8 +33,8 @@ export const CampaignOverview = ({
         className
       )}
     >
-      <p className="text-[32px]">{`$${amountNumber?.toLocaleString()}`}</p>
-      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${target?.toLocaleString()} raised`}</p>
+      <p className="text-[32px]">{`$${amountInDollars.toLocaleString()}`}</p>
+      <p className="mb-[16px] text-[32px]">{`${percentage}% of $${fundingTargetInDollars.toLocaleString()} raised`}</p>
 
       <ProgressBar percentage={percentage} className="!h-[17px]" />
       <div className="mb-[46px] mt-[12px] flex justify-between text-[14px]">
@@ -56,9 +57,11 @@ export const CampaignOverview = ({
           <Button fullWidth onClick={onSave} variant="secondary">
             Save
           </Button>
-          <Button fullWidth onClick={onShare} variant="secondary">
-            Share
-          </Button>
+          <CampaignShareButton
+            campaignId={campaignId}
+            onShare={onShare}
+            buttonProps={{ fullWidth: true, variant: 'secondary', children: 'Share' }}
+          />
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ export type MediaItem = {
 export type Perk = {
   perkId?: number
   campaignId?: number
+  perkTitle?: string
   perkText?: string
   perkAmount?: number
   perkImage?: string
@@ -29,7 +30,7 @@ export type Campaign = {
   title?: string
   campaignDesc?: string
   categoryId?: number
-  amount?: string
+  amount?: number
   fundingTarget?: number
   coverPic?: string
   invests?: number

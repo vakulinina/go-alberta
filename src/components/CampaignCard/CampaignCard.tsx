@@ -7,6 +7,7 @@ import { ShareButton } from './components/ShareButton'
 import cx from 'classnames'
 import { Campaign } from '@/types/campaign'
 import { EditButton } from './components/EditButton'
+import { CampaignShareButton } from '../Campaign/CampaignShareButton'
 
 interface CampaignCardProps extends Campaign {
   className?: string
@@ -17,7 +18,7 @@ export const CampaignCardComponent = ({
   campaignId,
   title = '',
   campaignDesc = '',
-  amount = '',
+  amount = 0,
   fundingTarget = 0,
   invests = 0,
   coverPic = '',
@@ -25,7 +26,9 @@ export const CampaignCardComponent = ({
   isEditable = false,
   endDate = '',
 }: CampaignCardProps) => {
-  const amountNumber = parseFloat(amount)
+  const amountInDollars = Math.round(amount / 100)
+  const fundingTargetInDollars = Math.round(fundingTarget / 100)
+  const percentage = fundingTargetInDollars > 0 ? Math.round((amountInDollars / fundingTargetInDollars) * 100) : 0
   const coverPicUrl = coverPic ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + '/' + coverPic : undefined
   const daysLeft = endDate ? Math.ceil((new Date(endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0
 
@@ -42,7 +45,7 @@ export const CampaignCardComponent = ({
         )}
 
         {isEditable ? <EditButton href={`/user/campaigns/${campaignId}/edit/basic`} /> : <BookmarkButton />}
-        <ShareButton />
+        <CampaignShareButton ButtonComponent={ShareButton} campaignId={campaignId} />
       </div>
 
       <div className="min-h-[160px] bg-[#FFFFFF] px-[6px] pt-[12px] transition-all group-hover:translate-y-[-18px]">
@@ -56,14 +59,13 @@ export const CampaignCardComponent = ({
             <p>Raised</p>
             <p>Total</p>
           </div>
-          <ProgressBar percentage={Math.round((amountNumber / fundingTarget) * 100)} />
+          <ProgressBar percentage={percentage} />
           <div className="mt-[6px] flex justify-between">
             <p className="text-[20px]">
-              ${Number(amountNumber?.toFixed())?.toLocaleString()}{' '}
-              <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${amountInDollars.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
             <p className="text-[20px]">
-              ${fundingTarget?.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
+              ${fundingTargetInDollars.toLocaleString()} <span className="text-[10px] text-[#6A6A6A]">CAD</span>
             </p>
           </div>
           <div className="opacity-0 group-hover:opacity-100">

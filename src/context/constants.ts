@@ -21,7 +21,7 @@ export const INITIAL_CAMPAIGN_DATA: Campaign = {
   title: '',
   campaignDesc: '',
   categoryId: 0,
-  amount: '',
+  amount: 0,
   fundingTarget: 0,
   coverPic: '',
   invests: 0,

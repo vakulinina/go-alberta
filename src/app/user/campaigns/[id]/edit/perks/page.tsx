@@ -7,6 +7,7 @@ import { Fragment, useCallback } from 'react'
 import { ImageGalleryItem } from '@/components/ImageGallery'
 import { Perk } from '@/types/campaign'
 import { Button } from '@/components/Button'
+import { TextArea } from '@/components/TextArea'
 
 interface PerkItemProps {
   perk: Perk
@@ -17,10 +18,10 @@ interface PerkItemProps {
 
 const PerkItem = ({ perk, index, onRemove, onChange, ...props }: PerkItemProps) => {
   const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = event.target
       if (!perk.perkId) {
-        onChange(index, { ...perk, [name]: value })
+        onChange(index, { ...perk, [name]: name === 'perkAmount' ? Number(value) * 100 : value })
       }
     },
     [onChange, index, perk]
@@ -41,6 +42,8 @@ const PerkItem = ({ perk, index, onRemove, onChange, ...props }: PerkItemProps) 
     [onChange, index, perk]
   )
 
+  const perkAmountInDollars = perk.perkAmount ? Math.round(perk.perkAmount / 100) : ''
+
   const imageUrl = perk.imageFile
     ? URL.createObjectURL(perk.imageFile)
     : perk.perkId
@@ -49,15 +52,15 @@ const PerkItem = ({ perk, index, onRemove, onChange, ...props }: PerkItemProps) 
 
   return (
     <Fragment {...props}>
-      <label htmlFor="perkText" className="mt-[42px] block text-[32px]">
+      <label htmlFor="perkTitle" className="mt-[42px] block text-[32px]">
         Perk Name*
       </label>
       <p className="mt-[16px] text-[20px]">Write a name for this perk.</p>
       <Input
-        name="perkText"
+        name="perkTitle"
         placeholder="Perk Name"
         className="mt-[16px] w-full"
-        defaultValue={perk.perkText}
+        defaultValue={perk.perkTitle}
         onChange={handleChange}
         disabled={!!perk.perkId}
       />
@@ -80,9 +83,22 @@ const PerkItem = ({ perk, index, onRemove, onChange, ...props }: PerkItemProps) 
         name="perkAmount"
         placeholder="Amount"
         className="mt-[16px] w-full"
-        defaultValue={perk.perkAmount === 0 ? '' : perk.perkAmount}
+        defaultValue={perkAmountInDollars}
         type="number"
         min={0}
+        onChange={handleChange}
+        disabled={!!perk.perkId}
+      />
+
+      <label htmlFor="perkText" className="mt-[42px] block text-[32px]">
+        Description*
+      </label>
+      <p className="mt-[16px] text-[20px]">Describe the details of this perk.</p>
+      <TextArea
+        name="perkText"
+        placeholder="Perk description"
+        className="mt-[16px] min-h-[120px] w-full rounded-lg border border-gray-300 p-4"
+        defaultValue={perk.perkText}
         onChange={handleChange}
         disabled={!!perk.perkId}
       />

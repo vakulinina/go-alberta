@@ -1,5 +1,5 @@
 import { getCampaignById, getCampaignMedia } from '@/api/campaignApi'
-import { CampaignOverview } from '@/components/CampaignOverview'
+import { CampaignOverview } from '@/components/Campaign/CampaignOverview'
 import { MediaGallery } from '@/components/MediaGallery'
 import { TabBox } from '@/components/TabBox'
 import { Metadata } from 'next'

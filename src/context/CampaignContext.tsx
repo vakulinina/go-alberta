@@ -141,13 +141,14 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { name, value } = e.target
+
       setModifiedFields((prev) => prev.add(name as keyof Campaign))
 
       setState((prev) => ({
         ...prev,
         campaign: {
           ...prev.campaign,
-          [name]: name === 'categoryId' ? Number(value) : value,
+          [name]: name === 'categoryId' ? Number(value) : name === 'fundingTarget' ? Number(value) * 100 : value,
         },
       }))
     },

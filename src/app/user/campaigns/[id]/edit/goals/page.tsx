@@ -12,6 +12,8 @@ export default function CampaignEditGoalsPage() {
     handleChange,
   } = useCampaign()
 
+  const fundingTarget = campaign.fundingTarget ? Math.round(campaign.fundingTarget / 100) : 0
+
   return (
     <>
       <p className="text-[20px]">
@@ -26,7 +28,7 @@ export default function CampaignEditGoalsPage() {
         name="fundingTarget"
         placeholder="Amount"
         className="mt-[16px] w-full"
-        defaultValue={campaign.fundingTarget}
+        defaultValue={fundingTarget}
         onChange={handleChange}
         type="number"
         min={0}
@@ -59,7 +61,7 @@ export default function CampaignEditGoalsPage() {
         error={errors.endDate}
       />
 
-      {errors.general && <Toast message={errors.general} key={Date.now()} />}
+      {errors.general && <Toast message={errors.general} variant="error" />}
     </>
   )
 }

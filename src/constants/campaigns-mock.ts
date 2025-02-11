@@ -7,7 +7,7 @@ export const MOCK_CAMPAIGN: Campaign = {
   title: 'COOLSMILE: Portable Air Cooler for Any Space',
   campaignDesc:
     'Lorem ipsum, dolor sit amet consect quod aperiam molestiae temporibus quiabeatae aliquid, asperiores fugiat odit dicta obcaecati atque officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro ad magni culpa sapiente iustoexcepturi, laboriosam autem molestiae veritatis. Quaerat, fugiat quae ratione nihil sequi dignissimos nulla atnostrum Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit eaque excepturi nam quos nobis, delenitiasperiores. Corrupti placeat maiores ad beatae, nam dolor tempora ab veritatis. Inventore porro quia ad?lorem',
-  amount: '5220',
+  amount: 5220,
   fundingTarget: 7500,
   coverPic: '/mock-camp-main.webp',
   invests: 75,

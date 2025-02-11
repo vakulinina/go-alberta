@@ -6,7 +6,7 @@ import { useCampaign } from '@/context/CampaignContext'
 import { useCallback, useState } from 'react'
 import { Dropdown } from '@/components/Dropdown'
 import { Toggle } from '../../../../../../components/Toggle'
-import { CampaignQna } from '@/components/CampaignQna'
+import { CampaignQna } from '@/components/Campaign/CampaignQna'
 import { ImageGallery } from '@/components/ImageGallery'
 import { FileInput } from '@/components/FileInput'
 import { Button } from '@/components/Button'
@@ -153,7 +153,7 @@ export default function CampaignEditBasicPage() {
           <Image src={coverImageUrl} alt="" className="h-[255px] w-[255px] object-cover" width={255} height={255} />
         </div>
       )}
-      {errors.coverPic && <Toast message={errors.coverPic} />}
+      {errors.coverPic && <Toast message={errors.coverPic} variant="error" />}
 
       <Toggle
         values={[
@@ -176,7 +176,7 @@ export default function CampaignEditBasicPage() {
             Maximum file size: 150KB.
           </p>
           <FileInput onChange={handleGalleryImageChange} label="Upload Image" multiple id="imageGallery" />
-          {errors.media && <Toast message={errors.media} />}
+          {errors.media && <Toast message={errors.media} variant="error" />}
         </>
       )}
 

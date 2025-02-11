@@ -9,9 +9,10 @@ import { userApi } from '@/api/userApi'
 interface SignUpPanelProps {
   onSignUpSuccess: (email: string) => void
   onSwitchToLogin: () => void
+  onClose: () => void
 }
 
-export function SignUpPanel({ onSignUpSuccess, onSwitchToLogin }: SignUpPanelProps) {
+export function SignUpPanel({ onSignUpSuccess, onSwitchToLogin, onClose }: SignUpPanelProps) {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -49,11 +50,7 @@ export function SignUpPanel({ onSignUpSuccess, onSwitchToLogin }: SignUpPanelPro
       onSubmit={handleSignUp}
       className="p-15 relative mx-auto flex min-h-[700px] w-full max-w-md flex-col items-center justify-between rounded-lg bg-white"
     >
-      <button
-        type="button"
-        className="absolute left-4 top-4 text-gray-400 hover:text-gray-600"
-        onClick={() => console.log('Close Modal')}
-      >
+      <button type="button" className="absolute left-4 top-4 text-gray-400 hover:text-gray-600" onClick={onClose}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
