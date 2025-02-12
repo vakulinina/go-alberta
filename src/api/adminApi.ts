@@ -20,10 +20,6 @@ export const adminApi = {
   },
 
   async updateCampaignStatus(campaignId: string, userId: number, campaignStatusId: number, adminMessage?: string) {
-    console.log('campaignId', campaignId)
-    console.log('userId', userId)
-    console.log('campaignStatusId', campaignStatusId)
-    console.log('adminMessage', adminMessage)
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/status`, {
       method: 'PATCH',
       // credentials: 'include',

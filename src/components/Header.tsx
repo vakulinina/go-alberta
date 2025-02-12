@@ -57,7 +57,7 @@ export const Header = () => {
   const [username, setUsername] = useState('')
   const [currentStep, setCurrentStep] = useState<'login' | 'signup' | 'confirm'>('login')
   const [emailForConfirmation, setEmailForConfirmation] = useState('')
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     if (user) {
@@ -101,7 +101,7 @@ export const Header = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('userId')
+    logout()
     setIsLoggedIn(false)
     setUsername('')
   }

@@ -49,10 +49,6 @@ export const userApi = {
 
     const data: LoginResponse = await response.json()
 
-    if ('userId' in data) {
-      localStorage.setItem('userId', String(data.userId))
-    }
-
     return data
   },
 

@@ -37,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const loadUser = async () => {
-      const userId = localStorage.getItem(USER_ID_KEY)
+      const userId = Cookies.get(USER_ID_KEY)
 
       if (userId) {
         try {
@@ -45,18 +45,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
           setUser(userData)
         } catch (error) {
           console.error('Failed to load user:', error)
-          localStorage.removeItem('userId')
+          Cookies.remove(USER_ID_KEY)
         }
       }
 
-      let currentGuestId = localStorage.getItem(GUEST_ID_KEY)
-      if (!currentGuestId) {
-        // TODO: replace with generateUUID when tokens implemented
-        currentGuestId = Math.floor(10000000000 + Math.random() * 90000000000).toString()
-        localStorage.setItem(GUEST_ID_KEY, currentGuestId)
-        Cookies.set(GUEST_ID_KEY, currentGuestId)
+      const currentGuestId = Cookies.get(GUEST_ID_KEY)
+      if (currentGuestId) {
+        setGuestId(Number(currentGuestId))
       }
-      setGuestId(Number(currentGuestId))
 
       setLoading(false)
     }
@@ -99,7 +95,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const logout = useCallback(() => {
-    localStorage.removeItem(USER_ID_KEY)
+    console.log('logout')
+    Cookies.remove(USER_ID_KEY)
     setUser(null)
   }, [])
 
