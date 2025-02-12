@@ -1,9 +1,12 @@
 import { getCampaignQna } from '@/api/campaignApi'
+import { cookies } from 'next/headers'
 
 const CampaignFaqTab = async ({ params }: { params: Promise<{ id: number }> }) => {
   const id = (await params).id
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId') || cookieStore.get('guestId')
 
-  const qna = await getCampaignQna(id)
+  const qna = await getCampaignQna(id, Number(userId?.value))
 
   if (!qna?.length) return <p className="text-center">No questions and answers available</p>
 

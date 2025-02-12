@@ -3,6 +3,7 @@
 import { memo, useState } from 'react'
 import { Toast } from '../Toast'
 import { Button, ButtonProps } from '../Button'
+import { createPortal } from 'react-dom'
 
 const CampaignShareButtonComponent = ({
   campaignId,
@@ -31,7 +32,7 @@ const CampaignShareButtonComponent = ({
 
   return (
     <>
-      {toastMessage && <Toast message={toastMessage} />}
+      {toastMessage && createPortal(<Toast message={toastMessage} />, document.body)}
       <ButtonComponent {...buttonProps} onClick={handleShare} />
     </>
   )

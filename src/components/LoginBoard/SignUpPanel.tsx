@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Input } from '@/components/Inputs/Input'
 import { PasswordInput } from '@/components/Inputs/PasswordInput'
 import { Button } from '@/components/Button'
-import { userApi } from '@/api/userApi'
+import { useAuth } from '@/context/AuthContext'
 
 interface SignUpPanelProps {
   onSignUpSuccess: (email: string) => void
@@ -20,6 +20,7 @@ export function SignUpPanel({ onSignUpSuccess, onSwitchToLogin, onClose }: SignU
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { signUp } = useAuth()
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,7 +33,7 @@ export function SignUpPanel({ onSignUpSuccess, onSwitchToLogin, onClose }: SignU
 
     try {
       setIsLoading(true)
-      await userApi.register({ email, password, firstName, lastName })
+      await signUp({ email, password, firstName, lastName })
       onSignUpSuccess(email)
     } catch (error: unknown) {
       if (error instanceof Error) {

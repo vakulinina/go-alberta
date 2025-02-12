@@ -2,20 +2,30 @@
 
 import { createCampaign } from '@/api/campaignApi'
 import { Spinner } from '@/components/Spinner'
+import { useAuth } from '@/context/AuthContext'
 
 import { redirect } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function NewCampaignPage() {
+  const { user } = useAuth()
   const [exist, setExist] = useState(false)
 
-  createCampaign().then((campaign) => {
-    if (campaign.exist === 1) {
-      setExist(true)
-    } else if (campaign?.campaignId) {
-      redirect(`/user/campaigns/${campaign.campaignId}/edit/basic`)
+  useEffect(() => {
+    if (!user) {
+      // TODO: redirect to login page
+      redirect('/')
+      return
     }
-  })
+
+    createCampaign(user.userId).then((campaign) => {
+      if (campaign.exist === 1) {
+        setExist(true)
+      } else if (campaign?.campaignId) {
+        redirect(`/user/campaigns/${campaign.campaignId}/edit/basic`)
+      }
+    })
+  }, [user])
 
   if (exist) {
     return (

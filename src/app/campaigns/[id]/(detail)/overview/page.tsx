@@ -1,11 +1,15 @@
 import { getCampaignById, getCampaignPerks } from '@/api/campaignApi'
 import { Carousel } from '@/components/Carousel/Carousel'
 import { PerkCard } from '@/components/PerkCard'
+import { cookies } from 'next/headers'
 
 const OverviewTab = async ({ params }: { params: Promise<{ id: number }> }) => {
   const id = (await params).id
-  const campaign = await getCampaignById(id)
-  const perks = await getCampaignPerks(id)
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId') || cookieStore.get('guestId')
+
+  const campaign = await getCampaignById(id, Number(userId?.value))
+  const perks = await getCampaignPerks(id, Number(userId?.value))
 
   if (!campaign) return null
 

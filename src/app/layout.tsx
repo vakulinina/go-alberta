@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer/Footer'
+import { AuthProvider } from '@/context/AuthContext'
 
 const albertSans = localFont({
   src: './fonts/AlbertSans.ttf',
@@ -23,8 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${albertSans.variable} flex min-h-screen flex-col overflow-x-hidden antialiased`}>
-        <Header />
-        <main>{children}</main>
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+        </AuthProvider>
         <Footer />
       </body>
     </html>

@@ -14,6 +14,7 @@ export type Perk = {
   perkImageType?: string
   imageFile?: File
   perkImagePresignedUrl?: string
+  userId?: number
 }
 
 export type Comment = {

@@ -11,6 +11,7 @@ import { SignUpPanel } from './LoginBoard/SignUpPanel'
 import { ConfirmationPanel } from './LoginBoard/ConfirmationPanel'
 import logo from '../images/logo.png'
 import Image from 'next/image'
+import { useAuth } from '@/context/AuthContext'
 
 const MenuButtons = ({ onLoginClick }: { onLoginClick: () => void }) => (
   <>
@@ -56,24 +57,14 @@ export const Header = () => {
   const [username, setUsername] = useState('')
   const [currentStep, setCurrentStep] = useState<'login' | 'signup' | 'confirm'>('login')
   const [emailForConfirmation, setEmailForConfirmation] = useState('')
+  const { user } = useAuth()
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = localStorage.getItem('userData')
-      const user = userData ? JSON.parse(userData) : null
-
-      if (user) {
-        try {
-          setIsLoggedIn(true)
-          setUsername(`${user.name} ${user.surname}`.trim())
-        } catch (err) {
-          console.error('Failed to fetch user:', err)
-          setIsLoggedIn(false)
-        }
-      }
+    if (user) {
+      setIsLoggedIn(true)
+      setUsername(`${user.name} ${user.surname}`.trim())
     }
-    fetchUser()
-  }, [])
+  }, [user])
 
   const handleLoginClick = useCallback(() => {
     setShowLoginModal(true)

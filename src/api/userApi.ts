@@ -17,11 +17,6 @@ export const userApi = {
   async getUserById(userId: number): Promise<User> {
     const response = await fetch(`${BASE_URL}/users/${userId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-      credentials: 'include',
     })
 
     if (!response.ok) {

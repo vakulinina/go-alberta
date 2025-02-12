@@ -4,21 +4,23 @@ import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import { getMyCampaigns } from '@/api/campaignApi'
 import { Campaign } from '@/types/campaign'
 import { Spinner } from '../Spinner'
+import { useAuth } from '@/context/AuthContext'
 
 export function MyCampaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { user } = useAuth()
+
   useEffect(() => {
     const fetchMyCampaigns = async () => {
       try {
-        const userId = localStorage.getItem('userId')
-        if (!userId) {
+        if (!user?.userId) {
           setError('User ID not found in local storage.')
           return
         }
 
-        const data = await getMyCampaigns(userId)
+        const data = await getMyCampaigns(user.userId)
         setCampaigns(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred')
@@ -28,7 +30,7 @@ export function MyCampaigns() {
     }
 
     fetchMyCampaigns()
-  }, [])
+  }, [user?.userId])
 
   if (isLoading)
     return (
@@ -43,7 +45,12 @@ export function MyCampaigns() {
     <div className="mx-auto w-full max-w-[1400px] px-4">
       <div className="grid auto-rows-[450px] grid-cols-1 gap-6 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {campaigns.map((campaign) => (
-          <CampaignCard key={campaign.campaignId} {...campaign} className="flex justify-center" isEditable={true} />
+          <CampaignCard
+            key={campaign.campaignId}
+            {...campaign}
+            className="flex justify-center"
+            isEditable={campaign.campaignStatusId === 1}
+          />
         ))}
       </div>
     </div>

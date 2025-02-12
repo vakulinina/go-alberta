@@ -15,8 +15,8 @@ import {
   updateCampaignMedia,
   updateCampaignQna,
   updateCampaignStatus,
-  uploadImageToS3,
 } from '@/api/campaignApi'
+import { uploadImageToS3 } from '@/api/storageApi'
 import { Campaign, MediaItem, Perk, Qna } from '@/types/campaign'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -31,6 +31,7 @@ import {
 } from './constants'
 import { isValidVideoUrl } from '@/utils/helpers'
 import { CampaignContextType, ErrorState } from './types'
+import { useAuth } from './AuthContext'
 
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined)
 
@@ -39,6 +40,7 @@ const getCurrentStepIndex = (id: number, pathname: string) => {
 }
 
 export function CampaignProvider({ children, id }: { children: React.ReactNode; id: number }) {
+  const { user, guestId } = useAuth()
   const { push } = useRouter()
   const pathname = usePathname()
 
@@ -56,15 +58,17 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
 
   useEffect(() => {
     const fetchCampaignData = async () => {
-      const campaignData = await getCampaignById(id)
+      if (!user?.userId) return
+
+      const campaignData = await getCampaignById(id, user?.userId)
       if (!campaignData) return
 
       setState((prev) => ({ ...prev, loading: true }))
       try {
         const [qnaList, perks, media] = await Promise.all([
-          getCampaignQna(id),
-          getCampaignPerks(id),
-          getCampaignMedia(id),
+          getCampaignQna(id, user.userId),
+          getCampaignPerks(id, user.userId),
+          getCampaignMedia(id, user.userId),
         ])
 
         const campaignToSet = {
@@ -89,7 +93,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
 
     fetchCampaignData()
     fetchCategories()
-  }, [id])
+  }, [guestId, id, user?.userId])
 
   const clearErrors = useCallback((field?: keyof Campaign) => {
     if (field) {
@@ -175,8 +179,8 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
 
       if (!perk) {
         const perkToRemove = campaign.perks?.[index]
-        if (perkToRemove?.perkId) {
-          await deletePerk(state.campaign.campaignId, perkToRemove.perkId)
+        if (perkToRemove?.perkId && user?.userId) {
+          await deletePerk(state.campaign.campaignId, perkToRemove.perkId, user.userId)
         }
         setState((prev) => ({
           ...prev,
@@ -199,7 +203,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         },
       }))
     },
-    [campaign.perks, state.campaign.campaignId]
+    [campaign.perks, state.campaign.campaignId, user?.userId]
   )
 
   const goToStep = useCallback(
@@ -220,7 +224,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
   const prevStep = useCallback(() => goToStep(currentStepIndex - 1), [currentStepIndex, goToStep])
 
   const saveCampaign = useCallback(async () => {
-    if (!campaign.campaignId) throw new Error('No campaign ID found')
+    if (!campaign.campaignId || !user?.userId) return
 
     if (modifiedFields.size === 0) {
       if (isLastStep) {
@@ -246,13 +250,13 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
       }, {})
 
       if (Object.keys(fieldsToUpdate).length > 0) {
-        await updateCampaign({ ...fieldsToUpdate, campaignId: campaign.campaignId })
+        await updateCampaign({ ...fieldsToUpdate, campaignId: campaign.campaignId, userId: user.userId })
       }
 
       if (modifiedFields.has('qnaList')) {
         const filteredQnaList = campaign.qnaList?.filter((qna) => qna.question && qna.answer) || []
         if (filteredQnaList.length > 0) {
-          await updateCampaignQna(campaign.campaignId, filteredQnaList)
+          await updateCampaignQna(campaign.campaignId, filteredQnaList, user.userId)
         }
       }
 
@@ -264,6 +268,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
             const { perkImagePresignedUrl, perkImage, perkId } = await addPerk(campaign.campaignId, {
               ...perk,
               imageFile: undefined,
+              userId: user?.userId,
             })
 
             if (perkImagePresignedUrl) {
@@ -293,11 +298,13 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
     } finally {
       setState((prev) => ({ ...prev, loading: false }))
     }
-  }, [campaign, isLastStep, modifiedFields, nextStep, push])
+  }, [campaign, isLastStep, modifiedFields, nextStep, push, user?.userId])
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>, launch: boolean) => {
       e.preventDefault()
+      if (!user?.userId) return
+
       clearErrors()
       setState((prev) => ({ ...prev, loading: true }))
 
@@ -309,7 +316,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         await saveCampaign()
 
         if (launch && campaign.campaignStatusId === 1) {
-          await updateCampaignStatus(campaign.campaignId, 2)
+          await updateCampaignStatus(campaign.campaignId, 2, user.userId)
         }
       } catch (error) {
         if (Object.keys(errors).length === 0) {
@@ -319,12 +326,12 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign, clearErrors, errors, saveCampaign, setFieldError, validateRequiredFields]
+    [campaign, clearErrors, errors, saveCampaign, setFieldError, validateRequiredFields, user?.userId]
   )
 
   const removeImage = useCallback(
     async (index: number) => {
-      if (!campaign?.media) return
+      if (!campaign?.media || !user?.userId) return
 
       setState((prev) => ({ ...prev, loading: true }))
 
@@ -332,6 +339,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         await deleteCampaignImage({
           campaignId: campaign.campaignId,
           imageId: campaign.media[index].imageId,
+          userId: user.userId,
         })
         setState((prev) => ({
           ...prev,
@@ -346,12 +354,13 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign]
+    [campaign, user?.userId]
   )
 
   const uploadCoverImage = useCallback(
     async (file: File) => {
-      if (!campaign.campaignId) return
+      if (!campaign.campaignId || !user?.userId) return
+
       clearErrors('coverPic')
 
       if (!isValidImageFormat(file) || !isValidImageSize(file)) {
@@ -367,6 +376,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
           campaignId: campaign.campaignId,
           coverPicType: file.type,
           coverPic: file.name,
+          userId: user.userId,
         })
 
         if (!picPresignedUrl) throw new Error('No presigned URL found')
@@ -386,12 +396,12 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign.campaignId, campaign.coverPic, clearErrors, setFieldError]
+    [campaign.campaignId, campaign.coverPic, clearErrors, setFieldError, user?.userId]
   )
 
   const uploadImages = useCallback(
     async (files: File[]) => {
-      if (!campaign.campaignId) return
+      if (!campaign.campaignId || !user?.userId) return
 
       if (files.some((file) => !isValidImageFormat(file) || !isValidImageSize(file))) {
         setFieldError('media', INVALID_IMAGE_ERROR)
@@ -411,6 +421,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         const response = await updateCampaignMedia({
           imageList,
           campaignId: campaign.campaignId,
+          userId: user.userId,
         })
 
         await Promise.all(
@@ -440,12 +451,12 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign.campaignId, removeImage, setFieldError]
+    [campaign.campaignId, removeImage, setFieldError, user?.userId]
   )
 
   const uploadVideo = useCallback(
     async (url: string) => {
-      if (!campaign.campaignId) return
+      if (!campaign.campaignId || !user?.userId) return
 
       if (!isValidVideoUrl(url)) {
         throw new Error('Invalid video URL: only YouTube and Vimeo links are supported')
@@ -463,6 +474,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
             },
           ],
           campaignId: campaign.campaignId,
+          userId: user.userId,
         })
 
         setState((prev) => ({
@@ -478,7 +490,7 @@ export function CampaignProvider({ children, id }: { children: React.ReactNode; 
         setState((prev) => ({ ...prev, loading: false }))
       }
     },
-    [campaign]
+    [campaign.campaignId, user?.userId]
   )
 
   const api = useMemo(

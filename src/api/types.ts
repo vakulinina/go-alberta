@@ -10,6 +10,7 @@ export type UpdateCampaignMediaResponse = {
 }[]
 
 export type UpdateCampaignMediaRequest = {
+  userId: number
   imageList: {
     imageId?: number
     imageType: '0' | '1'

@@ -7,6 +7,7 @@ import { getCampaignById } from '@/api/campaignApi'
 import { Campaign } from '@/types/campaign'
 import { createFunding } from '@/api/fundingApi'
 import Link from 'next/link'
+import { useAuth } from '@/context/AuthContext'
 
 interface PaymentFormData {
   cardNumber: string
@@ -16,8 +17,9 @@ interface PaymentFormData {
   selectedPerkId?: number
 }
 
-export default function PaymentPage({ params }: { params: Promise<{ id: number }> }) {
+export default function CheckoutPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = use(params)
+  const { user, guestId } = useAuth()
   const [campaign, setCampaign] = useState<Campaign>()
   const [formData, setFormData] = useState<PaymentFormData>({
     cardNumber: '',
@@ -30,12 +32,12 @@ export default function PaymentPage({ params }: { params: Promise<{ id: number }
 
   useEffect(() => {
     const fetchData = async () => {
-      const campaignData = await getCampaignById(id)
+      const campaignData = await getCampaignById(id, user?.userId || guestId)
       setCampaign(campaignData)
     }
 
     fetchData()
-  }, [id])
+  }, [guestId, id, user?.userId])
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target

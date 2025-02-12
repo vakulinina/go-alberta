@@ -1,8 +1,9 @@
 import { Perk } from '@/types/campaign'
 import Image from 'next/image'
 import { Button } from './Button'
+import Link from 'next/link'
 
-export const PerkCard = ({ perkAmount, perkImage, perkText }: Perk) => {
+export const PerkCard = ({ perkAmount, perkImage, perkText, campaignId }: Perk) => {
   return (
     <div className="w-[220px] pb-[12px]">
       {perkImage && (
@@ -16,8 +17,9 @@ export const PerkCard = ({ perkAmount, perkImage, perkText }: Perk) => {
             {/* TODO: calculate the amount */}
             {`$${perkAmount}`} <span className="text-[14px] text-[#6A6A6A]">CAD</span>
           </p>
-
-          <Button className="mt-[24px]">Get This Perk</Button>
+          <Link href={`/campaigns/${campaignId}/checkout`}>
+            <Button className="mt-[24px]">Get This Perk</Button>
+          </Link>
         </div>
       </div>
     </div>

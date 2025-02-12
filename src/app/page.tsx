@@ -1,9 +1,12 @@
 import { getCampaigns } from '@/api/campaignApi'
 import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import { Carousel } from '@/components/Carousel/Carousel'
+import { cookies } from 'next/headers'
 
 export default async function Home() {
-  const campaigns = await getCampaigns({ campaignStatusId: 3 })
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId') || cookieStore.get('guestId')
+  const campaigns = await getCampaigns({ campaignStatusId: 3, userId: Number(userId?.value) })
 
   return (
     <div className="px-[100px] py-[70px]">

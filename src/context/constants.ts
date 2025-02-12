@@ -58,3 +58,6 @@ export const REQUIRED_FIELDS = {
   qnaList: 'Q&A',
   perks: 'Perks',
 } as const
+
+export const USER_ID_KEY = 'userId'
+export const GUEST_ID_KEY = 'guestId'

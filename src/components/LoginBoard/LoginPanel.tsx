@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Input } from '@/components/Inputs/Input'
 import { PasswordInput } from '@/components/Inputs/PasswordInput'
 import { Button } from '@/components/Button'
-import { userApi } from '@/api/userApi'
 import { XmarkIcon } from '@/components/Icons/XmarkIcon'
+import { useAuth } from '@/context/AuthContext'
 
 interface LoginPanelProps {
   onLoginSuccess: () => void
@@ -20,6 +20,7 @@ export function LoginPanel({ onLoginSuccess, onSwitchToSignUp, setShowLoginModal
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { logIn } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,26 +29,11 @@ export function LoginPanel({ onLoginSuccess, onSwitchToSignUp, setShowLoginModal
     try {
       setIsLoading(true)
 
-      const response = await userApi.login(email, password)
-
-      if ('userId' in response) {
-        localStorage.setItem(
-          'userData',
-          JSON.stringify({
-            userId: response.userId,
-            name: response.user.name,
-            surname: response.user.surname,
-            status: response.user.status,
-          })
-        )
-        onLoginSuccess()
-        setShowLoginModal(false)
-        router.push('/user')
-      } else {
-        setError(response.message || 'Unexpected response.')
-      }
-    } catch (error) {
-      console.error('Login failed:', error)
+      await logIn(email, password)
+      onLoginSuccess()
+      setShowLoginModal(false)
+      router.push('/user')
+    } catch {
       setError('Login failed. Please try again.')
     } finally {
       setIsLoading(false)

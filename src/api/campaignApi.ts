@@ -7,14 +7,9 @@ if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
 
 const BASE_URL = process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL
 
-const getUserId = () => {
-  const userData = global?.window?.localStorage.getItem('userData')
-  return userData ? JSON.parse(userData).userId : 1
-}
-
-export const createCampaign = async (): Promise<Campaign> => {
+export const createCampaign = async (userId: number): Promise<Campaign> => {
   const params = {
-    userId: getUserId(),
+    userId,
   }
 
   try {
@@ -38,7 +33,7 @@ export const createCampaign = async (): Promise<Campaign> => {
 }
 
 export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
-  const { campaignId, ...params } = campaign
+  const { campaignId, userId, ...params } = campaign
 
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}`, {
@@ -46,7 +41,7 @@ export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...params, userId: getUserId() }),
+      body: JSON.stringify({ ...params, userId }),
     })
 
     if (!response.ok) {
@@ -60,9 +55,9 @@ export const updateCampaign = async (campaign: Campaign): Promise<Campaign> => {
   }
 }
 
-export const getCampaignById = async (id: number): Promise<Campaign | undefined> => {
+export const getCampaignById = async (id: number, userId: number): Promise<Campaign | undefined> => {
   const urlSearchParams = new URLSearchParams({
-    userId: getUserId().toString(),
+    userId: userId.toString(),
   }).toString()
 
   const url = `${BASE_URL}/campaigns/${id}?${urlSearchParams}`
@@ -85,13 +80,14 @@ type GetCampaignsParams = {
   campaignStatusId?: number
   pageSize?: number
   pageNum?: number
+  userId: number
 }
 
 export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaign[]> => {
   const defaultParams = {
-    userId: getUserId(),
     campaignStatusId: 1,
   }
+
   const urlSearchParams = new URLSearchParams(
     Object.entries({ ...defaultParams, ...params }).map(([key, value]) => [key, value.toString()])
   )
@@ -111,12 +107,10 @@ export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaig
   }
 }
 
-export const getCampaignPerks = async (id: number): Promise<Perk[]> => {
-  const params = {
-    userId: getUserId().toString(),
-  }
-
-  const urlSearchParams = new URLSearchParams(params).toString()
+export const getCampaignPerks = async (id: number, userId: number): Promise<Perk[]> => {
+  const urlSearchParams = new URLSearchParams({
+    userId: userId.toString(),
+  }).toString()
 
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${id}/perks?${urlSearchParams}`)
@@ -133,18 +127,13 @@ export const getCampaignPerks = async (id: number): Promise<Perk[]> => {
 }
 
 export const addPerk = async (campaignId: number, perk: Perk): Promise<Perk> => {
-  const params = {
-    userId: getUserId(),
-    ...perk,
-  }
-
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/perk`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify(perk),
     })
 
     if (!response.ok) {
@@ -159,18 +148,13 @@ export const addPerk = async (campaignId: number, perk: Perk): Promise<Perk> => 
 }
 
 export const updatePerk = async (campaignId: number, perk: Perk): Promise<Perk> => {
-  const params = {
-    userId: getUserId(),
-    ...perk,
-  }
-
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/perk/${perk.perkId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify(perk),
     })
 
     if (!response.ok) {
@@ -184,12 +168,12 @@ export const updatePerk = async (campaignId: number, perk: Perk): Promise<Perk> 
   }
 }
 
-export const deletePerk = async (campaignId: number, perkId: number): Promise<void> => {
+export const deletePerk = async (campaignId: number, perkId: number, userId: number): Promise<void> => {
   const params = {
-    userId: getUserId().toString(),
+    userId: userId.toString(),
   }
 
-  const urlSearchParams = new URLSearchParams(params).toString()
+  const urlSearchParams = new URLSearchParams(params)
 
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/perk/${perkId}?${urlSearchParams}`, {
@@ -208,12 +192,10 @@ export const deletePerk = async (campaignId: number, perkId: number): Promise<vo
   }
 }
 
-export const getCampaignQna = async (id: number): Promise<Qna[]> => {
-  const params = {
-    userId: getUserId().toString(),
-  }
-
-  const urlSearchParams = new URLSearchParams(params).toString()
+export const getCampaignQna = async (id: number, userId: number): Promise<Qna[]> => {
+  const urlSearchParams = new URLSearchParams({
+    userId: userId.toString(),
+  }).toString()
 
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${id}/qna?${urlSearchParams}`)
@@ -229,9 +211,9 @@ export const getCampaignQna = async (id: number): Promise<Qna[]> => {
   }
 }
 
-export const updateCampaignQna = async (campaignId: number, qnaList: Qna[]): Promise<Qna> => {
+export const updateCampaignQna = async (campaignId: number, qnaList: Qna[], userId: number): Promise<Qna> => {
   const params = {
-    userId: getUserId(),
+    userId,
     qnaList,
   }
 
@@ -256,15 +238,14 @@ export const updateCampaignQna = async (campaignId: number, qnaList: Qna[]): Pro
 }
 
 export const getCampaignMedia = async (
-  id: number
+  id: number,
+  userId: number
 ): Promise<{ imageId: number; imageType: number; imageUrl: string }[]> => {
-  const params = {
-    userId: getUserId().toString(),
-  }
-
-  const urlSearchParams = new URLSearchParams(params).toString()
-
   try {
+    const urlSearchParams = new URLSearchParams({
+      userId: userId.toString(),
+    })
+
     const response = await fetch(`${BASE_URL}/campaigns/${id}/images?${urlSearchParams}`)
 
     if (!response.ok) {
@@ -281,13 +262,14 @@ export const getCampaignMedia = async (
 export const updateCampaignMedia = async ({
   imageList,
   campaignId,
+  userId,
 }: UpdateCampaignMediaRequest): Promise<UpdateCampaignMediaResponse> => {
-  const params = {
-    userId: getUserId(),
-    imageList,
-  }
-
   try {
+    const params = {
+      userId,
+      imageList,
+    }
+
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/images`, {
       method: 'POST',
       headers: {
@@ -308,46 +290,14 @@ export const updateCampaignMedia = async ({
   }
 }
 
-export const uploadImageToS3 = async (
-  presignedUrl: string,
-  imageFile: File | Blob
-): Promise<{ ok: boolean; url: string }> => {
-  try {
-    if (!presignedUrl || !imageFile) {
-      throw new Error('Presigned URL and image file are required')
-    }
-
-    if (!(imageFile instanceof File) && !(imageFile instanceof Blob)) {
-      throw new Error('imageFile must be a File or Blob object')
-    }
-
-    const response = await fetch(presignedUrl, {
-      method: 'PUT',
-      body: imageFile,
-      headers: {
-        'Content-Type': imageFile.type || 'application/octet-stream',
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Image upload failed with status: ${response.status}`)
-    }
-
-    return {
-      ok: response.ok,
-      url: response.url.split('?')[0],
-    }
-  } catch (error) {
-    throw error
-  }
-}
-
 export const deleteCampaignImage = async ({
   campaignId,
   imageId,
+  userId,
 }: {
   campaignId: Campaign['campaignId']
   imageId: MediaItem['imageId']
+  userId: number
 }) => {
   try {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/image/${imageId}`, {
@@ -355,7 +305,7 @@ export const deleteCampaignImage = async ({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: getUserId() }),
+      body: JSON.stringify({ userId }),
     })
 
     if (!response.ok) {
@@ -369,33 +319,47 @@ export const deleteCampaignImage = async ({
 }
 
 export const getCampaignCategories = async (): Promise<{ categoryId: number; categoryName: string }[]> => {
-  const response = await fetch(`${BASE_URL}/campaigns/categories`)
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch categories: ${response.status}`)
-  }
-
-  const categories = await response.json()
-  return categories
-}
-
-export const updateCampaignStatus = async (campaignId: number, statusId: number): Promise<void> => {
-  const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/status`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId: getUserId(), statusId }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to update campaign status: ${response.status}`)
-  }
-}
-
-export const getMyCampaigns = async (userId: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/campaigns?userId=${userId}&fUserId=${userId}&campaignStatusId=-1`, {
+    const response = await fetch(`${BASE_URL}/campaigns/categories`)
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch categories: ${response.status}`)
+    }
+
+    const categories = await response.json()
+    return categories
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateCampaignStatus = async (campaignId: number, statusId: number, userId: number): Promise<void> => {
+  try {
+    const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/status`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, statusId }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to update campaign status: ${response.status}`)
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getMyCampaigns = async (userId: number) => {
+  try {
+    const params = new URLSearchParams({
+      userId: userId.toString(),
+      fUserId: userId.toString(),
+      campaignStatusId: '-1',
+    })
+
+    const response = await fetch(`${BASE_URL}/campaigns?${params}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },

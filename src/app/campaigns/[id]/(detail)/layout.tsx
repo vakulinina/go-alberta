@@ -3,16 +3,23 @@ import { CampaignOverview } from '@/components/Campaign/CampaignOverview'
 import { MediaGallery } from '@/components/MediaGallery'
 import { TabBox } from '@/components/TabBox'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 
 type CampaignLayoutProps = {
   children: React.ReactNode
   params: Promise<{ id: number }>
 }
 
+async function getUserIdFromCookies() {
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId') || cookieStore.get('guestId')
+  return Number(userId?.value)
+}
+
 export async function generateMetadata({ params }: CampaignLayoutProps): Promise<Metadata> {
   const id = (await params).id
-
-  const campaign = await getCampaignById(id)
+  const userId = await getUserIdFromCookies()
+  const campaign = await getCampaignById(id, userId)
 
   return {
     title: `${campaign?.title || 'Campaign'} | Go Alberta`,
@@ -21,8 +28,10 @@ export async function generateMetadata({ params }: CampaignLayoutProps): Promise
 
 const CampaignLayout = async ({ children, params }: CampaignLayoutProps) => {
   const id = (await params).id
-  const campaign = await getCampaignById(id)
-  const media = await getCampaignMedia(id)
+  const userId = await getUserIdFromCookies()
+
+  const campaign = await getCampaignById(id, userId)
+  const media = await getCampaignMedia(id, userId)
 
   const tabs = [
     { name: 'Overview', href: `/campaigns/${id}/overview` },
