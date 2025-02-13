@@ -82,6 +82,7 @@ type GetCampaignsParams = {
   pageNum?: number
   userId: number
   categoryIds?: string
+  freeText?: string
 }
 
 export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaign[]> => {

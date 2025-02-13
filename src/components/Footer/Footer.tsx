@@ -24,13 +24,13 @@ export const Footer = () => {
           <div>
             <p className="mb-[10px] text-[14px]">Follow us</p>
             <div className="flex gap-[24px]">
-              <a href="https://www.facebook.com/goalbertago">
+              <a href="https://www.facebook.com/goalbertago" target="_blank">
                 <FacebookIcon />
               </a>
-              <a href="https://www.instagram.com/goalbertaconnect">
+              <a href="https://www.instagram.com/goalbertaconnect" target="_blank">
                 <InstagramIcon />
               </a>
-              <a href="https://www.linkedin.com/company/goalbertago">
+              <a href="https://www.linkedin.com/company/goalbertago" target="_blank">
                 <LinkedInIcon />
               </a>
             </div>

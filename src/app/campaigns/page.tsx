@@ -3,7 +3,7 @@
 import { getCampaigns, getCampaignCategories } from '@/api/campaignApi'
 import { CampaignCard } from '@/components/CampaignCard/CampaignCard'
 import React, { useCallback, useEffect, useState } from 'react'
-import { CategoryFilter } from '../../components/CategoryFilter'
+import { CampaignsFilter } from '../../components/CategoryFilter'
 import { useAuth } from '@/context/AuthContext'
 import { Campaign } from '@/types/campaign'
 import { Category } from '@/api/types'
@@ -33,11 +33,12 @@ const CampaignsPage = () => {
   }, [guestId, user?.userId])
 
   const handleCategoryChange = useCallback(
-    async (categoryIds: number[]) => {
+    async (categoryIds: number[], searchText?: string) => {
       const campaigns = await getCampaigns({
         campaignStatusId: 3,
         userId: user?.userId || guestId,
         categoryIds: categoryIds.join(','),
+        freeText: searchText,
       })
 
       setCampaigns(campaigns)
@@ -55,7 +56,7 @@ const CampaignsPage = () => {
         <>
           <div className="w-[200px] flex-shrink-0 lg:w-[250px]">
             {categories.length > 0 && (
-              <CategoryFilter categories={categories} onCategoryChange={handleCategoryChange} />
+              <CampaignsFilter categories={categories} onCategoryChange={handleCategoryChange} />
             )}
           </div>
           <div className="flex-grow">
