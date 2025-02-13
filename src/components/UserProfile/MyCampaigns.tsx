@@ -15,8 +15,7 @@ export function MyCampaigns() {
   useEffect(() => {
     const fetchMyCampaigns = async () => {
       try {
-        if (!user?.userId) {
-          setError('User ID not found in local storage.')
+        if (!user) {
           return
         }
 
@@ -30,7 +29,7 @@ export function MyCampaigns() {
     }
 
     fetchMyCampaigns()
-  }, [user?.userId])
+  }, [user])
 
   if (isLoading)
     return (

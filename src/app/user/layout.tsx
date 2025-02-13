@@ -1,7 +1,17 @@
 import NavBar from '@/components/UserProfile/NavBar'
 import SideBar from '@/components/UserProfile/SideBar'
+import { USER_ID_KEY } from '@/context/constants'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export default function UserProfileLayout({ children }: { children: React.ReactNode }) {
+export default async function UserProfileLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies()
+  const user = cookieStore.get(USER_ID_KEY)?.value
+
+  if (!user) {
+    redirect('/')
+  }
+
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <div className="hidden border-r md:block">
