@@ -76,7 +76,7 @@ const CarouselComponent = ({
         {title && <h2 className="text-[32px]">{title}</h2>}
 
         {link && (
-          <Link href={link} className="text-[20px] underline">
+          <Link href={link} className="hidden text-[20px] underline sm:block">
             See all
           </Link>
         )}

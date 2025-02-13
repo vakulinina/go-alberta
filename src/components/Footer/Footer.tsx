@@ -18,7 +18,7 @@ export const Footer = () => {
       <div className="flex flex-col justify-between md:flex-row">
         <div className="mb-[60px]">
           <p className="mb-[50px] md:mr-[50px]">
-            Go Alberta Connect: Your Gateway to Supporting Local We Promote Alberta Businesses by helping you Invest
+            Go Alberta Booster: Your Gateway to Supporting Local We Promote Alberta Businesses by helping you Invest
             Local, Learn Local, Cheer Local, and Buy Local - Showcasing Everything Alberta
           </p>
           <div>
