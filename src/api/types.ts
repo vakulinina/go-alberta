@@ -19,3 +19,8 @@ export type UpdateCampaignMediaRequest = {
   }[]
   campaignId: Campaign['campaignId']
 }
+
+export type Category = {
+  categoryId: number
+  categoryName: string
+}

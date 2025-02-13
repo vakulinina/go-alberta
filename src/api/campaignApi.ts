@@ -1,5 +1,5 @@
 import { Campaign, MediaItem, Perk, Qna } from '@/types/campaign'
-import { UpdateCampaignMediaRequest, UpdateCampaignMediaResponse } from './types'
+import { Category, UpdateCampaignMediaRequest, UpdateCampaignMediaResponse } from './types'
 
 if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
   throw new Error('API URL is not defined')
@@ -81,6 +81,7 @@ type GetCampaignsParams = {
   pageSize?: number
   pageNum?: number
   userId: number
+  categoryIds?: string
 }
 
 export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaign[]> => {
@@ -318,7 +319,7 @@ export const deleteCampaignImage = async ({
   }
 }
 
-export const getCampaignCategories = async (): Promise<{ categoryId: number; categoryName: string }[]> => {
+export const getCampaignCategories = async (): Promise<Category[]> => {
   try {
     const response = await fetch(`${BASE_URL}/campaigns/categories`)
 

@@ -28,11 +28,12 @@ export function useAuth() {
 
 interface AuthProviderProps {
   children: ReactNode
+  initialGuestId?: string
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children, initialGuestId }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
-  const [guestId, setGuestId] = useState<number>(0)
+  const [guestId, setGuestId] = useState<number>(initialGuestId ? Number(initialGuestId) : 0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -95,7 +96,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const logout = useCallback(() => {
-    console.log('logout')
     Cookies.remove(USER_ID_KEY)
     setUser(null)
   }, [])

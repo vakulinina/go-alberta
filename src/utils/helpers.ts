@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const generateUUID = () => {
   if (!crypto.randomUUID) {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -8,24 +9,6 @@ export const generateUUID = () => {
   }
 
   return crypto.randomUUID()
-}
-
-export const getUUID = () => {
-  const localStorage = global?.window?.localStorage
-
-  if (!localStorage) {
-    console.error('localStorage is not available')
-    return generateUUID()
-  }
-
-  let userId = localStorage.getItem('userId')
-
-  if (!userId) {
-    userId = generateUUID()
-    localStorage.setItem('userId', userId)
-  }
-
-  return userId
 }
 
 export const getVideoIdAndPlatform = (url: string) => {
@@ -82,4 +65,15 @@ export const isValidVideoUrl = (url: string) => {
     url.startsWith('https://youtu.be/') ||
     url.startsWith('https://vimeo.com/')
   )
+}
+
+export const debounce = (callback: (...args: any[]) => void, delay = 300) => {
+  let timeoutId: NodeJS.Timeout | undefined
+
+  return function (...args: unknown[]) {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+      callback(...args)
+    }, delay)
+  }
 }
