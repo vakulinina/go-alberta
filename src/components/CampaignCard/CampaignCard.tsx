@@ -1,4 +1,6 @@
-import React, { memo } from 'react'
+'use client'
+
+import React, { memo, useState } from 'react'
 import Image from 'next/image'
 import { ProgressBar } from '../ProgressBar'
 import { BookmarkButton } from './components/BookmarkButton'
@@ -12,6 +14,8 @@ import { CampaignShareButton } from '../Campaign/CampaignShareButton'
 interface CampaignCardProps extends Campaign {
   className?: string
   isEditable?: boolean
+  isBookmarked?: boolean
+  onRemoveFromSavedList?: (campaignId: number) => void
 }
 
 export const CampaignCardComponent = ({
@@ -25,12 +29,15 @@ export const CampaignCardComponent = ({
   isEditable = false,
   endDate = '',
   funderCount = 0,
+  isBookmarked = false,
+  onRemoveFromSavedList,
 }: CampaignCardProps) => {
   const amountInDollars = Math.round(amount / 100)
   const fundingTargetInDollars = Math.round(fundingTarget / 100)
   const percentage = fundingTargetInDollars > 0 ? Math.round((amountInDollars / fundingTargetInDollars) * 100) : 0
   const coverPicUrl = coverPic ? process.env.NEXT_PUBLIC_S3_BUCKET_URL + '/' + coverPic : undefined
   const daysLeft = endDate ? Math.ceil((new Date(endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0
+  const [bookmarked, setBookmarked] = useState(isBookmarked)
 
   return (
     <Link
@@ -44,7 +51,16 @@ export const CampaignCardComponent = ({
           <div className="flex h-[255px] w-[255px] items-center justify-center bg-gray-100" />
         )}
 
-        {isEditable ? <EditButton href={`/user/campaigns/${campaignId}/edit/basic`} /> : <BookmarkButton />}
+        {isEditable ? (
+          <EditButton href={`/user/campaigns/${campaignId}/edit/basic`} />
+        ) : (
+          <BookmarkButton
+            campaignId={campaignId}
+            isBookmarked={bookmarked}
+            onToggle={setBookmarked}
+            onRemoveFromSavedList={onRemoveFromSavedList}
+          />
+        )}
         <CampaignShareButton ButtonComponent={ShareButton} campaignId={campaignId} />
       </div>
 

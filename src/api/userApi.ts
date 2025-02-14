@@ -151,3 +151,54 @@ export const userApi = {
     return response.json()
   },
 }
+
+export const getUserSavedCampaigns = async (userId: number) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}/campaigns`, {
+      method: 'GET',
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch saved campaigns: ${response.status}`)
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching saved campaigns:', error)
+    throw error
+  }
+}
+
+export const addCampaignToSaved = async (userId: number, campaignId: number) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}/campaigns/${campaignId}`, {
+      method: 'POST',
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to save campaign: ${response.status}`)
+    }
+
+    return response.text()
+  } catch (error) {
+    console.error('Error saving campaign:', error)
+    throw error
+  }
+}
+
+export const removeCampaignFromSaved = async (userId: number, campaignId: number) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}/campaigns/${campaignId}`, {
+      method: 'DELETE',
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to remove saved campaign: ${response.status}`)
+    }
+
+    return response.text()
+  } catch (error) {
+    console.error('Error removing saved campaign:', error)
+    throw error
+  }
+}
