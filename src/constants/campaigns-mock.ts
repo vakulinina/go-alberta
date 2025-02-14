@@ -10,7 +10,7 @@ export const MOCK_CAMPAIGN: Campaign = {
   amount: 5220,
   fundingTarget: 7500,
   coverPic: '/mock-camp-main.webp',
-  invests: 75,
+  funderCount: 75,
   days: 15,
   startDate: '2024-12-22T00:00:00.000Z',
   media: [
@@ -71,34 +71,25 @@ export const MOCK_CAMPAIGN: Campaign = {
   ],
   comments: [
     {
-      id: '1',
-      user: {
-        name: 'John Doe',
-        imageUrl: 'https://placehold.co/40x40/png',
-      },
-      content:
+      commentId: 1,
+      commenterName: 'John Doe',
+      createdAt: '2024-12-22T00:00:00.000Z',
+      commentText:
         'Comment 1. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',
-      date: '2024-12-22T00:00:00.000Z',
     },
     {
-      id: '2',
-      user: {
-        name: 'Jane Doe',
-        imageUrl: '',
-      },
-      content:
+      commentId: 2,
+      commenterName: 'Jane Doe',
+      createdAt: '2024-12-22T00:00:00.000Z',
+      commentText:
         'Comment 2. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores que officiis ipsa delectus? Magni reiciendis odit deserunt ipsa?Lorem ipsum dolor sit, amet consec',
-      date: '2024-12-22T00:00:00.000Z',
     },
     {
-      id: '3',
-      user: {
-        name: 'John Doe',
-        imageUrl: 'https://placehold.co/40x40/png',
-      },
-      content:
+      commentId: 3,
+      commenterName: 'John Doe',
+      createdAt: '2024-12-22T00:00:00.000Z',
+      commentText:
         'Comment 3. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur quod aperiam molestiae temporibus quiabeatae aliquid, asperiores',
-      date: '2024-12-22T00:00:00.000Z',
     },
   ],
 }

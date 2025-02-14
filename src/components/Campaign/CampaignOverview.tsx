@@ -16,7 +16,7 @@ interface CampaignOverviewProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const CampaignOverview = ({
-  campaign: { amount = 0, fundingTarget = 0, invests, endDate, campaignId },
+  campaign: { amount = 0, fundingTarget = 0, funderCount, endDate, campaignId },
   className,
   onSave,
   onShare,
@@ -38,7 +38,7 @@ export const CampaignOverview = ({
 
       <ProgressBar percentage={percentage} className="!h-[17px]" />
       <div className="mb-[46px] mt-[12px] flex justify-between text-[14px]">
-        <p>{invests || 0} Invests</p>
+        <p>{funderCount || 0} Invests</p>
         <p>{daysLeft} days left</p>
       </div>
 

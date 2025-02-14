@@ -24,7 +24,7 @@ export const INITIAL_CAMPAIGN_DATA: Campaign = {
   amount: 0,
   fundingTarget: 0,
   coverPic: '',
-  invests: 0,
+  funderCount: 0,
   days: 0,
   startDate: '',
   endDate: '',

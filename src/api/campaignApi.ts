@@ -1,5 +1,5 @@
-import { Campaign, MediaItem, Perk, Qna } from '@/types/campaign'
-import { Category, UpdateCampaignMediaRequest, UpdateCampaignMediaResponse } from './types'
+import { Campaign, MediaItem, Perk, Qna, Comment } from '@/types/campaign'
+import { Category, GetCampaignsParams, UpdateCampaignMediaRequest, UpdateCampaignMediaResponse } from './types'
 
 if (!process.env.NEXT_PUBLIC_CAMPAIGNS_API_URL) {
   throw new Error('API URL is not defined')
@@ -74,15 +74,6 @@ export const getCampaignById = async (id: number, userId: number): Promise<Campa
   } catch (error) {
     throw error
   }
-}
-
-type GetCampaignsParams = {
-  campaignStatusId?: number
-  pageSize?: number
-  pageNum?: number
-  userId: number
-  categoryIds?: string
-  freeText?: string
 }
 
 export const getCampaigns = async (params?: GetCampaignsParams): Promise<Campaign[]> => {
@@ -375,6 +366,54 @@ export const getMyCampaigns = async (userId: number) => {
   } catch (error) {
     console.error('Error in getMyCampaigns:', error)
 
+    throw error
+  }
+}
+
+export const getCampaignComments = async (
+  params: Pick<GetCampaignsParams, 'userId' | 'pageSize' | 'pageNum'>,
+  campaignId: number
+): Promise<Comment[]> => {
+  try {
+    const urlSearchParams = new URLSearchParams(Object.entries(params).map(([key, value]) => [key, value.toString()]))
+
+    const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/comments?${urlSearchParams}`, {
+      cache: 'no-store',
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch campaign comments')
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error in getCampaignComments:', error)
+    throw error
+  }
+}
+
+export const addCampaignComment = async (comment: Comment, campaignId: number, userId: number) => {
+  const params = {
+    comment,
+    userId,
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to add campaign comment')
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error in addCampaignComment:', error)
     throw error
   }
 }

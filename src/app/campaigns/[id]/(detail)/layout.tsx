@@ -10,7 +10,7 @@ type CampaignLayoutProps = {
   params: Promise<{ id: number }>
 }
 
-async function getUserIdFromCookies() {
+export async function getUserIdFromCookies() {
   const cookieStore = await cookies()
   const userId = cookieStore.get('userId') || cookieStore.get('guestId')
   return Number(userId?.value)

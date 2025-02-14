@@ -24,3 +24,12 @@ export type Category = {
   categoryId: number
   categoryName: string
 }
+
+export type GetCampaignsParams = {
+  campaignStatusId?: number
+  pageSize?: number
+  pageNum?: number
+  userId: number
+  categoryIds?: string
+  freeText?: string
+}

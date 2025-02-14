@@ -20,11 +20,11 @@ export const CampaignCardComponent = ({
   campaignDesc = '',
   amount = 0,
   fundingTarget = 0,
-  invests = 0,
   coverPic = '',
   className,
   isEditable = false,
   endDate = '',
+  funderCount = 0,
 }: CampaignCardProps) => {
   const amountInDollars = Math.round(amount / 100)
   const fundingTargetInDollars = Math.round(fundingTarget / 100)
@@ -70,7 +70,7 @@ export const CampaignCardComponent = ({
           </div>
           <div className="opacity-0 group-hover:opacity-100">
             <div className="mt-[6px] flex justify-between text-[14px] text-[#6A6A6A]">
-              <p>{invests} Invests</p>
+              <p>{funderCount} Invests</p>
               <p>{daysLeft} days left</p>
             </div>
           </div>

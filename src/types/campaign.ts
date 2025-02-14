@@ -18,10 +18,10 @@ export type Perk = {
 }
 
 export type Comment = {
-  id: string
-  user: { name: string; imageUrl: string }
-  date: string
-  content: string
+  commentId?: number
+  commenterName?: string
+  createdAt?: string
+  commentText: string
 }
 
 export type Campaign = {
@@ -34,7 +34,6 @@ export type Campaign = {
   amount?: number
   fundingTarget?: number
   coverPic?: string
-  invests?: number
   days?: number
   startDate?: string
   endDate?: string
@@ -46,6 +45,7 @@ export type Campaign = {
   picPresignedUrl?: string
   coverPicType?: string
   exist?: number
+  funderCount?: number
 }
 
 export type Qna = { qnaId?: number; question?: string; answer?: string; createdAt?: string }
