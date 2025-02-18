@@ -6,7 +6,7 @@ interface ReviewPanelProps {
   isOpen: boolean
   review: CampaignReviewType | null
   onClose: () => void
-  onSubmit: (review: CampaignReviewType, comment: string) => void
+  onSubmit: (review: CampaignReviewType, comment: string) => Promise<void>
 }
 
 const ReviewPanel: React.FC<ReviewPanelProps> = ({ isOpen, review, onClose, onSubmit }) => {
@@ -19,6 +19,15 @@ const ReviewPanel: React.FC<ReviewPanelProps> = ({ isOpen, review, onClose, onSu
   }, [isOpen])
 
   if (!isOpen || !review) return null
+
+  const handleSubmit = async () => {
+    try {
+      await onSubmit(review, comment)
+      setComment('')
+    } catch (error) {
+      console.error('Failed to submit review:', error)
+    }
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -35,14 +44,7 @@ const ReviewPanel: React.FC<ReviewPanelProps> = ({ isOpen, review, onClose, onSu
         />
 
         <div className="mt-4 flex justify-end space-x-4">
-          <button
-            className="rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-700"
-            onClick={() => {
-              onSubmit(review, comment)
-              setComment('')
-              onClose()
-            }}
-          >
+          <button className="rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-700" onClick={handleSubmit}>
             OK
           </button>
           <button className="rounded bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300" onClick={onClose}>

@@ -18,6 +18,7 @@ export interface User {
   accessToken: string | null
   tokenId: string | null
   tokenExpiryTime: string | null
+  isAdmin: 0 | 1
 }
 
 export type LoginResponse =
@@ -27,6 +28,7 @@ export type LoginResponse =
         status: number
         name: string
         surname: string
+        isAdmin: 0 | 1
       }
       userId: number
       tokens: {

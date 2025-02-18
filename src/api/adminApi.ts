@@ -10,7 +10,6 @@ export const adminApi = {
   async getCampaignReviews(): Promise<CampaignReviewType[]> {
     const response = await fetch(`${BASE_URL}/campaigns?userId=-1&campaignStatusId=2`, {
       method: 'GET',
-      //  credentials: 'include',
     })
     if (!response.ok) {
       const error = await response.json()
@@ -19,12 +18,11 @@ export const adminApi = {
     return response.json()
   },
 
-  async updateCampaignStatus(campaignId: string, userId: number, campaignStatusId: number, adminMessage?: string) {
+  async updateCampaignStatus(campaignId: string, userId: number, statusId: number, adminMessage?: string) {
     const response = await fetch(`${BASE_URL}/campaigns/${campaignId}/status`, {
       method: 'PATCH',
-      // credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, campaignStatusId, adminMessage }),
+      body: JSON.stringify({ userId, statusId, adminMessage }),
     })
 
     if (!response.ok) {
@@ -33,7 +31,7 @@ export const adminApi = {
     }
 
     try {
-      return await response.json()
+      return await response.text()
     } catch {
       throw new Error('Failed to parse server response as JSON')
     }

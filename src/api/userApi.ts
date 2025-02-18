@@ -13,16 +13,12 @@ export const userApi = {
     })
 
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Failed to fetch user')
+      const error = await response.text()
+      throw new Error(error || 'Failed to fetch user')
     }
 
-    const data = await response.json()
-    if (!Array.isArray(data) || data.length === 0) {
-      throw new Error('User not found')
-    }
-
-    return data[0]
+    const user = await response.json()
+    return user
   },
 
   async login(email: string, password: string): Promise<LoginResponse> {

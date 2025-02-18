@@ -1,7 +1,6 @@
 export type CampaignStatus = 1 | 2 | 3 | 4 | 5 | 6
 
 export interface CampaignReviewType {
-  id: number
   campaignId: string
   title: string
   ownerName: string
@@ -10,4 +9,5 @@ export interface CampaignReviewType {
   campaignStatusId: CampaignStatus
   adminMessage?: string
   lastUpdated?: string
+  startDate?: string
 }

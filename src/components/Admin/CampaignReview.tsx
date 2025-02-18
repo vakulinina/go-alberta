@@ -5,23 +5,25 @@ import ReviewPanel from '@/components/Admin/ReviewPanel'
 import { adminApi } from '@/api/adminApi'
 import { CampaignReviewType } from '@/types/admin'
 import { Button } from '@/components/Button'
+import { useAuth } from '@/context/AuthContext'
 
 const CampaignReview = () => {
   const [reviews, setReviews] = useState<CampaignReviewType[]>([])
   const [isApproveConfirmOpen, setApproveConfirmOpen] = useState(false)
   const [isReviewPanelOpen, setReviewPanelOpen] = useState(false)
   const [currentReview, setCurrentReview] = useState<CampaignReviewType | null>(null)
+  const { user } = useAuth()
+
+  const fetchReviews = async () => {
+    try {
+      const data = await adminApi.getCampaignReviews()
+      setReviews(data)
+    } catch (error) {
+      console.error('Failed to fetch campaigns:', error)
+    }
+  }
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const data = await adminApi.getCampaignReviews()
-        setReviews(data)
-      } catch (error) {
-        console.error('Failed to fetch campaigns:', error)
-      }
-    }
-
     fetchReviews()
   }, [])
 
@@ -31,11 +33,10 @@ const CampaignReview = () => {
   }
 
   const handleApproveConfirm = async () => {
-    if (!currentReview) return
+    if (!currentReview || !user) return
 
     try {
-      await adminApi.updateCampaignStatus(currentReview.campaignId, currentReview.id, 3)
-
+      await adminApi.updateCampaignStatus(currentReview.campaignId, user.userId, 3)
       setReviews((prevReviews) => prevReviews.filter((review) => review.campaignId !== currentReview.campaignId))
     } catch (error) {
       console.error('Failed to approve campaign:', error)
@@ -50,10 +51,11 @@ const CampaignReview = () => {
     setReviewPanelOpen(true)
   }
 
-  const handleReviewSubmit = async (review: CampaignReviewType, comment: string) => {
-    try {
-      await adminApi.updateCampaignStatus(review.campaignId, review.id, 1, comment)
+  const handleReject = async (review: CampaignReviewType, comment: string) => {
+    if (!user) return
 
+    try {
+      await adminApi.updateCampaignStatus(review.campaignId, user.userId, 1, comment)
       setReviews((prevReviews) => prevReviews.filter((r) => r.campaignId !== review.campaignId))
     } catch (error) {
       console.error('Failed to update campaign status:', error)
@@ -83,31 +85,43 @@ const CampaignReview = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {reviews.map((review) => (
-            <tr key={review.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4">
-                <a href={`/campaigns/${review.campaignId}`} className="text-[#582F93] underline hover:text-[#51236D]">
-                  {review.title || 'No Title'}
-                </a>
-              </td>
-              <td className="px-6 py-4">{`${review.ownerName} ${review.ownerSurname}`}</td>
-              <td className="px-6 py-4">{new Date(review.submittedDate).toLocaleDateString()}</td>
-              <td className="px-6 py-4">
-                <span
-                  onClick={() => handleStatusClick(review)}
-                  className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-800"
-                >
-                  Pending
-                </span>
-              </td>
-              <td className="px-6 py-4">{review.adminMessage || '-'}</td>
-              <td className="px-6 py-4">
-                <Button onClick={() => handleApproveClick(review)} className="h-4 rounded text-sm text-white">
-                  Approve
-                </Button>
-              </td>
-            </tr>
-          ))}
+          {reviews.map((review) => {
+            const date = review.startDate
+              ? ((d) => new Date(d.getTime() + d.getTimezoneOffset() * 60000).toLocaleDateString())(
+                  new Date(review.startDate)
+                )
+              : '-'
+
+            return (
+              <tr key={review.campaignId} className="hover:bg-gray-50">
+                <td className="px-6 py-4">
+                  <a
+                    href={`/campaigns/${review.campaignId}`}
+                    className="text-[#582F93] underline hover:text-[#51236D]"
+                    target="_blank"
+                  >
+                    {review.title || 'No Title'}
+                  </a>
+                </td>
+                <td className="px-6 py-4">{`${review.ownerName} ${review.ownerSurname}`}</td>
+                <td className="px-6 py-4">{date}</td>
+                <td className="px-6 py-4">
+                  <span
+                    onClick={() => handleStatusClick(review)}
+                    className="cursor-pointer rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-800"
+                  >
+                    Pending
+                  </span>
+                </td>
+                <td className="px-6 py-4">{review.adminMessage || '-'}</td>
+                <td className="px-6 py-4">
+                  <Button onClick={() => handleApproveClick(review)} className="h-4 rounded text-sm text-white">
+                    Approve
+                  </Button>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
 
@@ -127,7 +141,7 @@ const CampaignReview = () => {
           setReviewPanelOpen(false)
           setCurrentReview(null)
         }}
-        onSubmit={(review, comment) => handleReviewSubmit(review, comment)}
+        onSubmit={handleReject}
       />
     </div>
   )
