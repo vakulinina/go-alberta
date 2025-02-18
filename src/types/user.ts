@@ -4,6 +4,7 @@ export interface User {
   midName: string | null
   surname: string
   email: string
+  phone?: string
   statusId: number
   addrStreet: string
   addrStreet2: string

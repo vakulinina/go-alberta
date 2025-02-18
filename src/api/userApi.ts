@@ -1,11 +1,4 @@
-import {
-  User,
-  LoginResponse,
-  RegisterData,
-  ConfirmEmailData,
-  PatchUserStatusData,
-  PatchUserNameData,
-} from '@/types/user'
+import { User, LoginResponse, RegisterData, ConfirmEmailData, PatchUserStatusData } from '@/types/user'
 
 if (!process.env.NEXT_PUBLIC_USERS_API_URL) {
   throw new Error('Users API URL is not defined')
@@ -131,24 +124,32 @@ export const userApi = {
     return response.json()
   },
 
-  async patchUserName(data: PatchUserNameData): Promise<{ message: string }> {
-    const response = await fetch(`${BASE_URL}/users/${data.userId}/name`, {
+  async patchUserName(
+    firstName: string,
+    lastName: string,
+    userId: number,
+    phoneNumber: string
+  ): Promise<{ message: string }> {
+    const response = await fetch(`${BASE_URL}/users/${userId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: data.firstName,
-        surname: data.lastName,
+        name: firstName,
+        surname: lastName,
+        phone: phoneNumber,
       }),
     })
 
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Failed to update user name')
+      const errorText = await response.text()
+      throw new Error(errorText || 'Failed to update user name')
     }
 
-    return response.json()
+    const message = await response.text()
+
+    return { message }
   },
 }
 

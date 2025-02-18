@@ -5,18 +5,67 @@ import { UserIcon } from '@/components/Icons/UserIcon'
 import { useState } from 'react'
 import { CameraIcon } from '../Icons/CameraIcon'
 import { Input } from '../Inputs/Input'
+import { userApi } from '@/api/userApi'
+import { useAuth } from '@/context/AuthContext'
+import { Toast } from '@/components/Toast'
 
 const FIRST_NAME = 'First Name'
 const LAST_NAME = 'Last Name'
 
 export default function Settings() {
-  const [firstName, setFirstName] = useState(FIRST_NAME)
-  const [lastName, setLastName] = useState(LAST_NAME)
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const { user, setUser } = useAuth()
+  const userId = user?.userId
+
+  const [displayFirstName, setDisplayFirstName] = useState(user?.name || FIRST_NAME)
+  const [displayLastName, setDisplayLastName] = useState(user?.surname || LAST_NAME)
+
+  const [firstName, setFirstName] = useState(user?.name || FIRST_NAME)
+  const [lastName, setLastName] = useState(user?.surname || LAST_NAME)
+  const [phoneNumber, setPhoneNumber] = useState(user?.phone || '')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [repeatNewPassword, setRepeatNewPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastVariant, setToastVariant] = useState<'success' | 'error' | 'info'>('info')
+
+  const handleSave = async () => {
+    if (!userId) return
+
+    setLoading(true)
+    setToastMessage(null)
+
+    try {
+      await userApi.patchUserName(firstName, lastName, userId, phoneNumber)
+
+      setUser({
+        ...user!,
+        name: firstName,
+        surname: lastName,
+        phone: phoneNumber,
+      })
+
+      setDisplayFirstName(firstName)
+      setDisplayLastName(lastName)
+
+      setToastMessage('User data updated successfully!')
+      setToastVariant('success')
+    } catch (err) {
+      setToastMessage((err as Error).message || 'Failed to update user data')
+      setToastVariant('error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCancel = () => {
+    setFirstName(user?.name || FIRST_NAME)
+    setLastName(user?.surname || LAST_NAME)
+    setPhoneNumber(user?.phone || '')
+    setCurrentPassword('')
+    setNewPassword('')
+    setRepeatNewPassword('')
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -27,7 +76,7 @@ export default function Settings() {
             <CameraIcon className="-m-[2px] h-5 w-5" />
           </div>
         </div>
-        <h1 className="text-xl font-bold">{`${firstName} ${lastName}`}</h1>
+        <h1 className="text-xl font-bold">{`${displayFirstName} ${displayLastName}`}</h1>
       </div>
 
       <form className="flex flex-col gap-6 px-8">
@@ -40,15 +89,6 @@ export default function Settings() {
             <div className="flex flex-col gap-2">
               <label>Last Name</label>
               <Input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label>Email</label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="m.b@gmail.com"
-              />
             </div>
             <div className="flex flex-col gap-2">
               <label>Phone Number</label>
@@ -78,10 +118,16 @@ export default function Settings() {
         </div>
 
         <div className="flex justify-end gap-4">
-          <Button className="w-[180px] md:w-[200px]">Cancel</Button>
-          <Button className="w-[180px] md:w-[200px]">Save</Button>
+          <Button className="w-[180px] md:w-[200px]" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button className="w-[180px] md:w-[200px]" type="button" onClick={handleSave} loading={loading}>
+            Save
+          </Button>
         </div>
       </form>
+
+      {toastMessage && <Toast message={toastMessage} variant={toastVariant} onClose={() => setToastMessage(null)} />}
     </div>
   )
 }

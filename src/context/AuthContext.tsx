@@ -8,6 +8,7 @@ import { GUEST_ID_KEY, USER_ID_KEY } from './constants'
 
 interface AuthContextType {
   user: User | null
+  setUser: (user: User | null) => void //for setting
   guestId: number
   loading: boolean
   logIn: (email: string, password: string) => Promise<void>
@@ -103,6 +104,7 @@ export function AuthProvider({ children, initialGuestId }: AuthProviderProps) {
   const value = useMemo(
     () => ({
       user,
+      setUser, //for setting
       guestId,
       loading,
       logIn,
