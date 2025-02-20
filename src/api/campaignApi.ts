@@ -394,7 +394,7 @@ export const getCampaignComments = async (
 
 export const addCampaignComment = async (comment: Comment, campaignId: number, userId: number) => {
   const params = {
-    comment,
+    ...comment,
     userId,
   }
 

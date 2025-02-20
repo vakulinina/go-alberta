@@ -1,3 +1,5 @@
+'use server'
+
 import { addCampaignComment } from '@/api/campaignApi'
 import { revalidatePath } from 'next/cache'
 

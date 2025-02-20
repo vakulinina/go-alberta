@@ -19,7 +19,12 @@ export const CommentForm = ({ campaignId }: { campaignId: number }) => {
   const handleSubmit = useCallback(
     async (formData: FormData) => {
       if (!user) return
-      await addComment(formData, campaignId, user.userId)
+      try {
+        await addComment(formData, campaignId, user.userId)
+        setComment('')
+      } catch (error) {
+        console.error('Error adding comment:', error)
+      }
     },
     [campaignId, user]
   )
@@ -36,7 +41,7 @@ export const CommentForm = ({ campaignId }: { campaignId: number }) => {
       <div className="flex items-center">
         {/* TODO: replace with proper User Avatar component when implemented */}
         <Image className="mr-[8px] shrink-0 rounded-full" src={avatar} alt="" width={40} height={40} />
-        <p className="text-[20px]">User Name</p>
+        <p className="text-[20px]">{`${user.name} ${user.surname}`}</p>
       </div>
       <textarea
         value={comment}
